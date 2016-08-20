@@ -1,0 +1,70 @@
+# Use C++11
+CXX_STD = CXX11
+# PATHS
+INCPATH=../inst/include
+BUILDPATH = ../inst/include
+PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) -I/usr/include/R -I"/home/alpalentless/SICS/IRTPP/packrat/lib/x86_64-redhat-linux-gnu/3.3.1/Rcpp/include"
+PKG_CXXFLAGS = -O3 -g3 $(SHLIB_OPENMP_CXXFLAGS) -std=c++11
+PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) -L$(INCPATH) -lfull $(LIBM)
+LIBS =-L./ -L/../inst
+# -L Path to lib
+# -l Path to lib implmentation
+# -I Path to header
+
+DME=$(INCPATH)/dicho-multi/estimation
+DMM=$(INCPATH)/dicho-multi/model
+DMT=$(INCPATH)/dicho-multi/type
+
+PME=$(INCPATH)/polytomous/estimation
+PMM=$(INCPATH)/polytomous/model
+PMT=$(INCPATH)/polytomous/type
+
+PSIM=simulation
+PTEST=test
+PUTIL=$(INCPATH)/util
+
+# SOURCES
+## DME
+DMESOURCES=estep.cpp estimation.cpp mstep.cpp
+## DMM
+DMMSOURCES=model.cpp
+## DMT
+DMTSOURCES=estimationdata.cpp
+## PME
+PMESOURCES=estep.cpp estimation.cpp mstep.cpp
+## PMM
+PMMSOURCES=model.cpp
+## PMT
+PMTSOURCES=estimationdata.cpp
+## PUTIL
+UTILSOURCES=initial_values.cpp quadraturepoints.cpp ramsay.cpp
+
+DMPATH=dicho-multi
+PMPATH=polytomous
+## Targets
+
+.PHONY: all mylibs
+# All
+all:$(SHLIB) mylibs
+$(SHLIB): mylibs
+
+mylibs:
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dicho-multi/estimation/mstep.o dicho-multi/estimation/mstep.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/quadraturepoints.o util/quadraturepoints.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o simulation/simulation.o simulation/simulation.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dicho-multi/model/model.o dicho-multi/model/model.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dicho-multi/type/estimationdata.o dicho-multi/type/estimationdata.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dicho-multi/estimation/estimation.o dicho-multi/estimation/estimation.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/type/estimationdata.o polytomous/type/estimationdata.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/mstep.o polytomous/estimation/mstep.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dicho-multi/estimation/estep.o dicho-multi/estimation/estep.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/estimation.o polytomous/estimation/estimation.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/estep.o polytomous/estimation/estep.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/model/model.o polytomous/model/model.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/initial_values.o util/initial_values.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/ramsay.o util/ramsay.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/directories.o util/directories.cpp
+	ar rcs $(INCPATH)/libfull.a dicho-multi/estimation/estep.o dicho-multi/estimation/estimation.o dicho-multi/estimation/mstep.o dicho-multi/model/model.o dicho-multi/type/estimationdata.o polytomous/estimation/estep.o polytomous/estimation/estimation.o polytomous/estimation/mstep.o polytomous/model/model.o polytomous/type/estimationdata.o simulation/simulation.o util/initial_values.o util/quadraturepoints.o util/ramsay.o util/directories.o
+
+clean:
+	rm -rf polytomous/type/estimationdata.o polytomous/type/estimationdata.d MIRTcpp util/ramsay.d util/ramsay.o polytomous/estimation/mstep.o polytomous/estimation/mstep.d dicho-multi/model/model.o dicho-multi/model/model.d dicho-multi/type/estimationdata.o dicho-multi/type/estimationdata.d polytomous/estimation/estep.o polytomous/estimation/estep.d polytomous/estimation/estimation.d dicho-multi/estimation/estimation.o dicho-multi/estimation/estimation.d polytomous/estimation/estimation.o IRTpp.o IRTpp.d util/initial_values.d util/initial_values.o polytomous/model/model.d polytomous/model/model.o dicho-multi/estimation/mstep.d dicho-multi/estimation/mstep.o simulation/simulation.o simulation/simulation.d dicho-multi/estimation/estep.d dicho-multi/estimation/estep.o util/quadraturepoints.o util/quadraturepoints.d util/directories.o util/directories.d

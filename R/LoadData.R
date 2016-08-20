@@ -1,0 +1,5 @@
+waka <- read.csv("~/SICS/IRTpp-multidimensional-cpp/datasets/3D/3D-dicho-1000x55-1.csv", header=FALSE, sep=";")
+waka = data.matrix(waka)
+View(waka)
+#w = multiTest_dico(RData = waka,dim = 3)
+#View(w[[1]])

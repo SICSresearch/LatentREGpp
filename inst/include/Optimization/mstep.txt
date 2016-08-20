@@ -1,0 +1,256 @@
+#include "mstep.h"
+
+namespace irtpp {
+
+
+//****************SINCE HERE***********************
+
+/**
+ * Typedef for the csandoval's BGFS
+ */
+
+std::vector<double> function(Parameter params, Info info) {
+	/**
+	 * Computing value of Qi function
+	 * */
+	double value = 0;
+	int mi = zeta[i].get_categories();
+	//Creating an item from a column_vector
+	item_parameter item_i(m, d, mi);
+	item_parameter::build_itemv2(params, d, mi, item_i);
+	for ( int g = 0; g < G; ++g ) {
+		std::vector<double> &theta_g = *theta.get_pointer_row(g);
+		for ( int k = 0; k < mi; ++k )
+			value += r[g](i, k) * log( m.Pik(theta_g, item_i, k) );
+	}
+	std::vector<double> ls;
+	ls.push_back(-value);
+	return ls;
+}
+
+std::vector<double> gradient(Parameter params, Info info) {
+	double tmp = 0;
+	double tmp2 = 0;
+	double tmp3 = 0;
+	double var = 0;
+	double kmax = zeta[i].get_categories();
+
+
+	std::vector<double> ls;
+
+	//build item for each iteration
+	item_parameter item_i(m, d, kmax);
+	item_parameter::build_itemv2(params, d, kmax, item_i);
+
+	column_vector res(kmax);
+
+	//Lambda derivative for each item
+	for (int g = 0; g < G; ++g) {
+		std::vector<double> &theta_g = *theta.get_pointer_row(g);
+		tmp3 = 0;
+		for (int k = 0; k<kmax ;++k) {
+			tmp3 += (((r[g](i, k))/(m.Pik(theta_g,item_i,k)))*((m.Pstar_ik(theta_g,item_i,k-1))*(1-(m.Pstar_ik(theta_g,item_i,k-1)))-(m.Pstar_ik(theta_g,item_i,k))*(1-(m.Pstar_ik(theta_g,item_i,k)))));
+		}
+		tmp2 += (theta_g[0]*tmp3);
+	}
+	res(0) = tmp2;
+
+	ls.push_back(-res(0));
+
+	tmp2 = 0;
+
+	//k derivatives for each item
+	for (int k = 0; k<kmax-1;++k) {
+		for (int g = 0; g < G; ++g) {
+			std::vector<double> &theta_g = *theta.get_pointer_row(g);
+
+			tmp = m.Pstar_ik(theta_g,item_i,k)*(1-(m.Pstar_ik(theta_g,item_i,k)));
+			tmp2 = ((-(r[g](i, k)))/(m.Pik(theta_g,item_i,k)))+(r[g](i, k+1))/(m.Pik(theta_g,item_i,k+1));
+
+			var += tmp*tmp2;
+		}
+		res(k+1) = var;
+		ls.push_back(-res(k+1));
+		var = 0;
+	}
+	return ls;
+}
+
+
+//****************UNTIL HERE***********************
+
+
+/**
+ * Variable to know where is the current item
+ * */
+int i;
+
+/*****************************************
+ * Log likelihood Function to maximize
+ *
+ * */
+
+double Qi (const column_vector& v) {
+	/**
+	 * Computing value of Qi function
+	 * */
+	double value = 0;
+	int mi = zeta[i].get_categories();
+	//Creating an item from a column_vector
+	item_parameter item_i(m, d, mi);
+	item_parameter::build_item(v, d, mi, item_i);
+	for ( int g = 0; g < G; ++g ) {
+		std::vector<double> &theta_g = *theta.get_pointer_row(g);
+		for ( int k = 0; k < mi; ++k )
+			value += r[g](i, k) * log( m.Pik(theta_g, item_i, k) );
+	}
+	return value;
+}
+
+const column_vector Qi_derivative (const column_vector& v) {
+	double tmp = 0;
+	double tmp2 = 0;
+	double tmp3 = 0;
+	double var = 0;
+	double kmax = zeta[i].get_categories();
+
+	//build item for each iteration
+	item_parameter item_i(m, d, kmax);
+	item_parameter::build_item(v, d, kmax, item_i);
+
+	column_vector res(kmax);
+
+	//Lambda derivative for each item
+	for (int g = 0; g < G; ++g) {
+		std::vector<double> &theta_g = *theta.get_pointer_row(g);
+		tmp3 = 0;
+		for (int k = 0; k<kmax ;++k) {
+			tmp3 += (((r[g](i, k))/(m.Pik(theta_g,item_i,k)))*((m.Pstar_ik(theta_g,item_i,k-1))*(1-(m.Pstar_ik(theta_g,item_i,k-1)))-(m.Pstar_ik(theta_g,item_i,k))*(1-(m.Pstar_ik(theta_g,item_i,k)))));
+		}
+		tmp2 += (theta_g[0]*tmp3);
+	}
+	res(0) = tmp2;
+
+	tmp2 = 0;
+
+	//k derivatives for each item
+	for (int k = 0; k<kmax-1;++k) {
+		for (int g = 0; g < G; ++g) {
+			std::vector<double> &theta_g = *theta.get_pointer_row(g);
+
+			tmp = m.Pstar_ik(theta_g,item_i,k)*(1-(m.Pstar_ik(theta_g,item_i,k)));
+			tmp2 = ((-(r[g](i, k)))/(m.Pik(theta_g,item_i,k)))+(r[g](i, k+1))/(m.Pik(theta_g,item_i,k+1));
+
+			var += tmp*tmp2;
+		}
+		res(k+1) = var;
+		var = 0;
+	}
+	return res;
+}
+
+/**********************************
+ *  M STEP						  *
+ *								  *
+ **********************************/
+
+double Mstep() {
+	double max_difference = 0.0;
+
+	/****************csandoval******************/
+	std::vector<Function> f;
+
+	f.push_back(function);
+	// Store the gradient
+	f.push_back(gradient);
+
+	/****************csandoval******************/
+
+	/**
+	 * Log likelihood must be optimized for every item
+	 * */
+	for ( i = 0; i < p; ++i ) {
+
+		/**
+		 * If it is multidimensional and this is one of the pinned items
+		 * i.e the first item of a dimension
+		 * this item is just skipped
+		 * */
+		if ( d > 1 && pinned_items.count(i) ) continue;
+
+		/**
+		 * Starting point where optimization will start
+		 */
+		column_vector starting_point(zeta[i].get_number_of_parameters());
+		int j = 0;
+		for ( int k = 0; k < zeta[i].alphas; ++k, ++j )
+			starting_point(j) = zeta[i].alpha[k];
+		for ( int k = 0; k < zeta[i].gammas; ++k, ++j )
+			starting_point(j) = zeta[i].gamma[k];
+		if ( zeta[i].guessing ) starting_point(j) = zeta[i].c;
+
+		/****************START TESTING******************/
+		Parameter params;
+		j = 0;
+		for ( int k = 0; k < zeta[i].alphas; ++k, ++j )
+			params.push_back(zeta[i].alpha[k]);
+		for ( int k = 0; k < zeta[i].gammas; ++k, ++j )
+			params.push_back(zeta[i].gamma[k]);
+		if ( zeta[i].guessing ) params.push_back(zeta[i].c);
+
+		/****************END TESTING******************/
+
+		/**
+		 *	Calling BFGS from dlib to optimize Qi with explicit derivatives (Log likelihood)
+		 * */
+
+		/**
+		 * If the dimension is 1, the optimization is done with explicit derivatives
+		 * */
+		if ( d == 1 ) {
+			if ( m.parameters < 3 ) {
+				spgo::BFGS<Function, Parameter, Info> bfgs22;
+				bfgs22.run(f,params,0);
+
+			} else {
+				dlib::find_max_using_approximate_derivatives(dlib::lbfgs_search_strategy(6),
+											   dlib::objective_delta_stop_strategy(1e-4),
+											   Qi,
+											   starting_point,-1);
+			}
+		} else {
+			dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
+						   dlib::objective_delta_stop_strategy(1e-4),
+						   Qi,starting_point,-1);
+		}
+
+		//Computing difference of current item
+		double dif = 0.0;
+
+		j = 0;
+		for ( int k = 0; k < zeta[i].alphas; ++k, ++j ) {
+
+			dif = std::max(dif, std::abs(zeta[i].alpha[k] - params.at(j)));
+			zeta[i].alpha[k] = params.at(j);
+		}
+
+		for ( int k = 0; k < zeta[i].gammas; ++k, ++j ) {
+
+			dif = std::max(dif, std::abs(zeta[i].gamma[k] - params.at(j)));
+			zeta[i].gamma[k] = params.at(j);
+		}
+
+		if ( zeta[i].guessing ) {
+
+			dif = std::max(dif, std::abs(zeta[i].c - params.at(j)));
+			zeta[i].c = params.at(j);
+		}
+
+		max_difference = std::max(max_difference, dif);
+	}
+	return max_difference;
+
+}
+
+} /* namespace irtpp */
+
