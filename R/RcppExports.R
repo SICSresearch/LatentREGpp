@@ -5,12 +5,7 @@
 #'
 #' @param RData Input dataset.
 #' @export
-multiTest_dico <- function(RData, dim, wd) {
-    .Call('IRTPP_multiTest_dico', PACKAGE = 'IRTPP', RData, dim, wd)
-}
-
-#' @export
-rcpp_hello <- function() {
-    .Call('IRTPP_rcpp_hello', PACKAGE = 'IRTPP')
+MulTRICall <- function(RData, dim, wd) {
+    .Call('IRTPP_MulTRICall', PACKAGE = 'IRTPP', RData, dim, wd)
 }
 

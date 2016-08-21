@@ -5,26 +5,16 @@
 
 using namespace Rcpp;
 
-// multiTest_dico
-List multiTest_dico(IntegerMatrix RData, unsigned int dim, std::string wd);
-RcppExport SEXP IRTPP_multiTest_dico(SEXP RDataSEXP, SEXP dimSEXP, SEXP wdSEXP) {
+// MulTRICall
+List MulTRICall(IntegerMatrix RData, unsigned int dim, std::string wd);
+RcppExport SEXP IRTPP_MulTRICall(SEXP RDataSEXP, SEXP dimSEXP, SEXP wdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< IntegerMatrix >::type RData(RDataSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
     Rcpp::traits::input_parameter< std::string >::type wd(wdSEXP);
-    __result = Rcpp::wrap(multiTest_dico(RData, dim, wd));
-    return __result;
-END_RCPP
-}
-// rcpp_hello
-List rcpp_hello();
-RcppExport SEXP IRTPP_rcpp_hello() {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    __result = Rcpp::wrap(rcpp_hello());
+    __result = Rcpp::wrap(MulTRICall(RData, dim, wd));
     return __result;
 END_RCPP
 }

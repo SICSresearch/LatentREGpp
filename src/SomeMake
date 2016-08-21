@@ -36,7 +36,7 @@ UTILSOURCES=initial_values.cpp quadraturepoints.cpp ramsay.cpp
 ## PSIM
 SIMSOURCES=simulation.cpp
 
-SOURCES= dichotest.cpp rcpp_hello.cpp RcppExports.cpp
+SOURCES= MulTRI.cpp RcppExports.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
 
 SOURCES_CAF= $(SOURCES) $(addprefix $(DME),$(DMESOURCES)) $(addprefix $(DMM),$(DMMSOURCES)) $(addprefix $(DMT),$(DMTSOURCES)) $(addprefix $(PME),$(PMESOURCES)) $(addprefix $(PMM),$(DMMSOURCES)) $(addprefix $(PMT),$(PMTSOURCES)) $(addprefix $(PUTIL),$(UTILSOURCES)) $(addprefix $(PSIM),$(SIMSOURCES)) $(addprefix $(PTEST),$(SIMSOURCES))

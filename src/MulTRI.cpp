@@ -1,28 +1,14 @@
 #include <Rcpp.h>
 #include "simulation/simulation.h"
+#include "util/general.h"
 using namespace Rcpp;
-//[[Rcpp::plugins(cpp11)]]
-//[[Rcpp::plugins(openmp)]]
-template <class T>
-void convert_matrix ( Rcpp::IntegerMatrix mat, irtpp::matrix<T> &Y ) {
-  Y = irtpp::matrix<T>(mat.nrow(), mat.ncol());
-  for ( int i = 0; i < mat.nrow(); ++i )
-    for ( int j = 0; j < mat.ncol(); ++j )
-      Y(i, j) = (T)mat(i,j);
-}
-
-void convert_vector(Rcpp::NumericVector input, std::vector<int> &output){
-  output = std::vector<int>(input.size());
-  for(int i = 0; i < input.size(); i++)
-    output.push_back(output[i]);
-}
 
 //' Estimates the parameters of a test
 //'
 //' @param RData Input dataset.
 //' @export
 // [[Rcpp::export]]
-List multiTest_dico(IntegerMatrix RData,unsigned int dim,std::string wd){
+List MulTRICall ( IntegerMatrix RData, unsigned int dim, std::string wd ) {
   irtpp::matrix<char> Y;
   convert_matrix(RData, Y);
   Rcout << "Data Loaded" << std::endl;
