@@ -5,11 +5,11 @@
  *      Author: Milder
  */
 
-#include "../../dicho-multi/estimation/estep.h"
+#include "../../dichotomous/estimation/estep.h"
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 void Estep ( estimation_data &data, int current ) {
 	//Number of items

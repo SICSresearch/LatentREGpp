@@ -14,7 +14,7 @@
 #include "../util/constants.h"
 #include "../util/quadraturepoints.h"
 #include "../polytomous/estimation/estimation.h"
-#include "../dicho-multi/estimation/estimation.h"
+#include "../dichotomous/estimation/estimation.h"
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
@@ -74,13 +74,13 @@ public:
 	 *		Model: 2PL
 	 *		Dimension: 2
 	 *		Iterations: 100
-	 *		Folder where data is: "datasets/dicho-multi-tests/escenario2"
-	 *		Prefix of files in folder: "dicho-multi"
+	 *		Folder where data is: "datasets/dichotomous-tests/escenario2"
+	 *		Prefix of files in folder: "dichotomous"
 	 *		Convergence difference
 	 *		Saves each 20 iterations.
 	 *		Data is dichotomous
 	 *
-	 *		simulate(2, 2, 100, "datasets/dicho-multi-tests/escenario2", "dicho-multi", 20, 0.001, true);
+	 *		simulate(2, 2, 100, "datasets/dichotomous-tests/escenario2", "dichotomous", 20, 0.001, true);
 	 *
 	 *	Optional parameters:
 	 *		quadrature_technique: [GAUSSIAN_QUADRATURE, SOBOL_QUADRATURE]

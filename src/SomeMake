@@ -6,9 +6,9 @@ PKG_CPPFLAGS= -Dlibcaf_core_shared_EXPORTS -Wall -pedantic $(SHLIB_OPENMP_CXXFLA
 PKG_LIBS=-L../inst -lcaf_main
 LIBS=-L./ -L../inst
 
-DME=./dicho-multi/estimation
-DMM=./dicho-multi/model
-DMT=./dicho-multi/type
+DME=./dichotomous/estimation
+DMM=./dichotomous/model
+DMT=./dichotomous/type
 
 PME=./polytomous/estimation
 PMM=./polytomous/model

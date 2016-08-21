@@ -5,8 +5,8 @@
  *      Author: Milder
  */
 
-#ifndef DICHOMULTI_ESTIMATION_ESTIMATION_H_
-#define DICHOMULTI_ESTIMATION_ESTIMATION_H_
+#ifndef dichotomous_ESTIMATION_ESTIMATION_H_
+#define dichotomous_ESTIMATION_ESTIMATION_H_
 
 #include "../../util/initial_values.h"
 #include "../../util/matrix.h"
@@ -25,9 +25,11 @@
 #include "../model/model.h"
 #include "../type/estimationdata.h"
 
+#include <Rcpp.h>
+
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 /**
  * Class to set up and run the estimation process.

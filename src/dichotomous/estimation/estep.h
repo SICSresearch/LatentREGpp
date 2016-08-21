@@ -5,8 +5,8 @@
  *      Author: Milder
  */
 
-#ifndef DICHOMULTI_ESTIMATION_ESTEP_H_
-#define DICHOMULTI_ESTIMATION_ESTEP_H_
+#ifndef dichotomous_ESTIMATION_ESTEP_H_
+#define dichotomous_ESTIMATION_ESTEP_H_
 
 #include "../../util/matrix.h"
 #include "../../test/test.h"
@@ -16,12 +16,12 @@
 
 #include <omp.h>
 
-#include "../../dicho-multi/model/model.h"
-#include "../../dicho-multi/type/estimationdata.h"
+#include "../../dichotomous/model/model.h"
+#include "../../dichotomous/type/estimationdata.h"
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 /**
  * Estep of the EMAlgortihm.

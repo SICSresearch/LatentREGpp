@@ -5,8 +5,8 @@
  *      Author: Milder
  */
 
-#ifndef DICHOMULTI_MODEL_MODEL_H_
-#define DICHOMULTI_MODEL_MODEL_H_
+#ifndef dichotomous_MODEL_MODEL_H_
+#define dichotomous_MODEL_MODEL_H_
 
 #include <vector>
 #include <cmath>
@@ -16,7 +16,7 @@
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 /**
  * Model class

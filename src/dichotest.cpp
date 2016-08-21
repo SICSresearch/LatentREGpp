@@ -34,7 +34,7 @@ List multiTest_dico(IntegerMatrix RData,unsigned int dim,std::string wd){
   //convert_vector(no_items,group_items);
   irtpp::setwd(wd);
   Rcout << "Working Directory: " << irtpp::getwd() << "\nInput: "<< wd << std::endl;
-  irtpp::dichomulti::estimation e(Y,dim);
+  irtpp::dichotomous::estimation e(Y,dim);
 
   //convert_matrix(quad, e.estimation_data.theta);
   // convert_matrix(weights, e.estimation_data.weights);

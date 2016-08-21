@@ -5,11 +5,11 @@
  *      Author: Milder
  */
 
-#include "../../dicho-multi/type/estimationdata.h"
+#include "../../dichotomous/type/estimationdata.h"
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 estimation_data::estimation_data(int d) {
 	this->d = d;

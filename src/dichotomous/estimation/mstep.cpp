@@ -5,11 +5,11 @@
  *      Author: Milder
  */
 
-#include "../../dicho-multi/estimation/mstep.h"
+#include "../../dichotomous/estimation/mstep.h"
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 Qi::Qi (int i, estimation_data *d) : i(i), data(d) { }
 

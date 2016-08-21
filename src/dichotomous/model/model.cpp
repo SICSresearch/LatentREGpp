@@ -5,11 +5,11 @@
  *      Author: Milder
  */
 
-#include "../../dicho-multi/model/model.h"
+#include "../../dichotomous/model/model.h"
 
 namespace irtpp {
 
-namespace dichomulti {
+namespace dichotomous {
 
 model::model() : model(2) {
 }
