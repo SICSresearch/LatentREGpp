@@ -102,7 +102,7 @@ class estimation {
 		 * @param cluster a std vector integer template with number of items for each dimension.
 		 * @param custom_initial_values_filename string with path for custom initial_values. Default is none.
 		 */
-		estimation(matrix<char>&, unsigned int, int themodel = 2, double convergence_difference = 0.001,
+		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, double convergence_difference = DEFAULT_EM_DELTA_STOP,
 						std::vector<int> cluster = EMPTY_INTEGER_VECTOR,
 						std::string quadrature_technique = GAUSSIAN,
 						int quadrature_points = DEFAULT_QMCEM_POINTS,
@@ -148,7 +148,7 @@ class estimation {
 		/**
 		 * Runs the EMAlgorithm to find out the parameters.
 		 */
-		void EMAlgortihm();
+		void EMAlgorithm();
 
 		/*
 		 * EAP

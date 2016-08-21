@@ -14,7 +14,6 @@
 #include "../util/constants.h"
 #include "../util/quadraturepoints.h"
 #include "../polytomous/estimation/estimation.h"
-#include "../dichotomous/estimation/estimation.h"
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
@@ -22,6 +21,7 @@
 #include <vector>
 #include <set>
 #include <omp.h>
+#include "../dichotomous/estimation/estimation.h"
 
 namespace irtpp {
 
@@ -44,8 +44,8 @@ public:
 	 *
 	 * 		and it's called iterations/interval times
 	 *
-	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param d the dimension.
+	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param start the start iteration.
 	 * @param end the end iteration.
 	 * @param folder string path where are the datasets.
@@ -57,7 +57,7 @@ public:
 	 * @param cluster a std vector cluster with integer template for multidimensional cases.
 	 * @param custom_initial_values_filename BUILD if the dataset has custom initial values, else NONE.
 	 */
-	 void simulate ( int model, int d, int start, int end, std::string folder, std::string name, double, bool,
+	 void simulate ( int d, int model, int start, int end, std::string folder, std::string name, double, bool,
 					std::string, int, std::vector<int> cluster, std::string );
 
 	/**
@@ -88,8 +88,8 @@ public:
 	 *		cluster: 			  Vector that contains the number of item for each dimension
 	 *		custom_initial_values_filename:		  Custom initial values filename
 	 *
-	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param d the dimension.
+	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param iterations the number of iterations.
 	 * @param folder string path where are the datasets.
 	 * @param name relative path within folder with dataset(s) to estimate.
@@ -101,43 +101,12 @@ public:
 	 * @param cluster a std vector cluster with integer template for multidimensional cases.
 	 * @param custom_initial_values_filename BUILD if the dataset has custom initial values, else NONE.
 	 */
-	void simulate ( int model, int d, int iterations, std::string folder,
+	void simulate ( int d, int model, int iterations, std::string folder,
 				    std::string name, int interval, double, bool,
 					std::string quadrature_technique = QMCEM,
 					int G = DEFAULT_QMCEM_POINTS,
 					std::vector<int> cluster = std::vector<int>(),
 					std::string custom_initial_values_filename = NONE );
-
-	/**
-	 * Runs a single test.
-	 * Receives the model to use
-	 * 			the dimensions of the problem
-	 * 			the filename of the dataset
-	 * 			the convergence difference to use
-	 * 			bool to indicate if data is dichotomous or not
-	 *
-	 * Optional parameters:
-	 *		quadrature_technique: [GAUSSIAN_QUADRATURE, SOBOL_QUADRATURE]
-	 *		G: 					  Custom number of quadrature points
-	 *		cluster: 			  Vector that contains the number of item for each dimension
-	 *		custom_initial_values_filename:		  Custom initial values filename
-	 *
-	 * This function calls dichotomous or polytomous according bool variable
-	 *
-	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
-	 * @param d the dimension.
-	 * @param filename string path where is the dataset.
-	 * @param dif epsilon convergence.
-	 * @param dicho if true, the estimation is dichotomous.
-	 * @param quadrature_technique it can be "Gaussian" or "Sobol".
-	 * @param G number of points in Sobol technique.
-	 * @param cluster a std vector cluster with integer template for multidimensional cases.
-	 * @param custom_initial_values_filename BUILD if the dataset has custom initial values, else NONE.
-	 */
-	void run_single ( int, int, std::string, double, bool,
-					  std::string quadrature_technique = GAUSSIAN, int G = DEFAULT_QMCEM_POINTS,
-					  std::vector<int> cluster = std::vector<int>(),
-					  std::string custom_initial_values_filename = NONE );
 
 	/**
 	 * Runs a single polytomous test
@@ -152,16 +121,16 @@ public:
 	 *		cluster: 			  Vector that contains the number of item for each dimension
 	 *		custom_initial_values_filename:		  Custom initial values filename
 	 *
-	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
-	 * @param d the dimension.
 	 * @param filename string path where is the dataset.
+	 * @param d the dimension.
+	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param dif epsilon convergence.
 	 * @param quadrature_technique it can be "Gaussian" or "Sobol".
 	 * @param G number of points in Sobol technique.
 	 * @param cluster a std vector cluster with integer template for multidimensional cases.
 	 * @param custom_initial_values_filename BUILD if the dataset has custom initial values, else NONE.
 	 */
-	void run_single_polytomous ( int, int, std::string, double,
+	void run_single_polytomous ( std::string, int, int model = TWOPL, double = DEFAULT_EM_DELTA_STOP,
 								 std::string quadrature_technique = GAUSSIAN, int G = DEFAULT_QMCEM_POINTS,
 								 std::vector<int> cluster = std::vector<int>(),
 								 std::string custom_initial_values_filename = NONE );
@@ -179,16 +148,16 @@ public:
 	 *		cluster: 			  Vector that contains the number of item for each dimension
 	 *		custom_initial_values_filename:		  Custom initial values filename
 	 *
-	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
-	 * @param d the dimension.
 	 * @param filename string path where is the dataset.
+	 * @param d the dimension.
+	 * @param model integer number with model, 1 = "1PL", 2 = "2PL", 3 = "3PL".
 	 * @param dif epsilon convergence.
 	 * @param quadrature_technique it can be "Gaussian" or "Sobol".
 	 * @param G number of points in Sobol technique.
 	 * @param cluster a std vector cluster with integer template for multidimensional cases.
 	 * @param custom_initial_values_filename BUILD if the dataset has custom initial values, else NONE.
 	 */
-	void run_single_dichotomous ( int, int, std::string, double,
+	void run_single_dichotomous ( std::string, int, int model = TWOPL, double = DEFAULT_EM_DELTA_STOP,
 								  std::string quadrature_technique = GAUSSIAN, int G = DEFAULT_QMCEM_POINTS,
 								  std::vector<int> cluster = std::vector<int>(),
 								  std::string custom_initial_values_filename = NONE );

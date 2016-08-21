@@ -26,7 +26,7 @@ namespace polytomous {
 
 
 /**
- * Estep of the EMAlgortihm.
+ * Estep of the EMAlgorithm.
  *
  * Receives an estimation_data reference that MUST bring all the
  * data needed to run the Estep.

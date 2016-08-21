@@ -106,8 +106,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	else
 		gaussian_quadrature();
 
-	build_matrixes();
-
 	//Pinned items in multidimensional case (the first of each dimension)
 	std::set<int> &pinned_items = data.pinned_items;
 
@@ -202,6 +200,7 @@ void estimation::sobol_quadrature (int g) {
 	G = g;
 
 	w = std::vector<double>(G, 1.0);
+	build_matrixes();
 }
 
 void estimation::gaussian_quadrature () {
@@ -235,6 +234,7 @@ void estimation::gaussian_quadrature () {
 	w = load_weights(d);
 
 	G = theta.rows();
+	build_matrixes();
 }
 
 void estimation::load_initial_values ( std::string filename ) {
@@ -256,7 +256,7 @@ void estimation::load_initial_values ( std::string filename ) {
 	zeta = std::vector<optimizer_vector>(p);
 
 	for ( int i = 0; i < p; ++i ) {
-		int total_parameters = m.parameters == 1 ? categories_item[i] - 1 : categories_item[i] - 1 + d;
+		int total_parameters = m.parameters == ONEPL ? categories_item[i] - 1 : categories_item[i] - 1 + d;
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
 			zeta[i](j) = mt(i, j);
@@ -302,10 +302,10 @@ void estimation::initial_values() {
 	zeta = std::vector<optimizer_vector>(p);
 
 	for ( int i = 0; i < p; ++i ) {
-		int total_parameters = m.parameters == 1 ? categories_item[i] - 1 : categories_item[i] - 1 + d;
+		int total_parameters = m.parameters == ONEPL ? categories_item[i] - 1 : categories_item[i] - 1 + d;
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
-			zeta[i](j) = 1.0;
+			zeta[i](j) = DEFAULT_INITIAL_VALUE;
 	}
 
 	if ( d == 1 ) {
@@ -335,7 +335,7 @@ void estimation::initial_values() {
 
 			double a = mean(alpha);
 
-			if ( m.parameters > 1 ) {
+			if ( m.parameters > ONEPL ) {
 				item_i(0) = a;
 				for ( int k = 0; k < mi - 1; ++k )
 					item_i(k + 1) = gamma[k];
@@ -365,7 +365,7 @@ void estimation::initial_values() {
 		 * Multidimensional case
 		 * */
 
-		int alphas = m.parameters == 2 ? d : 0;
+		int alphas = m.parameters == TWOPL ? d : 0;
 		/**
 		 * Polytomous case
 		 *
@@ -411,14 +411,14 @@ void estimation::initial_values() {
 			optimizer_vector &item = zeta[pinned];
 			for ( int h = 0; h < d; ++h )
 				item(h) = 0;
-			item(j) = 1;
+			item(j) = DEFAULT_INITIAL_VALUE;
 			++j;
 		}
 	}
 
 	data.loglikelihood = NOT_COMPUTED;
 }
-void estimation::EMAlgortihm() {
+void estimation::EMAlgorithm() {
 	if ( custom_initial_values_filename == NONE || custom_initial_values_filename == BUILD ) initial_values();
 	else load_initial_values(custom_initial_values_filename);
 	double dif = 0.0;
@@ -547,7 +547,7 @@ void estimation::MAP ( bool all_factors ) {
 	int current_zeta = iterations % ACCELERATION_PERIOD;
 	for ( int l = 0; l < s; ++l ) {
 		dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
-							   dlib::objective_delta_stop_strategy(1e-6),
+							   dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
 							   posterior(l, current_zeta, &data), latent_traits[l], -1);
 	}
 

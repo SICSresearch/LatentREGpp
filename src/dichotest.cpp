@@ -42,7 +42,7 @@ List multiTest_dico(IntegerMatrix RData,unsigned int dim,std::string wd){
   // e.build_matrixes();
 
   Rcout << "Estimation Object Created" << std::endl;
-  e.EMAlgortihm();
+  e.EMAlgorithm();
   Rcout << "Estimation Completed" << std::endl;
 
   NumericMatrix zetas(e.data.p,e.data.d+2);

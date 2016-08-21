@@ -71,7 +71,7 @@ void simulation::simulate ( int model, int d, int start, int end, std::string fo
 		if ( dicho ) {
 			START_CLOCK
 			dichotomous::estimation e(Y, d, model, dif, cluster, quadrature_technique, G, EMPTY_INTEGER_VECTOR, initial_values);
-			e.EMAlgortihm();
+			e.EMAlgorithm();
 
 			END_CLOCK
 			REPORT_TIME
@@ -79,7 +79,7 @@ void simulation::simulate ( int model, int d, int start, int end, std::string fo
 		} else {
 			START_CLOCK
 			polytomous::estimation e(Y, d, model, dif, cluster, quadrature_technique, G, EMPTY_INTEGER_VECTOR, initial_values);
-			e.EMAlgortihm();
+			e.EMAlgorithm();
 
 			END_CLOCK
 			REPORT_TIME
@@ -100,14 +100,7 @@ void simulation::simulate ( int model, int d, int iterations, std::string folder
 	}
 }
 
-void simulation::run_single ( int model, int d, std::string filename, double dif, bool dicho,
-							   std::string quadrature_technique, int G, std::vector<int> cluster,
-							   std::string custom_initial_values_filename ) {
-	if ( dicho ) run_single_dichotomous(model, d, filename, dif, quadrature_technique, G, cluster, custom_initial_values_filename );
-	else		 run_single_polytomous(model, d, filename, dif, quadrature_technique, G, cluster, custom_initial_values_filename );
-}
-
-void simulation::run_single_polytomous ( int model, int d, std::string filename, double dif,
+void simulation::run_single_polytomous ( std::string filename, int d, int model, double dif,
 										std::string quadrature_technique, int G, std::vector<int> cluster,
 									    std::string custom_initial_values_filename ) {
 	matrix<char> Y;
@@ -118,10 +111,11 @@ void simulation::run_single_polytomous ( int model, int d, std::string filename,
 	START_CLOCK
 
 	polytomous::estimation e(Y, d, model, dif, cluster, quadrature_technique, G, EMPTY_INTEGER_VECTOR, custom_initial_values_filename);
-	e.EMAlgortihm();
+	e.EMAlgorithm();
 
 	END_CLOCK
 	e.print_item_parameters();
+	std::cout << "Log likelihood: " << e.log_likelihood() << '\n';
 	REPORT_TIME
 
 	std::stringstream ss;
@@ -131,7 +125,7 @@ void simulation::run_single_polytomous ( int model, int d, std::string filename,
 	out.close();
 }
 
-void simulation::run_single_dichotomous ( int model, int d, std::string filename, double dif,
+void simulation::run_single_dichotomous ( std::string filename, int d, int model, double dif,
 										  std::string quadrature_technique, int G, std::vector<int> cluster,
 										  std::string custom_initial_values_filename ) {
 	matrix<char> Y;
@@ -142,10 +136,11 @@ void simulation::run_single_dichotomous ( int model, int d, std::string filename
 	START_CLOCK
 
 	dichotomous::estimation e(Y, d, model, dif, cluster, quadrature_technique, G, EMPTY_INTEGER_VECTOR, custom_initial_values_filename);
-	e.EMAlgortihm();
+	e.EMAlgorithm();
 
 	END_CLOCK
 	e.print_item_parameters();
+	std::cout << "Log likelihood: " << e.log_likelihood() << '\n';
 	REPORT_TIME
 
 	std::stringstream ss;

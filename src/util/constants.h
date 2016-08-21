@@ -27,9 +27,10 @@ namespace irtpp {
 	const std::string NONE = "NONE";
 	const std::string BUILD = "BUILD";
 
-	const std::string ONEPL = "1PL";
-	const std::string TWOPL = "2PL";
-	const std::string THREEPL = "3PL";
+	//Models
+	const int ONEPL = 1;
+	const int TWOPL = 2;
+	const int THREEPL = 3;
 
 	const std::vector<int> EMPTY_INTEGER_VECTOR = std::vector<int>();
 
@@ -42,6 +43,12 @@ namespace irtpp {
 	const double PI_ = std::acos(-1);
 
 	const double NOT_COMPUTED = -INT_MAX;
+
+	const double DEFAULT_INITIAL_VALUE = 1.0;
+	const double DEFAULT_C_INITIAL_VALUE = -1.1;
+
+	const double DEFAULT_EM_DELTA_STOP = 1e-4;
+	const double OPTIMIZER_DELTA_STOP = 1e-6;
 }
 
 

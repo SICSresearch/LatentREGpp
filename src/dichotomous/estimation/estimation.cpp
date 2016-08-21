@@ -85,8 +85,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	else
 		gaussian_quadrature();
 
-	build_matrixes();
-
 	//Pinned items in multidimensional case (the first of each dimension)
 	std::set<int> &pinned_items = data.pinned_items;
 
@@ -168,6 +166,8 @@ void estimation::sobol_quadrature (int g) {
 	G = g;
 
 	w = std::vector<double>(G, 1.0);
+
+	build_matrixes();
 }
 
 void estimation::gaussian_quadrature () {
@@ -201,6 +201,8 @@ void estimation::gaussian_quadrature () {
 	w = load_weights(d);
 
 	G = theta.rows();
+
+	build_matrixes();
 }
 
 void estimation::load_initial_values ( std::string filename ) {
@@ -314,7 +316,7 @@ void estimation::initial_values() {
 	data.loglikelihood = NOT_COMPUTED;
 }
 
-void estimation::EMAlgortihm() {
+void estimation::EMAlgorithm() {
 	if ( custom_initial_values_filename == NONE || custom_initial_values_filename == BUILD ) initial_values();
 	else load_initial_values(custom_initial_values_filename);
 	double dif = 0.0;
@@ -435,12 +437,13 @@ void estimation::MAP ( bool all_factors ) {
 	int current_zeta = iterations % ACCELERATION_PERIOD;
 	for ( int l = 0; l < s; ++l ) {
 		dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
-							   dlib::objective_delta_stop_strategy(1e-6),
+							   dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
 							   posterior(l, current_zeta, &data), latent_traits[l], -1);
 	}
 
 	if ( all_factors ) latent_traits_by_individuals();
 }
+
 
 
 estimation::posterior::posterior (int l, int cur, estimation_data *d) :

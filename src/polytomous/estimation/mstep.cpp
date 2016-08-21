@@ -105,9 +105,6 @@ double Mstep(estimation_data &data, int current) {
 
 	std::set<int> &pinned_items = data.pinned_items;
 
-
-	// Log likelihood must be optimized for every item
-
 	#pragma omp parallel for schedule(dynamic) reduction(max:max_difference)
 	for ( int i = 0; i < p; ++i ) {
 		/**
@@ -119,16 +116,16 @@ double Mstep(estimation_data &data, int current) {
 
 		next_zeta[i] = current_zeta[i];
 
-		// Calling BFGS from dlib to optimize Qi with explicit derivatives (Log likelihood)
+		// Calling BFGS from dlib to optimize Qi with explicit derivatives
 		// If the dimension is 1, the optimization is done with explicit derivatives
 		if ( d == 1 ) {
 			dlib::find_max(dlib::bfgs_search_strategy(),
-										   dlib::objective_delta_stop_strategy(1e-6),
+										   dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
 										   Qi(i, &data),
 										   Qi_derivative(i, &data), next_zeta[i],-1);
 		} else {
 			dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
-						   dlib::objective_delta_stop_strategy(1e-6),
+						   dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
 						   Qi(i, &data),next_zeta[i],-1);
 		}
 
