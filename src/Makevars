@@ -3,8 +3,8 @@ CXX_STD = CXX11
 # PATHS
 INCPATH=../inst/include
 BUILDPATH = ../inst/include
-PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) -I/usr/include/R -I"/home/alpalentless/SICS/IRTPP/packrat/lib/x86_64-redhat-linux-gnu/3.3.1/Rcpp/include"
-PKG_CXXFLAGS = -O3 -g3 $(SHLIB_OPENMP_CXXFLAGS) -std=c++11
+PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
+PKG_CXXFLAGS = -O3 -g3 $(SHLIB_OPENMP_CXXFLAGS) -std=c++11 `Rscript -e 'Rcpp:::CxxFlags()'`
 PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) -L$(INCPATH) -lfull $(LIBM)
 LIBS =-L./ -L/../inst
 # -L Path to lib
