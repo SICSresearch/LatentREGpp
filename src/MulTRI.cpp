@@ -20,13 +20,21 @@ using namespace Rcpp;
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
 List dichotomous ( IntegerMatrix RData, unsigned int dim, int model, double EMepsilon,
-                   NumericMatrix theta, NumericVector weights ) {
+                   NumericMatrix theta, NumericVector weights, std::string initial_values ) {
   irtpp::matrix<char> Y;
   irtpp::convert_matrix(RData, Y);
 
   //Estimation config
-  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon);
-
+  if(initial_values.empty()) {
+    initial_values = irtpp::NONE;
+    //std::cout<<"Enter here"<<std::endl;
+    //std::cout<<initial_values<<std::endl;
+  }
+  
+  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, irtpp::EMPTY_INTEGER_VECTOR,
+                                   irtpp::GAUSSIAN, irtpp::DEFAULT_QMCEM_POINTS, 
+                                   irtpp::EMPTY_INTEGER_VECTOR, initial_values);
+  
   //Quadrature points config 
   irtpp::convert_matrix(theta, e.data.theta);
   irtpp::convert_vector(weights, e.data.w);

@@ -329,3 +329,36 @@ traits_patt2data<- function(pattern, pattern.traits, data)
   
   return(data.traits)
 }
+
+
+#
+#
+#
+traits_by_individuals<- function(data, patterns)
+{
+  all_patterns = new.env()
+  for ( i in 1:nrow(data) ) {
+    key = paste(data[i,], collapse = "")
+    all_patterns[[key]] = append(all_patterns[[key]], i)
+  }
+  
+  traits_by_individuals = list()
+  
+  for ( l in 1:nrow(patterns) ) {
+    key = paste(patterns[l,-ncol(patterns)], collapse = "")
+    indexes_pattern_l = all_patterns[[key]]
+    for ( h in 1:length(indexes_pattern_l)) {
+      index = indexes_pattern_l[[h]]
+      traits_by_individuals[[index]] = patterns[l,ncol(patterns)]
+    }
+  }
+  all_individual_traits<-unlist(traits_by_individuals)
+  return(all_individual_traits)
+}
+
+normalize<- function(y)
+{
+  m.y<- apply(y,2,function(x) sqrt(sum(x^2)))
+  y.normalize<- t(t(y)/m.y)
+  return(y.normalize)
+}

@@ -21,6 +21,7 @@
 #'@importFrom fastGHQuad gaussHermiteData
 #'@importFrom RSpectra eigs
 #'@importFrom sirt noharm.sirt
+#'@importFrom IRTpp irtpp
 #'@section Getting Started:
 #'Get started with the MulTRI package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
@@ -118,11 +119,22 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	} else {
 		# TODO Sergio's initial values here
 		# TODO Find pinned items
-
+	  
+	  if(is.null(initial_values)) {
+	    #TODO add the cluster technique
+	    size.cluster = c(20,20,15)
+	    
+	    list_initial_values = inivals_MultiUni_NOHARM(data, size.cluster, model=model, find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
+	    write.table(x = list_initial_values$coefs,file = "initialvalues.csv",sep = ';',row.names = FALSE, col.names = FALSE)
+	    
+	    #TODO fixing with relative path
+	    initial_values = "initialvalues.csv"
+	  }
+	  
 		# Item parameters estimation
 		if ( dichotomous_data )
 			dichotomous(RData = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						theta = theta, weights = weights)
+						theta = theta, weights = weights, initial_values = initial_values)
 		#else
 		#	poly
 	}

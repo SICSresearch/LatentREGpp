@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // dichotomous
-List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, NumericMatrix theta, NumericVector weights);
-RcppExport SEXP MulTRI_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP thetaSEXP, SEXP weightsSEXP) {
+List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, NumericMatrix theta, NumericVector weights, std::string initial_values);
+RcppExport SEXP MulTRI_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP thetaSEXP, SEXP weightsSEXP, SEXP initial_valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -17,7 +17,8 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
-    __result = Rcpp::wrap(dichotomous(RData, dim, model, EMepsilon, theta, weights));
+    Rcpp::traits::input_parameter< std::string >::type initial_values(initial_valuesSEXP);
+    __result = Rcpp::wrap(dichotomous(RData, dim, model, EMepsilon, theta, weights, initial_values));
     return __result;
 END_RCPP
 }
