@@ -1,11 +1,11 @@
-Package: IRTPP
+Package: MulTRI
 Type: Package
-Title: What the Package Does (Title Case)
+Title: MUL-Tri
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Author: SICS Research Group
+Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
+Description: Mul-Tri is a c++ implementation of the Multidimensional Item Respone Theory (MIRT) cappable of performing parameter and traits estimations. It also provides a list of options to perform optiman analysis and provides usefull information about the obtained model.
+License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
     Rcpp (>= 0.12.6)
