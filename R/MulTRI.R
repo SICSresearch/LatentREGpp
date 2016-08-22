@@ -29,21 +29,19 @@ MulTRI = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	theta = NULL
 	weights = NULL
 	if ( quadrature_technique == "QMCEM" ) {
-		library(randtoolbox)
 
 		if ( is.null(quadrature_points) ) quadrature_points = 2000
 
-		theta = data.matrix(sobol(n = quadrature_points, dim = dim, normal = TRUE))
+		theta = data.matrix(randtoolbox::sobol(n = quadrature_points, dim = dim, normal = TRUE))
 		weights = rep(1, quadrature_points)
 	} else if ( quadrature_technique == "Gaussian" ) {
-		library(fastGHQuad)
 
 		if ( dim == 1 ) quadrature_points = 40
 		else if ( dim == 2 ) quadrature_points = 20
 		else if ( dim == 3 ) quadrature_points = 10
 		else quadrature_points = 5
 
-		g = gaussHermiteData(quadrature_points)
+		g = fastGHQuad::gaussHermiteData(quadrature_points)
 
 		nodes = g$x
 		weigths = g$w
