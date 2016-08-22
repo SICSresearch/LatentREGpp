@@ -19,6 +19,8 @@
 #'@importFrom Rcpp sourceCpp
 #'@importFrom randtoolbox sobol
 #'@importFrom fastGHQuad gaussHermiteData
+#'@importFrom RSpectra eigs
+#'@importFrom sirt noharm.sirt
 #'@section Getting Started:
 #'Get started with the MulTRI package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
