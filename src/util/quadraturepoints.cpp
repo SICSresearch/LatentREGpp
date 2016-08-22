@@ -11,7 +11,7 @@
 
 namespace irtpp {
 
-	void compute_latent_trait ( std::vector<double> &q, int r,
+	void compute_quadrature_points ( std::vector<double> &q, int r,
 								std::vector<double> &current_trait,
 				  	  	  	    matrix<double> &latent_trait ) {
 		if ( r == 0 ) {
@@ -20,7 +20,7 @@ namespace irtpp {
 		}
 		for ( size_t i = 0; i < q.size(); ++i ) {
 			current_trait.push_back(q[i]);
-			compute_latent_trait(q, r - 1, current_trait, latent_trait);
+			compute_quadrature_points(q, r - 1, current_trait, latent_trait);
 			current_trait.pop_back();
 		}
 	}
@@ -54,7 +54,7 @@ namespace irtpp {
 		//current latent trait vector, it starts void
 		std::vector<double> current_trait;
 		//computing latent trait vector for the given dimension
-		compute_latent_trait(q, d, current_trait, latent_trait);
+		compute_quadrature_points(q, d, current_trait, latent_trait);
 
 
 
