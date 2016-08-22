@@ -4,8 +4,12 @@
 #' Estimates the parameters of a test
 #'
 #' @param RData Input dataset.
-#' @export
+#' @param dim Model Dimension
+#' @param model 1 2 or 3PL
+#' @param EMepsilon Convergence value for the algorithm
+#' @param theta Quadrature Points
+#' @param weights Quadrature Points Weights
 dichotomous <- function(RData, dim, model, EMepsilon, theta, weights) {
-    .Call('IRTPP_dichotomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, theta, weights)
+    .Call('MulTRI_dichotomous', PACKAGE = 'MulTRI', RData, dim, model, EMepsilon, theta, weights)
 }
 

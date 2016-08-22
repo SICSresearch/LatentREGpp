@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // dichotomous
 List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, NumericMatrix theta, NumericVector weights);
-RcppExport SEXP IRTPP_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP thetaSEXP, SEXP weightsSEXP) {
+RcppExport SEXP MulTRI_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP thetaSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
