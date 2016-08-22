@@ -33,7 +33,7 @@ List dichotomous ( IntegerMatrix RData, unsigned int dim, int model, double EMep
   e.EMAlgorithm();
 
   NumericMatrix zetas(e.data.p, e.data.d + 2);
-  int current_zeta = e.get_iterations() % 3;
+  int current_zeta = e.get_iterations() % irtpp::ACCELERATION_PERIOD;
 
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;

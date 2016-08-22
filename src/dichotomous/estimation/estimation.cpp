@@ -327,8 +327,7 @@ void estimation::EMAlgorithm() {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-
-		Rcpp::Rcout << "Iteration: " << iterations << " \tMax-Change: " << dif << std::endl;
+		Rprintf("\rIteration: %u \tMax-Change: %.5lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
 }
 
