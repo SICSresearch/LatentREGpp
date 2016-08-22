@@ -19,7 +19,6 @@ PME=$(INCPATH)/polytomous/estimation
 PMM=$(INCPATH)/polytomous/model
 PMT=$(INCPATH)/polytomous/type
 
-PSIM=simulation
 PTEST=test
 PUTIL=$(INCPATH)/util
 
@@ -51,7 +50,6 @@ $(SHLIB): mylibs
 mylibs:
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/estimation/mstep.o dichotomous/estimation/mstep.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/quadraturepoints.o util/quadraturepoints.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o simulation/simulation.o simulation/simulation.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/model/model.o dichotomous/model/model.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/type/estimationdata.o dichotomous/type/estimationdata.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/estimation/estimation.o dichotomous/estimation/estimation.cpp
@@ -64,7 +62,7 @@ mylibs:
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/initial_values.o util/initial_values.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/ramsay.o util/ramsay.cpp
 	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/directories.o util/directories.cpp
-	ar rcs $(INCPATH)/libfull.a dichotomous/estimation/estep.o dichotomous/estimation/estimation.o dichotomous/estimation/mstep.o dichotomous/model/model.o dichotomous/type/estimationdata.o polytomous/estimation/estep.o polytomous/estimation/estimation.o polytomous/estimation/mstep.o polytomous/model/model.o polytomous/type/estimationdata.o simulation/simulation.o util/initial_values.o util/quadraturepoints.o util/ramsay.o util/directories.o
+	ar rcs $(INCPATH)/libfull.a dichotomous/estimation/estep.o dichotomous/estimation/estimation.o dichotomous/estimation/mstep.o dichotomous/model/model.o dichotomous/type/estimationdata.o polytomous/estimation/estep.o polytomous/estimation/estimation.o polytomous/estimation/mstep.o polytomous/model/model.o polytomous/type/estimationdata.o util/initial_values.o util/quadraturepoints.o util/ramsay.o util/directories.o
 
 clean:
-	rm -rf polytomous/type/estimationdata.o polytomous/type/estimationdata.d MIRTcpp util/ramsay.d util/ramsay.o polytomous/estimation/mstep.o polytomous/estimation/mstep.d dichotomous/model/model.o dichotomous/model/model.d dichotomous/type/estimationdata.o dichotomous/type/estimationdata.d polytomous/estimation/estep.o polytomous/estimation/estep.d polytomous/estimation/estimation.d dichotomous/estimation/estimation.o dichotomous/estimation/estimation.d polytomous/estimation/estimation.o IRTpp.o IRTpp.d util/initial_values.d util/initial_values.o polytomous/model/model.d polytomous/model/model.o dichotomous/estimation/mstep.d dichotomous/estimation/mstep.o simulation/simulation.o simulation/simulation.d dichotomous/estimation/estep.d dichotomous/estimation/estep.o util/quadraturepoints.o util/quadraturepoints.d util/directories.o util/directories.d
+	rm -rf polytomous/type/estimationdata.o polytomous/type/estimationdata.d MIRTcpp util/ramsay.d util/ramsay.o polytomous/estimation/mstep.o polytomous/estimation/mstep.d dichotomous/model/model.o dichotomous/model/model.d dichotomous/type/estimationdata.o dichotomous/type/estimationdata.d polytomous/estimation/estep.o polytomous/estimation/estep.d polytomous/estimation/estimation.d dichotomous/estimation/estimation.o dichotomous/estimation/estimation.d polytomous/estimation/estimation.o IRTpp.o IRTpp.d util/initial_values.d util/initial_values.o polytomous/model/model.d polytomous/model/model.o dichotomous/estimation/mstep.d dichotomous/estimation/mstep.o  dichotomous/estimation/estep.d dichotomous/estimation/estep.o util/quadraturepoints.o util/quadraturepoints.d util/directories.o util/directories.d

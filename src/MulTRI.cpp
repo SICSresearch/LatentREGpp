@@ -1,5 +1,9 @@
 #include <Rcpp.h>
-#include "simulation/simulation.h"
+#include "polytomous/estimation/estimation.h"
+#include "dichotomous/estimation/estimation.h"
+#include "util/constants.h"
+#include "util/matrix.h"
+#include "util/general.h"
 
 using namespace Rcpp;
 
