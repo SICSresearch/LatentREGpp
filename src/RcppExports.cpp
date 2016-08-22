@@ -5,16 +5,33 @@
 
 using namespace Rcpp;
 
-// MulTRICall
-List MulTRICall(IntegerMatrix RData, unsigned int dim, std::string wd);
-RcppExport SEXP IRTPP_MulTRICall(SEXP RDataSEXP, SEXP dimSEXP, SEXP wdSEXP) {
+// dichotomous
+List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, std::string wd);
+RcppExport SEXP IRTPP_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP wdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< IntegerMatrix >::type RData(RDataSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
     Rcpp::traits::input_parameter< std::string >::type wd(wdSEXP);
-    __result = Rcpp::wrap(MulTRICall(RData, dim, wd));
+    __result = Rcpp::wrap(dichotomous(RData, dim, model, EMepsilon, wd));
+    return __result;
+END_RCPP
+}
+// polytomous
+List polytomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, std::string wd);
+RcppExport SEXP IRTPP_polytomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP wdSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type RData(RDataSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
+    Rcpp::traits::input_parameter< std::string >::type wd(wdSEXP);
+    __result = Rcpp::wrap(polytomous(RData, dim, model, EMepsilon, wd));
     return __result;
 END_RCPP
 }

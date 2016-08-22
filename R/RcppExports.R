@@ -5,7 +5,15 @@
 #'
 #' @param RData Input dataset.
 #' @export
-MulTRICall <- function(RData, dim, wd) {
-    .Call('IRTPP_MulTRICall', PACKAGE = 'IRTPP', RData, dim, wd)
+dichotomous <- function(RData, dim, model, EMepsilon, wd) {
+    .Call('IRTPP_dichotomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, wd)
+}
+
+#' Estimates the parameters of a test
+#'
+#' @param RData Input dataset.
+#' @export
+polytomous <- function(RData, dim, model, EMepsilon, wd) {
+    .Call('IRTPP_polytomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, wd)
 }
 
