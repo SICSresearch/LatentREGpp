@@ -5,15 +5,7 @@
 #'
 #' @param RData Input dataset.
 #' @export
-dichotomous <- function(RData, dim, model, EMepsilon, wd) {
-    .Call('IRTPP_dichotomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, wd)
-}
-
-#' Estimates the parameters of a test
-#'
-#' @param RData Input dataset.
-#' @export
-polytomous <- function(RData, dim, model, EMepsilon, wd) {
-    .Call('IRTPP_polytomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, wd)
+dichotomous <- function(RData, dim, model, EMepsilon, theta, weights) {
+    .Call('IRTPP_dichotomous', PACKAGE = 'IRTPP', RData, dim, model, EMepsilon, theta, weights)
 }
 

@@ -20,7 +20,7 @@ namespace irtpp {
 	const int MAX_ITERATIONS = 500; /**< Max number of iterations of EMAlgorithm*/
 	const int MAX_NUMBER_OF_GAUSSIAN_POINTS = 40; /**< Max number of quadrature points*/
 
-	const std::string GAUSSIAN = "GAUSSIAN";
+	const std::string GAUSSIAN = "Gaussian";
 	const std::string QMCEM = "QMCEM";
 	const int DEFAULT_QMCEM_POINTS = 2000;
 

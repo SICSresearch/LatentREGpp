@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // dichotomous
-List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, std::string wd);
-RcppExport SEXP IRTPP_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP wdSEXP) {
+List dichotomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, NumericMatrix theta, NumericVector weights);
+RcppExport SEXP IRTPP_dichotomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP thetaSEXP, SEXP weightsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -15,23 +15,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
     Rcpp::traits::input_parameter< int >::type model(modelSEXP);
     Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
-    Rcpp::traits::input_parameter< std::string >::type wd(wdSEXP);
-    __result = Rcpp::wrap(dichotomous(RData, dim, model, EMepsilon, wd));
-    return __result;
-END_RCPP
-}
-// polytomous
-List polytomous(IntegerMatrix RData, unsigned int dim, int model, double EMepsilon, std::string wd);
-RcppExport SEXP IRTPP_polytomous(SEXP RDataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP wdSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< IntegerMatrix >::type RData(RDataSEXP);
-    Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
-    Rcpp::traits::input_parameter< int >::type model(modelSEXP);
-    Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
-    Rcpp::traits::input_parameter< std::string >::type wd(wdSEXP);
-    __result = Rcpp::wrap(polytomous(RData, dim, model, EMepsilon, wd));
+    Rcpp::traits::input_parameter< NumericMatrix >::type theta(thetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type weights(weightsSEXP);
+    __result = Rcpp::wrap(dichotomous(RData, dim, model, EMepsilon, theta, weights));
     return __result;
 END_RCPP
 }

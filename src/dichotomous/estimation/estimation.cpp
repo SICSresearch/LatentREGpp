@@ -80,11 +80,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			if ( Y(l, i) )
 				correct.add_element(l, i);
 
-	if ( quadrature_technique == QMCEM )
-		sobol_quadrature(quadrature_points);
-	else
-		gaussian_quadrature();
-
 	//Pinned items in multidimensional case (the first of each dimension)
 	std::set<int> &pinned_items = data.pinned_items;
 
@@ -332,8 +327,7 @@ void estimation::EMAlgorithm() {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-
-		Rcpp::Rcout << "Iteration: " << iterations << " \tMax-Change: " << dif << std::endl;
+		Rprintf("\rIteration: %u \tMax-Change: %.5lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
 }
 
