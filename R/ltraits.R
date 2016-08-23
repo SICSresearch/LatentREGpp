@@ -17,6 +17,11 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	theta = q$theta
 	weights = q$weights
 
+	# Type of data
+	dichotomous_data = TRUE
+	# TODO Find here the data type
+	# dichotomous_data = data_type(data)
+
 	if ( method == "MAP" ) {
 		if ( is.null(init_traits) ) 
 			traits = ltraitscpp(data = data, dim = dim, model = model, 

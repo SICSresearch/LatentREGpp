@@ -47,12 +47,12 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
 }
 
 
-NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
-                           NumericMatrix Rzetas,   
-                           NumericMatrix Rtheta, NumericVector Rweights, 
-                           std::string method,
-                           bool by_individuals,
-                           NumericMatrix Rinit_traits ) {
+NumericMatrix ltraits_dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, 
+                                    NumericMatrix Rzetas,   
+                                    NumericMatrix Rtheta, NumericVector Rweights, 
+                                    std::string method,
+                                    bool by_individuals,
+                                    NumericMatrix Rinit_traits ) {
   // Converting data types
   lrpp::matrix<char> Y;
   lrpp::matrix<double> zetas;

@@ -17,20 +17,20 @@ quadPoints = function(dim, quadrature_technique = "Gaussian", quadrature_points 
 		g = gaussHermiteData(quadrature_points)
 
 		nodes = g$x
-		weigths = g$w
+		weights = g$w
 
 		lista.nodes = vector("list", length = dim)
-		lista.weigths = vector("list", length = dim)
+		lista.weights = vector("list", length = dim)
 		for (i in 1:dim) {
 			lista.nodes[[i]] = nodes
-			lista.weigths[[i]] = weigths
+			lista.weights[[i]] = weights
 		}
 
 		sqrt2 = sqrt(2)
 		factor = (sqrt(pi))^dim
 		theta = data.matrix( expand.grid(lista.nodes) * sqrt2 )
-		weights = apply( expand.grid(lista.weigths), MARGIN = 1, function(x) prod(x)) / factor
+		weights = apply( expand.grid(lista.weights), MARGIN = 1, function(x) prod(x)) / factor
 	}	
 
-	return (list(theta = theta, weigths = weigths))
+	return (list(theta = theta, weights = weights))
 }
