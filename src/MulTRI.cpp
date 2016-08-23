@@ -32,8 +32,8 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
   irtpp::convert_matrix(Rdata, Y);
   irtpp::convert_matrix(Rtheta, theta);
   irtpp::convert_vector(Rweights, weights);
-  irtpp::convert_vector(Rclusters, clusters);
-  irtpp::convert_matrix(Rinitial_values, initial_values);
+  if ( dim > 1 ) irtpp::convert_vector(Rclusters, clusters);
+  if ( dim > 1 ) irtpp::convert_matrix(Rinitial_values, initial_values);
 
   
   //Estimation object  

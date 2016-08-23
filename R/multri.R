@@ -110,20 +110,22 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 		# Item parameters estimation
 		if ( dichotomous_data )
 			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						theta = theta, weights = weights, Rclusters = clusters)
+						Rtheta = theta, Rweights = weights, Rclusters = clusters,
+						Rinitial_values = initial_values)
 		#else
 		#	poly
 	} else {
-		# TODO Sergio's initial values here
-		# TODO Find pinned items
-	  
-		if(is.null(initial_values)) {
-			#TODO find clusters
-			size.cluster = c(20,20,15)
+		if ( is.null(initial_values) ) {
+			
+			if ( is.null(clusters) ) {
+				#TODO find clusters
+			}
 
-			list_initial_values = inivals_MultiUni_NOHARM(data, size.cluster, model=model, 
+			list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 									find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
 		}
+
+		# TODO Find pinned items
 	  
 		# Item parameters estimation
 		if ( dichotomous_data )
