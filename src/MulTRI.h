@@ -21,5 +21,6 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
+                   IntegerVector Rindividual_weights,
                    IntegerVector Rclusters = IntegerVector::create(),
                    NumericMatrix Rinitial_values = NumericMatrix(0, 0, 0) );

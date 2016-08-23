@@ -3,26 +3,28 @@
 using namespace Rcpp;
 
 List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
-                   NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rclusters,
+                   NumericMatrix Rtheta, NumericVector Rweights, 
+                   IntegerVector Rindividual_weights, IntegerVector Rclusters,
                    NumericMatrix Rinitial_values ) {
   // Converting data types
   irtpp::matrix<char> Y;
   irtpp::matrix<double> theta;
   std::vector<double> weights;
+  std::vector<int> individual_weights;
   std::vector<int> clusters;
   irtpp::matrix<double> initial_values;
 
   irtpp::convert_matrix(Rdata, Y);
   irtpp::convert_matrix(Rtheta, theta);
   irtpp::convert_vector(Rweights, weights);
+  irtpp::convert_vector(Rindividual_weights, individual_weights);
   irtpp::convert_vector(Rclusters, clusters);
-  Rcpp::Rcout << "Ready to convert initial_values\n";
   irtpp::convert_matrix(Rinitial_values, initial_values);
 
-  
   //Estimation object  
   irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
-                                   theta, weights, clusters, initial_values);
+                                   theta, weights, individual_weights,
+                                   clusters, initial_values);
 
   //EM
   e.EMAlgorithm();
@@ -40,9 +42,8 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
     else zetas(i,j+1) = 0;
   }
 
-  double loglikelihood = e.log_likelihood();
   List output = List::create(Rcpp::Named("zetas") = zetas,
-                             Rcpp::Named("Loglikelihood") = loglikelihood);
+                             Rcpp::Named("Loglikelihood") = e.log_likelihood());
 
   return output;
 }

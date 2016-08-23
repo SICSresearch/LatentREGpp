@@ -6,8 +6,8 @@
 using namespace Rcpp;
 
 // dichotomous
-List dichotomous(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rclusters, NumericMatrix Rinitial_values);
-RcppExport SEXP MulTRI_dichotomous(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP) {
+List dichotomous(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rindividual_weights, IntegerVector Rclusters, NumericMatrix Rinitial_values);
+RcppExport SEXP MulTRI_dichotomous(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -17,9 +17,10 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Rtheta(RthetaSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type Rweights(RweightsSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type Rindividual_weights(Rindividual_weightsSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type Rclusters(RclustersSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Rinitial_values(Rinitial_valuesSEXP);
-    __result = Rcpp::wrap(dichotomous(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rclusters, Rinitial_values));
+    __result = Rcpp::wrap(dichotomous(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters, Rinitial_values));
     return __result;
 END_RCPP
 }

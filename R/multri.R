@@ -46,8 +46,9 @@ NULL
 #'@export
 multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 				  quadrature_technique = NULL, quadrature_points = NULL, 
-				  indivudual_weights = NULL,
-				  initial_values = NULL ) {
+				  individual_weights = as.integer(c()),
+				  initial_values = NULL,
+				  verbose = TRUE ) {
 	# Asserting matrix type of data
 	data = data.matrix(data)
 
@@ -110,7 +111,8 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 		# Item parameters estimation
 		if ( dichotomous_data )
 			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights)
+						Rtheta = theta, Rweights = weights, 
+						Rindividual_weights = individual_weights)
 		#else TODO
 		#	poly
 	} else {
@@ -129,8 +131,10 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 		# Item parameters estimation
 		if ( dichotomous_data )
 			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights, Rclusters = clusters,
-						Rinitial_values = list_initial_values$coefs)
+						Rtheta = theta, Rweights = weights, 
+						Rindividual_weights = individual_weights,
+						Rclusters = clusters,
+						Rinitial_values = list_initial_values$coefs )
 		#else TODO
 		#	poly
 	}

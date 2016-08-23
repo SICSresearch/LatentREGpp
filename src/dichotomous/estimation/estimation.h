@@ -104,9 +104,9 @@ class estimation {
 						double convergence_difference = DEFAULT_EM_DELTA_STOP,
 						matrix<double> theta = EMPTY_REAL_MATRIX,
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,
+					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR,
 					    std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
-					    matrix<double> initial_values = EMPTY_REAL_MATRIX,
-					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR );
+					    matrix<double> initial_values = EMPTY_REAL_MATRIX );
 
 		/**
 		 * Destructor for estimation class.
@@ -126,7 +126,7 @@ class estimation {
 		 * @param filename string with path for initial values.
 		 * @see custom_initial_values_filename
 		 */
-		void compute_MULTI_initial_values(matrix<double> &mt);
+		void load_multi_initial_values(matrix<double> &mt);
 
 		/**
 		 * Builds all necessary matrixes for the estimation process

@@ -15,9 +15,9 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
 					   matrix<double> theta,
 					   std::vector<double> weights,
+					   std::vector<int> individual_weights,
 					   std::vector<int> clusters,
-					   matrix<double> initial_values,
-					   std::vector<int> individual_weights ) {
+					   matrix<double> initial_values ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -99,7 +99,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			}
 		}
 
-		compute_MULTI_initial_values(initial_values);
+		load_multi_initial_values(initial_values);
 	}
 
 	//Configurations for the estimation
@@ -145,7 +145,7 @@ void estimation::build_matrixes() {
 }
 
 
-void estimation::compute_MULTI_initial_values ( matrix<double> &mt ) {
+void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	//Dimension
 	int &d = data.d;
 	//Parameters of the items
