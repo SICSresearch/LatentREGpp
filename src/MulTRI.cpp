@@ -1,24 +1,7 @@
-#include <Rcpp.h>
-#include "polytomous/estimation/estimation.h"
-#include "dichotomous/estimation/estimation.h"
-#include "util/constants.h"
-#include "util/matrix.h"
-#include "util/general.h"
+#include "MulTRI.h"
 
 using namespace Rcpp;
 
-//[[Rcpp::plugins(cpp11)]]
-//[[Rcpp::plugins(openmp)]]
-
-// Estimates the parameters of a test
-//
-// @param Rdata Input dataset.
-// @param dim Model Dimension
-// @param model 1 2 or 3PL
-// @param EMepsilon Convergence value for the algorithm
-// @param theta Quadrature Points
-// @param weights Quadrature Points Weights
-// [[Rcpp::export]]
 List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rclusters,
                    NumericMatrix Rinitial_values ) {
@@ -32,8 +15,9 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
   irtpp::convert_matrix(Rdata, Y);
   irtpp::convert_matrix(Rtheta, theta);
   irtpp::convert_vector(Rweights, weights);
-  if ( dim > 1 ) irtpp::convert_vector(Rclusters, clusters);
-  if ( dim > 1 ) irtpp::convert_matrix(Rinitial_values, initial_values);
+  irtpp::convert_vector(Rclusters, clusters);
+  Rcpp::Rcout << "Ready to convert initial_values\n";
+  irtpp::convert_matrix(Rinitial_values, initial_values);
 
   
   //Estimation object  
