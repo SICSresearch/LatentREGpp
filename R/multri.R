@@ -52,7 +52,6 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	data = data.matrix(data)
 
 	# Model id
-	m = 2
 	if ( model == "1PL" ) m = 1
 	else if ( model == "2PL" ) m = 2
 	else if ( model == "3PL" ) m = 3
@@ -69,8 +68,6 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	}
 
 	# Quadrature points and weights
-	theta = NULL
-	weights = NULL
 	if ( quadrature_technique == "QMCEM" ) {
 
 		if ( is.null(quadrature_points) ) quadrature_points = 2000
@@ -120,22 +117,19 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 		# TODO Sergio's initial values here
 		# TODO Find pinned items
 	  
-	  if(is.null(initial_values)) {
-	    #TODO add the cluster technique
-	    size.cluster = c(20,20,15)
-	    
-	    list_initial_values = inivals_MultiUni_NOHARM(data, size.cluster, model=model, find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
-	    write.table(x = list_initial_values$coefs,file = "initialvalues.csv",sep = ';',row.names = FALSE, col.names = FALSE)
-	    
-	    #TODO fixing with relative path
-	    initial_values = "initialvalues.csv"
-	  }
+		if(is.null(initial_values)) {
+			#TODO find clusters
+			size.cluster = c(20,20,15)
+
+			list_initial_values = inivals_MultiUni_NOHARM(data, size.cluster, model=model, 
+									find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
+		}
 	  
 		# Item parameters estimation
 		if ( dichotomous_data )
 			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						theta = theta, weights = weights, Rclusters = clusters,
-						initial_values = initial_values)
+						Rtheta = theta, Rweights = weights, Rclusters = clusters,
+						Rinitial_values = list_initial_values$coefs)
 		#else
 		#	poly
 	}

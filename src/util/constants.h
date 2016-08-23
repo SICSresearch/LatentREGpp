@@ -9,6 +9,7 @@
 #define UTIL_CONSTANTS_H_
 
 #include <string>
+#include "matrix.h"
 
 //including optimization files from dlib library
 #include <dlib/optimization.h>
@@ -33,6 +34,8 @@ namespace irtpp {
 	const int THREEPL = 3;
 
 	const std::vector<int> EMPTY_INTEGER_VECTOR = std::vector<int>();
+	const std::vector<double> EMPTY_REAL_VECTOR = std::vector<double>();
+	const matrix<double> EMPTY_REAL_MATRIX = matrix<double>(0, 0);
 
 	const double LOWER_BOUND_ = 1e-10;
 	const double UPPER_BOUND_ = 1.0 - LOWER_BOUND_;

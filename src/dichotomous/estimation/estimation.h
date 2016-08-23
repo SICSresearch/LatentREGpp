@@ -102,9 +102,11 @@ class estimation {
 		 */
 		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, 
 						double convergence_difference = DEFAULT_EM_DELTA_STOP,
-						std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
-						std::vector<int> individuals_weights = EMPTY_INTEGER_VECTOR,
-						std::string custom_initial_values_filename = NONE );
+						matrix<double> theta = EMPTY_REAL_MATRIX,
+					    std::vector<double> weights = EMPTY_REAL_VECTOR,
+					    std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
+					    matrix<double> initial_values = EMPTY_REAL_MATRIX,
+					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR );
 
 		/**
 		 * Destructor for estimation class.
@@ -116,7 +118,7 @@ class estimation {
 		 * it is called if custom_initial_values_filename is none by default.
 		 * @see custom_initial_values_filename
 		 */
-		void initial_values();
+		void compute_1D_initial_values();
 
 		/**
 		 * Loads the initial values for every parameter of the items to start the estimation
@@ -124,18 +126,7 @@ class estimation {
 		 * @param filename string with path for initial values.
 		 * @see custom_initial_values_filename
 		 */
-		void load_initial_values(std::string);
-
-		/**
-		 * Sobol quadrature, receives the number of points to use.
-		 * @param g the number of points.
-		 */
-		void sobol_quadrature(int);
-
-		/**
-		 * gaussian_quadrature. By default max points to use is 40.
-		 */
-		void gaussian_quadrature();
+		void compute_MULTI_initial_values(matrix<double> &mt);
 
 		/**
 		 * Builds all necessary matrixes for the estimation process

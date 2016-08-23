@@ -20,31 +20,29 @@ using namespace Rcpp;
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
 List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
-                   NumericMatrix theta, NumericVector weights, IntegerVector Rclusters,
-                   std::string initial_values ) {
+                   NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rclusters,
+                   NumericMatrix Rinitial_values ) {
+  // Converting data types
   irtpp::matrix<char> Y;
-  irtpp::convert_matrix(Rdata, Y);
+  irtpp::matrix<double> theta;
+  std::vector<double> weights;
   std::vector<int> clusters;
-  irtpp::convert_vector(Rclusters, clusters);
+  irtpp::matrix<double> initial_values;
 
-  //Estimation config
-  if(initial_values.empty()) {
-    initial_values = irtpp::NONE;
-    //std::cout<<"Enter here"<<std::endl;
-    //std::cout<<initial_values<<std::endl;
-  }
+  irtpp::convert_matrix(Rdata, Y);
+  irtpp::convert_matrix(Rtheta, theta);
+  irtpp::convert_vector(Rweights, weights);
+  irtpp::convert_vector(Rclusters, clusters);
+  irtpp::convert_matrix(Rinitial_values, initial_values);
+
   
-  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, clusters,
-                                   irtpp::EMPTY_INTEGER_VECTOR, initial_values);
-  
-  //Quadrature points config 
-  irtpp::convert_matrix(theta, e.data.theta);
-  irtpp::convert_vector(weights, e.data.w);
-  e.data.G = e.data.theta.rows();
-  e.build_matrixes();
+  //Estimation object  
+  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
+                                   theta, weights, clusters, initial_values);
 
   //EM
   e.EMAlgorithm();
+  
 
   NumericMatrix zetas(e.data.p, e.data.d + 2);
   int current_zeta = e.get_iterations() % irtpp::ACCELERATION_PERIOD;

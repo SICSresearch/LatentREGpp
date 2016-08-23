@@ -13,9 +13,11 @@ namespace dichotomous {
 
 estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
+					   matrix<double> theta,
+					   std::vector<double> weights,
 					   std::vector<int> clusters,
-					   std::vector<int> individual_weights,
-					   std::string custom_initial_values_filename ) {
+					   matrix<double> initial_values,
+					   std::vector<int> individual_weights ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -78,36 +80,42 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			if ( Y(l, i) )
 				correct.add_element(l, i);
 
-	//Pinned items in multidimensional case (the first of each dimension)
-	std::set<int> &pinned_items = data.pinned_items;
+	data.theta = theta;
+	data.w = weights;
+	data.G = theta.rows();
+	build_matrixes();
 
-	//clusters size MUST be equal to the number of dimensions
-	if ( d > 1 && clusters.size() == d ) {
-		int pinned = 0;
-		for ( unsigned int i = 0; i < clusters.size(); ++i ) {
-			pinned_items.insert(pinned);
-			pinned += clusters[i];
+	if ( d == 1 ) compute_1D_initial_values();
+	else {
+		//Pinned items in multidimensional case (the first of each dimension)
+		std::set<int> &pinned_items = data.pinned_items;
+
+		//clusters size MUST be equal to the number of dimensions
+		if ( clusters.size() == d ) {
+			int pinned = 0;
+			for ( unsigned int i = 0; i < clusters.size(); ++i ) {
+				pinned_items.insert(pinned);
+				pinned += clusters[i];
+			}
 		}
+
+		compute_MULTI_initial_values(initial_values);
 	}
 
 	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
 	m = model(themodel);
 	this->convergence_difference = convergence_difference;
-	this->iterations = 0;
-	this->custom_initial_values_filename = custom_initial_values_filename;
+	this->iterations = 0;	
 }
 
 void estimation::build_matrixes() {
 	//Number of items
 	int &p = data.p;
-
 	//Number of response patterns (s <= N)
 	int &s = data.s;
-
 	//Number of quadrature points
 	int &G = data.G;
-
 	//Matrix r. Needed in Estep and Mstep
 	matrix<double> &r = data.r;
 
@@ -137,72 +145,7 @@ void estimation::build_matrixes() {
 }
 
 
-void estimation::sobol_quadrature (int g) {
-	//Dimension
-	int &d = data.d;
-
-	//Number of quadrature points
-	int &G = data.G;
-
-	//Latent trait vectors
-	matrix<double> &theta = data.theta;
-	theta = matrix<double>(0, 0);
-
-	//Weights
-	std::vector<double> &w = data.w;
-
-	input<double> in;
-	std::stringstream ss;
-	ss << getwd() << "data/sobol" << d << ".data";
-	in.import_data(ss.str(), theta);
-
-	G = g;
-
-	w = std::vector<double>(G, 1.0);
-
-	build_matrixes();
-}
-
-void estimation::gaussian_quadrature () {
-	//Dimension
-	int &d = data.d;
-
-	//Number of quadrature points
-	int &G = data.G;
-
-	//Latent trait vectors
-	matrix<double> &theta = data.theta;
-
-	//Weights
-	std::vector<double> &w = data.w;
-
-	/**
-	 * Number of quadrature points (G) is computed based on
-	 * MAX_NUMBER_OF_QUADRATURE_POINTS and dimension of the problem, in this way
-	 *
-	 *
-	 * G will be in 1dimension = 40 ---> 40^1 = 40
-	 * 				2dimension = 20 ---> 20^2 = 400
-	 * 				3dimension = 10 ---> 10^3 = 1000
-	 * 				> 4dimension = 5 ---> 5^d
-	 * */
-
-	// Latent trait vectors loaded from file
-	theta = load_quadrature_points(d);
-
-	// Weights loaded from file
-	w = load_weights(d);
-
-	G = theta.rows();
-
-	build_matrixes();
-}
-
-void estimation::load_initial_values ( std::string filename ) {
-	matrix<double> mt;
-	input<double> in;
-	in.import_data(filename, mt);
-
+void estimation::compute_MULTI_initial_values ( matrix<double> &mt ) {
 	//Dimension
 	int &d = data.d;
 	//Parameters of the items
@@ -213,13 +156,13 @@ void estimation::load_initial_values ( std::string filename ) {
 	model &m = data.m;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = m.parameters == 1 ? 1 : m.parameters - 1 + d;
+	int total_parameters = m.parameters == ONEPL ? 1 : m.parameters - 1 + d;
 
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
 			zeta[i](j) = mt(i, j);
-		if ( m.parameters == 3 ) {
+		if ( m.parameters == THREEPL ) {
 			double &c = zeta[i](total_parameters - 1);
 			c = std::log(c / (1.0 - c));
 		}
@@ -238,7 +181,7 @@ void estimation::load_initial_values ( std::string filename ) {
 	iterations = 0;
 }
 
-void estimation::initial_values() {
+void estimation::compute_1D_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Dimension
@@ -251,72 +194,37 @@ void estimation::initial_values() {
 	matrix<char> &dataset = *data.dataset;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = m.parameters == 1 ? 1 : m.parameters - 1 + d;
+	int total_parameters = m.parameters;
 
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
-			zeta[i](j) = 1.0;
+			zeta[i](j) = DEFAULT_INITIAL_VALUE;
 	}
 
-	if ( d == 1 ) {
-		std::vector<double> alpha, gamma;
-		find_initial_values(dataset, alpha, gamma);
+	std::vector<double> alpha, gamma;
+	find_initial_values(dataset, alpha, gamma);
 
-		for ( int i = 0; i < p; ++i ) {
-			optimizer_vector &item_i = zeta[i];
+	for ( int i = 0; i < p; ++i ) {
+		optimizer_vector &item_i = zeta[i];
 
-			if ( m.parameters > 1 ) {
-				item_i(0) = alpha[i];
-				item_i(1) = gamma[i];
-				if ( m.parameters == 3 ) item_i(2) = -1.1;
-			} else {
-				item_i(0) = gamma[i];
-			}
-		}
-	} else {
-		std::vector<double> alpha, gamma;
-		find_initial_values(dataset, alpha, gamma);
-
-		for ( int i = 0; i < p; ++i ) {
-			optimizer_vector &item_i = zeta[i];
-
-			if ( m.parameters < 3 ) item_i(item_i.size() - 1) = gamma[i];
-			else {
-				item_i(item_i.size() - 2) = gamma[i];
-				item_i(item_i.size() - 1) = -1.1;
-			}
-		}
-
-		//Items that will not be estimated
-		std::set<int> &pinned_items = data.pinned_items;
-
-		if ( pinned_items.empty() ) {
-			int items_for_dimension = (p + d - 1) / d;
-			for ( int i = 0, j = 0; i < p; i += items_for_dimension, ++j )
-				pinned_items.insert(i);
-		}
-
-		int j = 0;
-		for ( auto pinned : pinned_items ) {
-			optimizer_vector &item = zeta[pinned];
-			for ( int h = 0; h < d; ++h )
-				item(h) = 0;
-			item(j) = 1;
-			++j;
+		if ( m.parameters > ONEPL ) {
+			item_i(0) = alpha[i];
+			item_i(1) = gamma[i];
+			if ( m.parameters == THREEPL ) item_i(2) = -1.1;
+		} else {
+			item_i(0) = gamma[i];
 		}
 	}
+
 	data.loglikelihood = NOT_COMPUTED;
 }
 
 void estimation::EMAlgorithm() {
-	if ( custom_initial_values_filename == NONE || custom_initial_values_filename == BUILD ) initial_values();
-	else load_initial_values(custom_initial_values_filename);
+	Rprintf("EMAlgorithm started\n");
 	double dif = 0.0;
-
 	iterations = 0;
 	int current;
-
 	do {
 		current = iterations % ACCELERATION_PERIOD;
 		if ( current == 2 )
