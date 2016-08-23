@@ -47,7 +47,7 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
 }
 
 
-NumericMatrix ltraits_dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, 
+NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
                                     NumericMatrix Rzetas,   
                                     NumericMatrix Rtheta, NumericVector Rweights, 
                                     std::string method,
