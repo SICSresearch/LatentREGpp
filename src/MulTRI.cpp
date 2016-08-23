@@ -56,8 +56,10 @@ List dichotomous ( IntegerMatrix RData, unsigned int dim, int model, double EMep
     else zetas(i,j+1) = 0;
   }
 
-  double loglik = e.log_likelihood();
-  List output = List::create(zetas,loglik);
+  double loglikelihood = e.log_likelihood();
+  List output = List::create(Rcpp::Named("zetas") = zetas,
+                             Rcpp::Named("Loglikelihood") = loglikelihood);
+
   return output;
 }
 
