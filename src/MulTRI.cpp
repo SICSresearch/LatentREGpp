@@ -35,7 +35,6 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
   }
   
   irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, clusters,
-                                   irtpp::GAUSSIAN, irtpp::DEFAULT_QMCEM_POINTS, 
                                    irtpp::EMPTY_INTEGER_VECTOR, initial_values);
   
   //Quadrature points config 

@@ -13,9 +13,7 @@ namespace dichotomous {
 
 estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
-					   std::vector<int> number_of_items,
-					   std::string quadrature_technique,
-					   int quadrature_points,
+					   std::vector<int> clusters,
 					   std::vector<int> individual_weights,
 					   std::string custom_initial_values_filename ) {
 	/**
@@ -83,12 +81,12 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	//Pinned items in multidimensional case (the first of each dimension)
 	std::set<int> &pinned_items = data.pinned_items;
 
-	//Number of items size MUST be equal to the number of dimensions
-	if ( d > 1 && number_of_items.size() == d ) {
+	//clusters size MUST be equal to the number of dimensions
+	if ( d > 1 && clusters.size() == d ) {
 		int pinned = 0;
-		for ( unsigned int i = 0; i < number_of_items.size(); ++i ) {
+		for ( unsigned int i = 0; i < clusters.size(); ++i ) {
 			pinned_items.insert(pinned);
-			pinned += number_of_items[i];
+			pinned += clusters[i];
 		}
 	}
 

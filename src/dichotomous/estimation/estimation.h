@@ -97,15 +97,12 @@ class estimation {
 		 * @param d the dimension.
 		 * @param themodel model to use 1PL, 2PL or 3PL.
 		 * @param convergence_difference epsilon convergence difference.
-		 * @param quadrature_technique string. it can be Gaussian or Sobol.
-		 * @param quadrature_technique if Sobol. Number of points to use.
 		 * @param cluster a std vector integer template with number of items for each dimension.
 		 * @param custom_initial_values_filename string with path for custom initial_values. Default is none.
 		 */
-		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, double convergence_difference = DEFAULT_EM_DELTA_STOP,
-						std::vector<int> cluster = EMPTY_INTEGER_VECTOR,
-						std::string quadrature_technique = GAUSSIAN,
-						int quadrature_points = DEFAULT_QMCEM_POINTS,
+		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, 
+						double convergence_difference = DEFAULT_EM_DELTA_STOP,
+						std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
 						std::vector<int> individuals_weights = EMPTY_INTEGER_VECTOR,
 						std::string custom_initial_values_filename = NONE );
 
