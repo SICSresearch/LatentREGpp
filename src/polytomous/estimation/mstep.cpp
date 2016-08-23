@@ -7,7 +7,7 @@
 
 #include "mstep.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -139,5 +139,5 @@ double Mstep(estimation_data &data, int current) {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 

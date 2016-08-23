@@ -12,7 +12,7 @@
 #include <exception>
 #include "matrix.h"
 
-namespace irtpp {
+namespace lrpp {
 	/**
 	 * Computing initial values according to
 	 * Andrade, Tavares & Valle (2000),
@@ -74,6 +74,6 @@ namespace irtpp {
 	 * @return the standard deviation of v vector
 	 */
 	inline double sd ( std::vector<double> &v );
-} //irtpp
+} //lrpp
 
 #endif /* UTIL_INITIAL_VALUES_H_ */

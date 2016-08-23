@@ -27,7 +27,7 @@
 
 #include <Rcpp.h>
 
-namespace irtpp {
+namespace lrpp {
 
 namespace dichotomous {
 
@@ -148,6 +148,6 @@ class estimation {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* ESTIMATION_ESTIMATION_H_ */

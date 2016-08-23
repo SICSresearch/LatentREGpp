@@ -24,7 +24,7 @@
 
 #include <omp.h>
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -86,6 +86,6 @@ private:
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* ESTIMATION_MSTEP_H_ */

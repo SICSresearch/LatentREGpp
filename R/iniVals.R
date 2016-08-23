@@ -56,19 +56,19 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   #Recover Unidimensional IRT models to obtain
   #Initial values for NOHARM
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  fit_irtpp<- list()
+  fit_lrpp<- list()
   traits<- list()
   coef<- list()
   data.traits<- list()
   
   for(i in 1:length(size.cluster)){ # == for(i in 1:nc){
     
-    fit_irtpp[[i]]<- irtpp(cluster[[i]], model=model)
-    z <- parameter.matrix(fit_irtpp[[i]]$z)
+    fit_lrpp[[i]]<- irtpp(cluster[[i]], model=model)
+    z <- parameter.matrix(fit_lrpp[[i]]$z)
     coef[[i]]<- z
     
     #    traits[[i]]<- individual.traits(fit_ltm[[i]], resp.patterns = cluster[[i]])
-    traits[[i]]<- individual.traits(model=model, itempars=z, dataset=as.matrix(cluster[[i]]), method="EAP", probability_matrix = fit_irtpp[[i]]$prob_mat)
+    traits[[i]]<- individual.traits(model=model, itempars=z, dataset=as.matrix(cluster[[i]]), method="EAP", probability_matrix = fit_lrpp[[i]]$prob_mat)
     
     pattern.matrix<- traits[[i]][,1:ncol(cluster[[i]])]
     pattern.traits<- traits[[i]][,ncol(traits[[i]])]

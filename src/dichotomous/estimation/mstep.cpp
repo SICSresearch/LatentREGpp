@@ -7,7 +7,7 @@
 
 #include "../../dichotomous/estimation/mstep.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace dichotomous {
 
@@ -92,5 +92,5 @@ double Mstep(estimation_data &data, int current) {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 

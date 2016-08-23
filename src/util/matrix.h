@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace irtpp {
+namespace lrpp {
 
 template<class T>
 /**
@@ -274,6 +274,6 @@ void matrix<T>::export_to_csv(std::string filename, char sep) {
 	out.close();
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* UTIL_MATRIX_H_ */

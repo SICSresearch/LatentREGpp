@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 dichotomous <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters = as.integer( c()), Rinitial_values = matrix(0, 0, 0)) {
-    .Call('MulTRI_dichotomous', PACKAGE = 'MulTRI', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters, Rinitial_values)
+    .Call('lrpp_dichotomous', PACKAGE = 'lrpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters, Rinitial_values)
 }
 
 ltraitscpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits = matrix(0, 0, 0)) {
-    .Call('MulTRI_ltraitscpp', PACKAGE = 'MulTRI', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits)
+    .Call('lrpp_ltraitscpp', PACKAGE = 'lrpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits)
 }
 

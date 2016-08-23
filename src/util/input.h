@@ -16,7 +16,7 @@
 #include <algorithm>
 #include "matrix.h"
 
-namespace irtpp {
+namespace lrpp {
 
 template<class T>
 /**
@@ -158,6 +158,6 @@ void input<T>::set_delimiter(char del) {
 	this->delimiter = delimiter;
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* UTIL_INPUT_H_ */

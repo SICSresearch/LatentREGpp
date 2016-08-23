@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace irtpp {
+namespace lrpp {
 	
 	static std::string prev_path = "";
 	

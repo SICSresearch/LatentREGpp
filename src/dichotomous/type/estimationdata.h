@@ -18,7 +18,7 @@
 
 #include "../../dichotomous/model/model.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace dichotomous {
 
@@ -65,6 +65,6 @@ public:
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* UTIL_ESTIMATIONDATA_H_ */

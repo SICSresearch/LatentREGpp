@@ -7,7 +7,7 @@
 
 #include "estimation.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -657,4 +657,4 @@ estimation::~estimation() {}
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */

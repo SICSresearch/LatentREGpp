@@ -14,7 +14,7 @@
 //including optimization files from dlib library
 #include <dlib/optimization.h>
 
-namespace irtpp {
+namespace lrpp {
 
 	typedef dlib::matrix<double,0,1> optimizer_vector; /**< data type from dlib library*/
 

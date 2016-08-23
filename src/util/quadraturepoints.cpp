@@ -9,7 +9,7 @@
 #include "input.h"
 #include "matrix.h"
 
-namespace irtpp {
+namespace lrpp {
 
 	void compute_quadrature_points ( std::vector<double> &q, int r,
 								std::vector<double> &current_trait,

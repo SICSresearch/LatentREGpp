@@ -14,7 +14,7 @@
 #include <cmath>
 #include <set>
 
-namespace irtpp {
+namespace lrpp {
 
 /**
  * Ramsay is an accelerate method for EM algorithm.
@@ -24,6 +24,6 @@ namespace irtpp {
 void ramsay ( std::vector<optimizer_vector> zeta[ACCELERATION_PERIOD], std::set<int> &pinned );
 
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* UTIL_SQUAREM_H_ */

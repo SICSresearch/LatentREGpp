@@ -8,7 +8,7 @@
 #include "test.h"
 #include <iostream>
 
-namespace irtpp {
+namespace lrpp {
 
 	bool test_pi ( matrix<double> &pi ) {
 		const double eps = 1e-5;

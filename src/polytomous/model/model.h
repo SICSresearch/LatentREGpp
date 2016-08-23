@@ -14,7 +14,7 @@
 
 #include "../../util/constants.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -76,6 +76,6 @@ public:
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* MODEL_MODEL_H_ */

@@ -15,7 +15,7 @@
 
 #include <dlib/optimization.h>
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -65,6 +65,6 @@ public:
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* UTIL_ESTIMATIONDATA_H_ */

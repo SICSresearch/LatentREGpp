@@ -1,13 +1,13 @@
 #######################################################################
-#' @name MulTRI
+#' @name lrpp
 #' @docType package
-#' @title MulTRI : Item Response Theory Implemented in R and Cpp
-#' @description Mul-Tri is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
+#' @title lrpp : Item Response Theory Implemented in R and Cpp
+#' @description lrpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 #' cappable of performing parameter and traits estimations. It also provides a list of options to 
 #' perform optiman analysis and provides usefull information about the obtained model.
 #' @details
 #' \tabular{ll}{
-#'Package: \tab MulTRI\cr
+#'Package: \tab lrpp\cr
 #'Type: \tab Package\cr
 #'Version: \tab 0.0.5\cr
 #'Date: \tab 2016-08-22\cr
@@ -15,23 +15,23 @@
 #'}
 #'@author SICS Research Team
 #'@keywords IRT MIRT Psychometry 
-#'@useDynLib MulTRI
+#'@useDynLib lrpp
 #'@importFrom Rcpp sourceCpp
 #'@importFrom randtoolbox sobol
 #'@importFrom fastGHQuad gaussHermiteData
 #'@importFrom RSpectra eigs
 #'@importFrom sirt noharm.sirt
-#'@importFrom IRTpp irtpp
+#'@importFrom lrpp lrpp
 #'@section Getting Started:
-#'Get started with the MulTRI package browsing the index of this documentation
+#'Get started with the lrpp package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
 #'@section Getting Started:
-#'The IRTpp package allows you to use the MulTRI methodology for simulating, analyzing and scoring tests \cr
+#'The lrpp package allows you to use the lrpp methodology for simulating, analyzing and scoring tests \cr
 #'You can browse the package vignettes to get started.
 #'
 NULL
 
-#'@name multri
+#'@name lrpp
 #'@title Parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
@@ -44,7 +44,7 @@ NULL
 #'@param individual_weights Weights of the quadrature points
 #'@param initial_values Initial Values of the estimation
 #'@export
-multri = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
+lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quadrature_technique = NULL, quadrature_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,

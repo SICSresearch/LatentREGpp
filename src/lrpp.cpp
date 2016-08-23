@@ -1,4 +1,4 @@
-#include "MulTRI.h"
+#include "lrpp.h"
 
 using namespace Rcpp;
 
@@ -7,22 +7,22 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
                    IntegerVector Rindividual_weights, IntegerVector Rclusters,
                    NumericMatrix Rinitial_values ) {
   // Converting data types
-  irtpp::matrix<char> Y;
-  irtpp::matrix<double> theta;
+  lrpp::matrix<char> Y;
+  lrpp::matrix<double> theta;
   std::vector<double> weights;
   std::vector<int> individual_weights;
   std::vector<int> clusters;
-  irtpp::matrix<double> initial_values;
+  lrpp::matrix<double> initial_values;
 
-  irtpp::convert_matrix(Rdata, Y);
-  irtpp::convert_matrix(Rtheta, theta);
-  irtpp::convert_vector(Rweights, weights);
-  irtpp::convert_vector(Rindividual_weights, individual_weights);
-  irtpp::convert_vector(Rclusters, clusters);
-  irtpp::convert_matrix(Rinitial_values, initial_values);
+  lrpp::convert_matrix(Rdata, Y);
+  lrpp::convert_matrix(Rtheta, theta);
+  lrpp::convert_vector(Rweights, weights);
+  lrpp::convert_vector(Rindividual_weights, individual_weights);
+  lrpp::convert_vector(Rclusters, clusters);
+  lrpp::convert_matrix(Rinitial_values, initial_values);
 
   //Estimation object  
-  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
+  lrpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
                                    theta, weights, individual_weights,
                                    clusters, initial_values);
 
@@ -31,7 +31,7 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
   
 
   NumericMatrix zetas(e.data.p, e.data.d + 2);
-  int current_zeta = e.get_iterations() % irtpp::ACCELERATION_PERIOD;
+  int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
 
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;
@@ -54,20 +54,20 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            bool by_individuals,
                            NumericMatrix Rinit_traits ) {
   // Converting data types
-  irtpp::matrix<char> Y;
-  irtpp::matrix<double> zetas;
-  irtpp::matrix<double> theta;
+  lrpp::matrix<char> Y;
+  lrpp::matrix<double> zetas;
+  lrpp::matrix<double> theta;
   std::vector<double> weights;
-  irtpp::matrix<double> init_traits;
+  lrpp::matrix<double> init_traits;
 
-  irtpp::convert_matrix(Rdata, Y);
-  irtpp::convert_matrix(Rzetas, zetas);
-  irtpp::convert_matrix(Rtheta, theta);
-  irtpp::convert_vector(Rweights, weights);
-  irtpp::convert_matrix(Rinit_traits, init_traits);
+  lrpp::convert_matrix(Rdata, Y);
+  lrpp::convert_matrix(Rzetas, zetas);
+  lrpp::convert_matrix(Rtheta, theta);
+  lrpp::convert_vector(Rweights, weights);
+  lrpp::convert_matrix(Rinit_traits, init_traits);
 
   //Estimation object  
-  irtpp::dichotomous::estimation e(Y, dim, model, 1e-4, 
+  lrpp::dichotomous::estimation e(Y, dim, model, 1e-4, 
                                    theta, weights );
   e.load_multi_initial_values(zetas);
 
@@ -75,7 +75,7 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   else                   e.MAP(by_individuals);
 
   //NumericMatrix latent_traits;
-  //irtpp::convert_matrix(e.data.latent_traits, latent_traits);
+  //lrpp::convert_matrix(e.data.latent_traits, latent_traits);
 
   //Nothing yet
   //TODO, convert from dlib vectors to NumericMatrix

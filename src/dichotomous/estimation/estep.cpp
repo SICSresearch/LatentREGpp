@@ -7,7 +7,7 @@
 
 #include "../../dichotomous/estimation/estep.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace dichotomous {
 
@@ -107,4 +107,4 @@ void Estep ( estimation_data &data, int current ) {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */

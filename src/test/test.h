@@ -11,7 +11,7 @@
 #include <vector>
 #include "../util/matrix.h"
 
-namespace irtpp {
+namespace lrpp {
 
 	/**
 	 * Tests the sum if each columns of pi matrix is equals to 1.

@@ -1,10 +1,10 @@
-Package: MulTRI
+Package: lrpp
 Type: Package
-Title: MUL-TRI
+Title: lrpp
 Version: 0.1.0
 Author: SICS Research Group
 Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
-Description: Mul-Tri is a c++ implementation of the Multidimensional Item Respone Theory (MIRT) cappable of performing parameter and traits estimations. It also provides a list of options to perform optiman analysis and provides usefull information about the obtained model.
+Description: lrpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT) cappable of performing parameter and traits estimations. It also provides a list of options to perform optiman analysis and provides usefull information about the obtained model.
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports:

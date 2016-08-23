@@ -1,6 +1,6 @@
 #include "directories.h"
 
-namespace irtpp {
+namespace lrpp {
 	
 	void setwd(std::string path) {
 		prev_path = path;

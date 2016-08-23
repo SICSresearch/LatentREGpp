@@ -9,7 +9,7 @@
 #include <cmath>
 #include <boost/math/distributions/normal.hpp>
 
-namespace irtpp {
+namespace lrpp {
 
 	double mean ( std::vector<double> &v ) {
 		double sum = 0;
@@ -109,7 +109,7 @@ namespace irtpp {
 			d[i] = -a[i] * b[i];
 	}
 
-} // irtpp
+} // lrpp
 
 
 

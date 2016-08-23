@@ -25,7 +25,7 @@
 #include <map>
 #include <cmath>
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -208,6 +208,6 @@ class estimation {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 #endif /* ESTIMATION_ESTIMATION_H_ */

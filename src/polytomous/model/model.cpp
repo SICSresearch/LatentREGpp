@@ -7,7 +7,7 @@
 
 #include "model.h"
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -91,4 +91,4 @@ model::~model() {
 
 }
 
-} /* namespace irtpp */
+} /* namespace lrpp */

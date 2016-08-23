@@ -8,7 +8,7 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 
 	if ( is.null(zetas) ) {
 		print("Item parameters were not loaded\n")
-		zetas = multri(data, dim, model, quadrature_technique, quadrature_points)$zetas
+		zetas = lrpp(data, dim, model, quadrature_technique, quadrature_points)$zetas
 	} else {
 		zeta = data.matrix(zeta)
 	}

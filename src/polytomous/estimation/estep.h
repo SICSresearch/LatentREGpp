@@ -20,7 +20,7 @@
 
 #include <omp.h>
 
-namespace irtpp {
+namespace lrpp {
 
 namespace polytomous {
 
@@ -34,7 +34,7 @@ namespace polytomous {
  */
 void Estep(estimation_data&, int current);
 
-} /* namespace irtpp */
+} /* namespace lrpp */
 
 }
 
