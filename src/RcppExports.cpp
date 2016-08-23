@@ -24,3 +24,22 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// ltraitscpp
+NumericMatrix ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individual, NumericMatrix Rinit_traits);
+RcppExport SEXP MulTRI_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualSEXP, SEXP Rinit_traitsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type Rdata(RdataSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Rzetas(RzetasSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Rtheta(RthetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Rweights(RweightsSEXP);
+    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+    Rcpp::traits::input_parameter< bool >::type by_individual(by_individualSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Rinit_traits(Rinit_traitsSEXP);
+    __result = Rcpp::wrap(ltraitscpp(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits));
+    return __result;
+END_RCPP
+}

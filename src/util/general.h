@@ -20,6 +20,14 @@ void convert_matrix ( Rcpp::NumericMatrix mat, irtpp::matrix<T> &Y ) {
       Y(i, j) = (T)mat(i,j);
 }
 
+template <class T>
+void convert_matrix ( irtpp::matrix<T> &Y, Rcpp::NumericMatrix mat ) {
+  Y = NumericMatrix(0, Y.rows(), Y.cols());
+  for ( int i = 0; i < Y.rows(); ++i )
+    for ( int j = 0; j < Y.cols(); ++j )
+      mat(i,j) = Y(i, j);
+}
+
 
 template <class T>
 void convert_vector ( Rcpp::NumericVector rvector, std::vector<T> &cvector ) {

@@ -42,9 +42,42 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
     else zetas(i,j+1) = 0;
   }
 
-  List output = List::create(Rcpp::Named("zetas") = zetas,
-                             Rcpp::Named("Loglikelihood") = e.log_likelihood());
-
-  return output;
+  return List::create(Rcpp::Named("zetas") = zetas,
+                      Rcpp::Named("Loglikelihood") = e.log_likelihood());;
 }
 
+
+NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
+                           NumericMatrix Rzetas,   
+                           NumericMatrix Rtheta, NumericVector Rweights, 
+                           std::string method,
+                           bool by_individuals,
+                           NumericMatrix Rinit_traits ) {
+  // Converting data types
+  irtpp::matrix<char> Y;
+  irtpp::matrix<double> zetas;
+  irtpp::matrix<double> theta;
+  std::vector<double> weights;
+  irtpp::matrix<double> init_traits;
+
+  irtpp::convert_matrix(Rdata, Y);
+  irtpp::convert_matrix(Rzetas, zetas);
+  irtpp::convert_matrix(Rtheta, theta);
+  irtpp::convert_vector(Rweights, weights);
+  irtpp::convert_matrix(Rinit_traits, init_traits);
+
+  //Estimation object  
+  irtpp::dichotomous::estimation e(Y, dim, model, 1e-4, 
+                                   theta, weights );
+  e.load_multi_initial_values(zetas);
+
+  if ( method == "EAP" ) e.EAP(by_individuals);
+  else                   e.MAP(by_individuals);
+
+  //NumericMatrix latent_traits;
+  //irtpp::convert_matrix(e.data.latent_traits, latent_traits);
+
+  //Nothing yet
+  //TODO, convert from dlib vectors to NumericMatrix
+  return NumericMatrix(0, 0, 0);
+}

@@ -44,7 +44,7 @@ NULL
 #'@param individual_weights Weights of the quadrature points
 #'@param initial_values Initial Values of the estimation
 #'@export
-multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
+multri = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quadrature_technique = NULL, quadrature_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
@@ -68,7 +68,6 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 		}
 	}
 
-	# Quadrature points and weights
 	if ( quadrature_technique == "QMCEM" ) {
 
 		if ( is.null(quadrature_points) ) quadrature_points = 2000

@@ -5,3 +5,7 @@ dichotomous <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindivid
     .Call('MulTRI_dichotomous', PACKAGE = 'MulTRI', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters, Rinitial_values)
 }
 
+ltraitscpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits = matrix(0, 0, 0)) {
+    .Call('MulTRI_ltraitscpp', PACKAGE = 'MulTRI', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individual, Rinit_traits)
+}
+
