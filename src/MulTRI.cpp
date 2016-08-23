@@ -12,17 +12,20 @@ using namespace Rcpp;
 
 // Estimates the parameters of a test
 //
-// @param RData Input dataset.
+// @param Rdata Input dataset.
 // @param dim Model Dimension
 // @param model 1 2 or 3PL
 // @param EMepsilon Convergence value for the algorithm
 // @param theta Quadrature Points
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
-List dichotomous ( IntegerMatrix RData, unsigned int dim, int model, double EMepsilon,
-                   NumericMatrix theta, NumericVector weights, std::string initial_values ) {
+List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+                   NumericMatrix theta, NumericVector weights, IntegerVector Rclusters,
+                   std::string initial_values ) {
   irtpp::matrix<char> Y;
-  irtpp::convert_matrix(RData, Y);
+  irtpp::convert_matrix(Rdata, Y);
+  std::vector<int> clusters;
+  irtpp::convert_vector(Rclusters, clusters);
 
   //Estimation config
   if(initial_values.empty()) {
@@ -31,7 +34,7 @@ List dichotomous ( IntegerMatrix RData, unsigned int dim, int model, double EMep
     //std::cout<<initial_values<<std::endl;
   }
   
-  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, irtpp::EMPTY_INTEGER_VECTOR,
+  irtpp::dichotomous::estimation e(Y, dim, model, EMepsilon, clusters,
                                    irtpp::GAUSSIAN, irtpp::DEFAULT_QMCEM_POINTS, 
                                    irtpp::EMPTY_INTEGER_VECTOR, initial_values);
   

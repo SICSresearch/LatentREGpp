@@ -112,8 +112,8 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	if ( dim == 1 ) {
 		# Item parameters estimation
 		if ( dichotomous_data )
-			dichotomous(RData = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						theta = theta, weights = weights)
+			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+						theta = theta, weights = weights, Rclusters = clusters)
 		#else
 		#	poly
 	} else {
@@ -133,8 +133,9 @@ multri = function(data, dim, model = "2PL", EMepsilon = 0.0001, clusters = NULL,
 	  
 		# Item parameters estimation
 		if ( dichotomous_data )
-			dichotomous(RData = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						theta = theta, weights = weights, initial_values = initial_values)
+			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+						theta = theta, weights = weights, Rclusters = clusters,
+						initial_values = initial_values)
 		#else
 		#	poly
 	}

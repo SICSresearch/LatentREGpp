@@ -25,7 +25,14 @@ template <class T>
 void convert_vector ( Rcpp::NumericVector rvector, std::vector<T> &cvector ) {
   cvector = std::vector<T>(rvector.size());
   for ( int i = 0; i < cvector.size(); ++i )
-  	cvector[i] = rvector[i];
+    cvector[i] = rvector[i];
+}
+
+template <class T>
+void convert_vector ( Rcpp::IntegerVector rvector, std::vector<T> &cvector ) {
+  cvector = std::vector<T>(rvector.size());
+  for ( int i = 0; i < cvector.size(); ++i )
+    cvector[i] = rvector[i];
 }
 
 }
