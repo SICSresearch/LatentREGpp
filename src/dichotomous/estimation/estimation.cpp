@@ -99,7 +99,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			}
 		}
 
-		load_multi_initial_values(initial_values);
+		if ( initial_values.rows() > 0 )
+			load_multi_initial_values(initial_values);
 	}
 
 	//Configurations for the estimation
@@ -157,7 +158,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	zeta = std::vector<optimizer_vector>(p);
 	int total_parameters = m.parameters == ONEPL ? 1 : m.parameters - 1 + d;
-
+	
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )

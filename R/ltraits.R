@@ -8,10 +8,16 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 
 	if ( is.null(zetas) ) {
 		print("Item parameters were not loaded\n")
-		zetas = lrpp(data, dim, model, quadrature_technique, quadrature_points)$zetas
+		zetas = lrpp(data = data, dim = dim, model = model, quadrature_technique = quadrature_technique, 
+			quadrature_points = quadrature_points)$zetas
 	} else {
 		zetas = data.matrix(zetas)
 	}
+
+	# Model id
+	if ( model == "1PL" ) m = 1
+	else if ( model == "2PL" ) m = 2
+	else if ( model == "3PL" ) m = 3
 
 	# Quadrature technique
 	if ( is.null(quadrature_technique) ) {
@@ -37,13 +43,13 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	if ( dichotomous_data ) {
 		if ( method == "MAP" && !is.null(init_traits) ) {
 			init_traits = data.matrix(init_traits)
-			traits = ltraitscpp(data = data, dim = dim, model = model, 
-									zetas = zetas, theta = theta, weights = weights,
+			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+									Rzetas = zetas, Rtheta = theta, Rweights = weights,
 									method = method, by_individuals = by_individuals,
 									init_traits = init_traits)
 		} else {
-			traits = ltraitscpp(data = data, dim = dim, model = model, 
-									zetas = zetas, theta = theta, weights = weights,
+			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+									Rzetas = zetas, Rtheta = theta, Rweights = weights,
 									method = method, by_individuals = by_individuals)
 		}
 	} else {

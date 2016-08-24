@@ -41,5 +41,5 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            NumericMatrix Rzetas,   
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
-                           bool by_individual,
+                           bool by_individuals,
                            NumericMatrix Rinit_traits = NumericMatrix(0, 0, 0) );

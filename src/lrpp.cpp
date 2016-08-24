@@ -48,11 +48,11 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
 
 
 NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
-                                    NumericMatrix Rzetas,   
-                                    NumericMatrix Rtheta, NumericVector Rweights, 
-                                    std::string method,
-                                    bool by_individuals,
-                                    NumericMatrix Rinit_traits ) {
+                           NumericMatrix Rzetas,   
+                           NumericMatrix Rtheta, NumericVector Rweights, 
+                           std::string method,
+                           bool by_individuals,
+                           NumericMatrix Rinit_traits ) {
   // Converting data types
   lrpp::matrix<char> Y;
   lrpp::matrix<double> zetas;
@@ -66,16 +66,18 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   lrpp::convert_vector(Rweights, weights);
   lrpp::convert_matrix(Rinit_traits, init_traits);
 
+  
+
   //Estimation object  
-  lrpp::dichotomous::estimation e(Y, dim, model, 1e-4, 
+  lrpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
                                    theta, weights );
   e.load_multi_initial_values(zetas);
 
   if ( method == "EAP" ) e.EAP(by_individuals);
   else                   e.MAP(by_individuals);
 
-  NumericMatrix traits;
-  lrpp::convert_matrix(e.data.latent_traits, traits);
+  NumericMatrix traits(0, 0, 0);
+  //lrpp::convert_matrix(e.data.latent_traits, traits);
 
   return traits;
 }
