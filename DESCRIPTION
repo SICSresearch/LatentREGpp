@@ -8,7 +8,7 @@ Description: lrpp is a c++ implementation of the Multidimensional Item Respone T
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
-    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad
+    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt
 LinkingTo: Rcpp
 SystemRequirements: c++11
 RoxygenNote: 5.0.1
