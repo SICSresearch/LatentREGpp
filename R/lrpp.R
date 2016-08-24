@@ -71,7 +71,8 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 		}
 	}
 
-	q = quadPoints(dim, quadrature_technique, quadrature_points)
+	q = quadPoints(dim = dim, quadrature_technique = quadrature_technique, 
+				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights
 
@@ -90,68 +91,58 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 		#else TODO
 		#	poly
 	} else {
-	  if ( is.null(initial_values) ) {
-	    
-	    if ( is.null(clusters) ) {
-	      #TODO find clusters
-	      #1. Find a temporal cluster
-	      p = ncol(data)
-	      d = dim
-	      clusters = find_temporal_cluster(p=p,d=d)
-	      
-	      #2. Find initial values
-	      III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-	                                    find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
-	      
-	      #3. do something weird :v 
-	      # Normalize Discrimination vectors per item
-	      #A_matrix<- III$coefs[,1:d]
-	      #Sigma<- cov(A_matrix)
-	      #CholSigm<- chol(Sigma)
-	      #A_asterisco<- A_matrix%*%solve(CholSigm)
-	      #Betas<- normalize(t(A_asterisco))
-	      #cov(t(Betas))
-	      
-	      #4. Clustering and find clustering
-	      #CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
-	      #unlist(lapply(CLUST,ncol))
-	      #paste("N clust",length(CLUST))
-	      #acpc<-PCA(CLUST[[1]])
-	      
-	      
-	      #BONUS. Another Reclassify
-	      acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
-	      hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
-	      CLUST_final<- list()
-	      for (i in 1:length(table(hcpc$data.clust$clust))) {
-	        CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
-	      }
-	      
-	      #5. Find Reclassify
-	      #P_axes_filter<- Principal_axes(CLUST)
-	      #CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=t(P_axes_filter))
-	      #unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB));
-	      
-	      #BONUS. Printing the clusters
-	      #print("New Clusters are: ")
-	      #print(CLUST_final)
-	      
-	      clusters = unlist(lapply(CLUST_final, ncol))
-	      
-	      #6. Find initial values again
-	      list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-	                                  find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
-	      
-	      new_initial_values = list_initial_values$coefs
-	      
-	    }else {
-	      
-	      list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-	                                  find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
-	      
-	      new_initial_values = list_initial_values$coefs
-	    }
-	  }
+		if ( is.null(initial_values) ) {
+
+			if ( is.null(clusters) ) {
+				#1. Find a temporal cluster
+				p = ncol(data)
+				d = dim
+				clusters = find_temporal_cluster(p=p,d=d)
+
+				#2. Find initial values
+				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
+				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
+
+				#3. do something weird :v 
+				# Normalize Discrimination vectors per item
+				#A_matrix<- III$coefs[,1:d]
+				#Sigma<- cov(A_matrix)
+				#CholSigm<- chol(Sigma)
+				#A_asterisco<- A_matrix%*%solve(CholSigm)
+				#Betas<- normalize(t(A_asterisco))
+				#cov(t(Betas))
+
+				#4. Clustering and find clustering
+				#CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
+				#unlist(lapply(CLUST,ncol))
+				#paste("N clust",length(CLUST))
+				#acpc<-PCA(CLUST[[1]])
+
+
+				#BONUS. Another Reclassify
+				acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
+				hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
+				CLUST_final<- list()
+				for (i in 1:length(table(hcpc$data.clust$clust))) {
+					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
+				}
+
+				#5. Find Reclassify
+				#P_axes_filter<- Principal_axes(CLUST)
+				#CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=t(P_axes_filter))
+				#unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB));
+
+				#BONUS. Printing the clusters
+				#print("New Clusters are: ")
+				#print(CLUST_final)
+
+				clusters = unlist(lapply(CLUST_final, ncol))
+			}
+
+			#Find initial values again
+			list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
+			                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
+		}
 
 		# TODO Find pinned items
 	  

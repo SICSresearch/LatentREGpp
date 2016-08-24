@@ -1,7 +1,7 @@
 
 
 ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
-					quadrature_technique = NULL, quadrature_point = NULL, 
+					quadrature_technique = NULL, quadrature_points = NULL, 
 					init_traits = NULL, method = "MAP", by_individuals = TRUE ) {
 	# Asserting matrix type
 	data = data.matrix(data)
@@ -10,10 +10,22 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 		print("Item parameters were not loaded\n")
 		zetas = lrpp(data, dim, model, quadrature_technique, quadrature_points)$zetas
 	} else {
-		zeta = data.matrix(zeta)
+		zetas = data.matrix(zetas)
 	}
 
-	q = quadPoints(quadrature_technique, quadrature_points)
+	# Quadrature technique
+	if ( is.null(quadrature_technique) ) {
+		if ( dim < 5 ) quadrature_technique = "Gaussian"
+		else quadrature_technique = "QMCEM"
+	} else {
+		if ( dim >= 5 && quadrature_technique == "Gaussian" ) {
+			print("Better use QMCEM")
+			# Try to change the qudrature technique
+		}
+	}
+
+	q = quadPoints(dim = dim, quadrature_technique = quadrature_technique, 
+				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights
 
@@ -22,20 +34,21 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	# TODO Find here the data type
 	# dichotomous_data = data_type(data)
 
-	if ( method == "MAP" ) {
-		if ( is.null(init_traits) ) 
+	if ( dichotomous_data ) {
+		if ( method == "MAP" && !is.null(init_traits) ) {
+			init_traits = data.matrix(init_traits)
 			traits = ltraitscpp(data = data, dim = dim, model = model, 
-								zetas = zetas, theta = theta, weights = weights,
-								method = method, by_individuals = by_individuals)
-		else {
+									zetas = zetas, theta = theta, weights = weights,
+									method = method, by_individuals = by_individuals,
+									init_traits = init_traits)
+		} else {
 			traits = ltraitscpp(data = data, dim = dim, model = model, 
-								zetas = zetas, theta = theta, weights = weights,
-								method = method, by_individuals = by_individuals,
-								init_traits = init_traits)
+									zetas = zetas, theta = theta, weights = weights,
+									method = method, by_individuals = by_individuals)
 		}
 	} else {
-		traits = ltraitscpp(data = data, dim = dim, model = model, 
-							zetas = zetas, theta = theta, weights = weights,
-							method = method, by_individuals = by_individuals)
+		# TODO poly case
 	}
+
+	
 }

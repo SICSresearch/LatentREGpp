@@ -233,7 +233,7 @@ void estimation::EMAlgorithm() {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-		Rprintf("\rIteration: %u \tMax-Change: %.5lf", iterations, dif);
+		Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
 }
 

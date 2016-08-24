@@ -74,10 +74,8 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   if ( method == "EAP" ) e.EAP(by_individuals);
   else                   e.MAP(by_individuals);
 
-  //NumericMatrix latent_traits;
-  //lrpp::convert_matrix(e.data.latent_traits, latent_traits);
+  NumericMatrix traits;
+  lrpp::convert_matrix(e.data.latent_traits, traits);
 
-  //Nothing yet
-  //TODO, convert from dlib vectors to NumericMatrix
-  return NumericMatrix(0, 0, 0);
+  return traits;
 }
