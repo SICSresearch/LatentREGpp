@@ -6,20 +6,29 @@
 namespace lrpp {
 
 template <class T>
-void convert_matrix ( Rcpp::IntegerMatrix &mat, lrpp::matrix<T> &Y ) {
-  Y = lrpp::matrix<T>(mat.nrow(), mat.ncol());
-  for ( int i = 0; i < mat.nrow(); ++i )
-    for ( int j = 0; j < mat.ncol(); ++j )
-      Y(i, j) = (T)mat(i,j);
+void convert_matrix ( Rcpp::IntegerMatrix &mat1, lrpp::matrix<T> &mat2 ) {
+  mat2 = lrpp::matrix<T>(mat1.nrow(), mat1.ncol());
+  for ( int i = 0; i < mat1.nrow(); ++i )
+    for ( int j = 0; j < mat1.ncol(); ++j )
+      mat2(i, j) = (T)mat1(i,j);
 }
 
 template <class T>
-void convert_matrix ( Rcpp::NumericMatrix &mat, lrpp::matrix<T> &Y ) {
-  Y = lrpp::matrix<T>(mat.nrow(), mat.ncol());
-  for ( int i = 0; i < mat.nrow(); ++i )
-    for ( int j = 0; j < mat.ncol(); ++j )
-      Y(i, j) = (T)mat(i,j);
+void convert_matrix ( Rcpp::NumericMatrix &mat1, lrpp::matrix<T> &mat2 ) {
+  mat2 = lrpp::matrix<T>(mat1.nrow(), mat1.ncol());
+  for ( int i = 0; i < mat1.nrow(); ++i )
+    for ( int j = 0; j < mat1.ncol(); ++j )
+      mat2(i, j) = (T)mat1(i,j);
 }
+
+template <class T>
+void convert_matrix ( lrpp::matrix<T> &mat1, Rcpp::NumericMatrix &mat2 ) {
+  mat2 = Rcpp::NumericMatrix(mat1.rows(), mat1.columns(0));
+  for ( size_t i = 0; i < mat1.rows(); ++i ) 
+    for ( int j = 0; j < mat1.columns(i); ++j )
+      mat2(i, j) = mat1(i, j);
+}
+
 
 void convert_matrix ( std::vector<lrpp::optimizer_vector> &mat1, Rcpp::NumericMatrix &mat2 ) {
   mat2 = Rcpp::NumericMatrix(int(mat1.size()), int(mat1[0].size()));

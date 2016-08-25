@@ -25,8 +25,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // ltraitscpp
-List ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individuals, NumericMatrix Rinit_traits);
-RcppExport SEXP lrpp_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualsSEXP, SEXP Rinit_traitsSEXP) {
+List ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individuals, bool dichotomous_data, NumericMatrix Rinit_traits);
+RcppExport SEXP lrpp_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualsSEXP, SEXP dichotomous_dataSEXP, SEXP Rinit_traitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -38,8 +38,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type Rweights(RweightsSEXP);
     Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
     Rcpp::traits::input_parameter< bool >::type by_individuals(by_individualsSEXP);
+    Rcpp::traits::input_parameter< bool >::type dichotomous_data(dichotomous_dataSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Rinit_traits(Rinit_traitsSEXP);
-    __result = Rcpp::wrap(ltraitscpp(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, Rinit_traits));
+    __result = Rcpp::wrap(ltraitscpp(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits));
     return __result;
 END_RCPP
 }

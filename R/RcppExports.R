@@ -5,7 +5,7 @@ dichotomous <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindivid
     .Call('lrpp_dichotomous', PACKAGE = 'lrpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, Rclusters, Rinitial_values)
 }
 
-ltraitscpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, Rinit_traits = matrix(0, 0, 0)) {
-    .Call('lrpp_ltraitscpp', PACKAGE = 'lrpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, Rinit_traits)
+ltraitscpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits = matrix(0, 0, 0)) {
+    .Call('lrpp_ltraitscpp', PACKAGE = 'lrpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits)
 }
 

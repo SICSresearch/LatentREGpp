@@ -51,6 +51,7 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
                            bool by_individuals,
+                           bool dichotomous_data,
                            NumericMatrix Rinit_traits ) {
   // Converting data types
   lrpp::matrix<char> Y;
@@ -64,18 +65,26 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   lrpp::convert_matrix(Rtheta, theta);
   lrpp::convert_vector(Rweights, weights);
   lrpp::convert_matrix(Rinit_traits, init_traits);
-
   
+  if ( dichotomous_data ) {
+    lrpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
+                                     theta, weights );
+    e.load_multi_initial_values(zetas);
 
-  //Estimation object  
-  lrpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
-                                   theta, weights );
-  e.load_multi_initial_values(zetas);
+    if ( method == "EAP" ) e.EAP(by_individuals);
+    else                   e.MAP(by_individuals);
 
-  if ( method == "EAP" ) e.EAP(by_individuals);
-  else                   e.MAP(by_individuals);
-
-  NumericMatrix traits;
-  lrpp::convert_matrix(e.data.latent_traits, traits);
-  return List::create(Rcpp::Named("latent_traits") = traits);
+    NumericMatrix traits;
+    lrpp::convert_matrix(e.data.latent_traits, traits);
+    
+    if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
+    else {
+      NumericMatrix patterns;
+      lrpp::convert_matrix(e.data.Y, patterns);  
+      return List::create(Rcpp::Named("latent_traits") = traits, 
+                          Rcpp::Named("patterns") = patterns);
+    }
+  } else {
+    //TODO poly
+  }
 }

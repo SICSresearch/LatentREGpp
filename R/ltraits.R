@@ -46,11 +46,13 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
 									Rzetas = zetas, Rtheta = theta, Rweights = weights,
 									method = method, by_individuals = by_individuals,
+									dichotomous_data = dichotomous_data,
 									init_traits = init_traits)
 		} else {
 			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
 									Rzetas = zetas, Rtheta = theta, Rweights = weights,
-									method = method, by_individuals = by_individuals)
+									method = method, by_individuals = by_individuals,
+									dichotomous_data = dichotomous_data)
 		}
 	} else {
 		# TODO poly case

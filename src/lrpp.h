@@ -42,4 +42,5 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
                            bool by_individuals,
+                           bool dichotomous_data,
                            NumericMatrix Rinit_traits = NumericMatrix(0, 0, 0) );
