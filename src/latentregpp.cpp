@@ -69,7 +69,6 @@ List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double E
                                    clusters, initial_values);
   //EM
   e.EMAlgorithm();
-  e.print_item_parameters();
   
   int max_category = *std::max_element(e.data.categories_item.begin(), e.data.categories_item.end());
   NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);

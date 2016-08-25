@@ -106,7 +106,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	//Configurations for the estimation
 	m = model(themodel, d, &categories_item);
 
 	//TODO Change this temporary test
@@ -128,6 +127,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			load_multi_initial_values(initial_values);
 	}	
 
+	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
 	this->convergence_difference = convergence_difference;
 	this->iterations = 0;

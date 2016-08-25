@@ -85,12 +85,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	//Configurations for the estimation
-	loglikelihood = NOT_COMPUTED;
 	m = model(themodel);
-	this->convergence_difference = convergence_difference;
-	this->iterations = 0;	
-
+	
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
 		//Pinned items in multidimensional case (the first of each dimension)
@@ -108,6 +104,11 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		if ( initial_values.rows() > 0 )
 			load_multi_initial_values(initial_values);
 	}
+
+	//Configurations for the estimation
+	loglikelihood = NOT_COMPUTED;
+	this->convergence_difference = convergence_difference;
+	this->iterations = 0;	
 }
 
 void estimation::build_matrixes() {
