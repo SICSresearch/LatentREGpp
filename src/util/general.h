@@ -22,7 +22,7 @@ void convert_matrix ( Rcpp::NumericMatrix &mat, lrpp::matrix<T> &Y ) {
 }
 
 void convert_matrix ( std::vector<lrpp::optimizer_vector> &mat1, Rcpp::NumericMatrix &mat2 ) {
-  mat2 = Rcpp::NumericMatrix(0, int(mat1.size()), int(mat1[0].size()));
+  mat2 = Rcpp::NumericMatrix(int(mat1.size()), int(mat1[0].size()));
   for ( size_t i = 0; i < mat1.size(); ++i ) 
     for ( int j = 0; j < mat1[i].size(); ++j )
       mat2(i, j) = mat1[i](j);

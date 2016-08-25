@@ -75,10 +75,7 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   if ( method == "EAP" ) e.EAP(by_individuals);
   else                   e.MAP(by_individuals);
 
-  NumericMatrix traits(4, 4, 4);
+  NumericMatrix traits;
+  lrpp::convert_matrix(e.data.latent_traits, traits);
   return List::create(Rcpp::Named("latent_traits") = traits);
-
-  
-  //lrpp::convert_matrix(e.data.latent_traits, traits);
-
 }
