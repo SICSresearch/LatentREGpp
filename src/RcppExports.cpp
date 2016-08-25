@@ -5,9 +5,9 @@
 
 using namespace Rcpp;
 
-// lrppcpp
-List lrppcpp(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rindividual_weights, bool dichotomous_data, IntegerVector Rclusters, NumericMatrix Rinitial_values);
-RcppExport SEXP lrpp_lrppcpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP dichotomous_dataSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP) {
+// latentregppcpp
+List latentregppcpp(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rindividual_weights, bool dichotomous_data, IntegerVector Rclusters, NumericMatrix Rinitial_values);
+RcppExport SEXP LatentRegpp_latentregppcpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP dichotomous_dataSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
@@ -21,13 +21,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type dichotomous_data(dichotomous_dataSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type Rclusters(RclustersSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Rinitial_values(Rinitial_valuesSEXP);
-    __result = Rcpp::wrap(lrppcpp(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values));
+    __result = Rcpp::wrap(latentregppcpp(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values));
     return __result;
 END_RCPP
 }
 // ltraitscpp
 List ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individuals, bool dichotomous_data, NumericMatrix Rinit_traits);
-RcppExport SEXP lrpp_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualsSEXP, SEXP dichotomous_dataSEXP, SEXP Rinit_traitsSEXP) {
+RcppExport SEXP LatentRegpp_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualsSEXP, SEXP dichotomous_dataSEXP, SEXP Rinit_traitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;

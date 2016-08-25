@@ -9,7 +9,7 @@
 #include <cmath>
 #include <boost/math/distributions/normal.hpp>
 
-namespace lrpp {
+namespace latentregpp {
 
 	double mean ( std::vector<double> &v ) {
 		double sum = 0;
@@ -109,7 +109,7 @@ namespace lrpp {
 			d[i] = -a[i] * b[i];
 	}
 
-} // lrpp
+} // latentregpp
 
 
 

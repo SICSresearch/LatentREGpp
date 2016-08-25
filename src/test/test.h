@@ -11,7 +11,7 @@
 #include <vector>
 #include "../util/matrix.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 	/**
 	 * Tests the sum if each columns of pi matrix is equals to 1.

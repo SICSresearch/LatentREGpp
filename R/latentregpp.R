@@ -1,13 +1,13 @@
 #######################################################################
-#' @name lrpp
+#' @name latentregpp
 #' @docType package
-#' @title lrpp : Item Response Theory Implemented in R and Cpp
-#' @description lrpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
+#' @title latentregpp : Item Response Theory Implemented in R and Cpp
+#' @description latentregpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 #' cappable of performing parameter and traits estimations. It also provides a list of options to 
 #' perform optiman analysis and provides usefull information about the obtained model.
 #' @details
 #' \tabular{ll}{
-#'Package: \tab lrpp\cr
+#'Package: \tab latentregpp\cr
 #'Type: \tab Package\cr
 #'Version: \tab 0.0.5\cr
 #'Date: \tab 2016-08-22\cr
@@ -15,26 +15,26 @@
 #'}
 #'@author SICS Research Team
 #'@keywords IRT MIRT Psychometry 
-#'@useDynLib lrpp
+#'@useDynLib latentregpp
 #'@importFrom Rcpp sourceCpp
 #'@importFrom randtoolbox sobol
 #'@importFrom fastGHQuad gaussHermiteData
 #'@importFrom RSpectra eigs
 #'@importFrom sirt noharm.sirt
-#'@importFrom lrpp lrpp
+#'@importFrom latentregpp latentregpp
 #'@importFrom IRTpp irtpp
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@section Getting Started:
-#'Get started with the lrpp package browsing the index of this documentation
+#'Get started with the latentregpp package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
 #'@section Getting Started:
-#'The lrpp package allows you to use the lrpp methodology for simulating, analyzing and scoring tests \cr
+#'The latentregpp package allows you to use the latentregpp methodology for simulating, analyzing and scoring tests \cr
 #'You can browse the package vignettes to get started.
 #'
 NULL
 
-#'@name lrpp
+#'@name latentregpp
 #'@title Parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
@@ -47,7 +47,7 @@ NULL
 #'@param individual_weights Weights of the quadrature points
 #'@param initial_values Initial Values of the estimation
 #'@export
-lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
+latentregpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quadrature_technique = NULL, quadrature_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
@@ -85,7 +85,7 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 					Rtheta = theta, Rweights = weights, 
 					Rindividual_weights = individual_weights,
 					dichotomous_data = dichotomous_data)
@@ -145,7 +145,7 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 		}
 	  
 		# Item parameters estimation
-		lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 					Rtheta = theta, Rweights = weights, 
 					Rindividual_weights = individual_weights,
 					dichotomous_data = dichotomous_data,

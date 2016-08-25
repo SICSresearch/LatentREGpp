@@ -12,7 +12,7 @@
 #include <iostream>
 #include <fstream>
 
-namespace lrpp {
+namespace latentregpp {
 
 template<class T>
 /**
@@ -274,6 +274,6 @@ void matrix<T>::export_to_csv(std::string filename, char sep) {
 	out.close();
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */
 
 #endif /* UTIL_MATRIX_H_ */

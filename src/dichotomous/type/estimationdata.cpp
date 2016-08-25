@@ -7,7 +7,7 @@
 
 #include "../../dichotomous/type/estimationdata.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace dichotomous {
 
@@ -23,4 +23,4 @@ estimation_data::~estimation_data() {
 }
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */

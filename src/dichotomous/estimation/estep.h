@@ -19,7 +19,7 @@
 #include "../../dichotomous/model/model.h"
 #include "../../dichotomous/type/estimationdata.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace dichotomous {
 
@@ -33,7 +33,7 @@ namespace dichotomous {
  */
 void Estep(estimation_data&, int current);
 
-} /* namespace lrpp */
+} /* namespace latentregpp */
 
 }
 

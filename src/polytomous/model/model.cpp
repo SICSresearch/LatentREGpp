@@ -7,7 +7,7 @@
 
 #include "model.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace polytomous {
 
@@ -91,4 +91,4 @@ model::~model() {
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */

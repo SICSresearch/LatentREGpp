@@ -7,7 +7,7 @@
 
 #include "../../dichotomous/model/model.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace dichotomous {
 
@@ -86,4 +86,4 @@ model::~model() {
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */

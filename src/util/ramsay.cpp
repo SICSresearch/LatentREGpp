@@ -7,7 +7,7 @@
 
 #include "ramsay.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 void ramsay(std::vector<optimizer_vector> zeta[ACCELERATION_PERIOD],
 		std::set<int> &pinned) {
@@ -37,4 +37,4 @@ void ramsay(std::vector<optimizer_vector> zeta[ACCELERATION_PERIOD],
 	}
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */

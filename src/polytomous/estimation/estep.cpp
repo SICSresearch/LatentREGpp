@@ -7,7 +7,7 @@
 
 #include "estep.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace polytomous {
 
@@ -155,4 +155,4 @@ void Estep ( estimation_data &data, int current ) {
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */

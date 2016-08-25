@@ -19,7 +19,7 @@ using namespace Rcpp;
 // @param theta Quadrature Points
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
-List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights,
                    bool dichotomous_data,

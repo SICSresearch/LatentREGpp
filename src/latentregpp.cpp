@@ -1,45 +1,45 @@
-#include "lrpp.h"
+#include "latentregpp.h"
 
 using namespace Rcpp;
 
-List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights, 
                    bool dichotomous_data,
                    IntegerVector Rclusters,
                    NumericMatrix Rinitial_values ) {
   // Converting data types
-  lrpp::matrix<char> Y;
-  lrpp::matrix<double> theta;
+  latentregpp::matrix<char> Y;
+  latentregpp::matrix<double> theta;
   std::vector<double> weights;
   std::vector<int> individual_weights;
   std::vector<int> clusters;
-  lrpp::matrix<double> initial_values;
+  latentregpp::matrix<double> initial_values;
 
-  lrpp::convert_matrix(Rdata, Y);
-  lrpp::convert_matrix(Rtheta, theta);
-  lrpp::convert_vector(Rweights, weights);
-  lrpp::convert_vector(Rindividual_weights, individual_weights);
-  lrpp::convert_vector(Rclusters, clusters);
-  lrpp::convert_matrix(Rinitial_values, initial_values);
+  latentregpp::convert_matrix(Rdata, Y);
+  latentregpp::convert_matrix(Rtheta, theta);
+  latentregpp::convert_vector(Rweights, weights);
+  latentregpp::convert_vector(Rindividual_weights, individual_weights);
+  latentregpp::convert_vector(Rclusters, clusters);
+  latentregpp::convert_matrix(Rinitial_values, initial_values);
 
   if ( dichotomous_data ) {
     //Estimation object  
-    lrpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
+    latentregpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
                                      theta, weights, individual_weights,
                                      clusters, initial_values);
     //EM
     e.EMAlgorithm();
     
     NumericMatrix zetas(e.data.p, e.data.d + 2);
-    int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
+    int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
     int parameters = e.data.m.parameters;
 
     for ( int i = 0; i < e.data.p; ++i ) {
       int j = 0;
       //a's
-      if ( parameters == lrpp::ONEPL )
-        for ( ; j < e.data.d; ++j ) zetas(i, j) = lrpp::ALPHA_WITH_NO_ESTIMATION;
+      if ( parameters == latentregpp::ONEPL )
+        for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
       else
         for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
       
@@ -48,7 +48,7 @@ List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilo
       ++j;
 
       //c
-      if ( parameters == lrpp::THREEPL ) {
+      if ( parameters == latentregpp::THREEPL ) {
         double &c = zetas(i, j);
         c = e.data.zeta[current_zeta][i](j);
         c = 1.0 / (1.0 + exp(-c));
@@ -64,23 +64,23 @@ List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilo
   //polytomous data
 
   //Estimation object  
-  lrpp::polytomous::estimation e(Y, dim, model, EMepsilon, 
+  latentregpp::polytomous::estimation e(Y, dim, model, EMepsilon, 
                                    theta, weights, individual_weights,
                                    clusters, initial_values);
   //EM
   e.EMAlgorithm();
   
   int max_category = *std::max_element(e.data.categories_item.begin(), e.data.categories_item.end());
-  NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);
+  NumericMatrix zetas(e.data.p, e.data.d + max_category);
   std::fill( zetas.begin(), zetas.end(), NumericVector::get_na() );
-  int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
+  int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
   int parameters = e.data.m.parameters;
 
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;
     //a's
-    if ( parameters == lrpp::ONEPL )
-      for ( ; j < e.data.d; ++j ) zetas(i, j) = lrpp::ALPHA_WITH_NO_ESTIMATION;
+    if ( parameters == latentregpp::ONEPL )
+      for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
     else
       for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
 
@@ -102,21 +102,21 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            bool dichotomous_data,
                            NumericMatrix Rinit_traits ) {
   // Converting data types
-  lrpp::matrix<char> Y;
-  lrpp::matrix<double> zetas;
-  lrpp::matrix<double> theta;
+  latentregpp::matrix<char> Y;
+  latentregpp::matrix<double> zetas;
+  latentregpp::matrix<double> theta;
   std::vector<double> weights;
-  lrpp::matrix<double> init_traits;
+  latentregpp::matrix<double> init_traits;
 
-  lrpp::convert_matrix(Rdata, Y);
-  lrpp::convert_matrix(Rzetas, zetas);
-  lrpp::convert_matrix(Rtheta, theta);
-  lrpp::convert_vector(Rweights, weights);
-  lrpp::convert_matrix(Rinit_traits, init_traits);
+  latentregpp::convert_matrix(Rdata, Y);
+  latentregpp::convert_matrix(Rzetas, zetas);
+  latentregpp::convert_matrix(Rtheta, theta);
+  latentregpp::convert_vector(Rweights, weights);
+  latentregpp::convert_matrix(Rinit_traits, init_traits);
   
   if ( dichotomous_data ) {
     //Estimation object 
-    lrpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
+    latentregpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
                                      theta, weights );
     e.load_multi_initial_values(zetas);
 
@@ -130,12 +130,12 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
     }
 
     NumericMatrix traits;
-    lrpp::convert_matrix(e.data.latent_traits, traits);
+    latentregpp::convert_matrix(e.data.latent_traits, traits);
     
     if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
 
     NumericMatrix patterns;
-    lrpp::convert_matrix(e.data.Y, patterns);  
+    latentregpp::convert_matrix(e.data.Y, patterns);  
     return List::create(Rcpp::Named("latent_traits") = traits, 
                         Rcpp::Named("patterns") = patterns);
   }

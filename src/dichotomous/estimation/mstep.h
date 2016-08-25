@@ -17,7 +17,7 @@
 #include "../../dichotomous/model/model.h"
 #include "../../dichotomous/type/estimationdata.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace dichotomous {
 
@@ -58,6 +58,6 @@ private:
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */
 
 #endif /* ESTIMATION_MSTEP_H_ */

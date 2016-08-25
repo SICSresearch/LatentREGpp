@@ -1,6 +1,6 @@
 #include "directories.h"
 
-namespace lrpp {
+namespace latentregpp {
 	
 	void setwd(std::string path) {
 		prev_path = path;

@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace lrpp {
+namespace latentregpp {
 	
 	static std::string prev_path = "";
 	

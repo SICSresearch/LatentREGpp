@@ -14,7 +14,7 @@
 
 #include "../../util/constants.h"
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace polytomous {
 
@@ -76,6 +76,6 @@ public:
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */
 
 #endif /* MODEL_MODEL_H_ */

@@ -24,7 +24,7 @@
 
 #include <omp.h>
 
-namespace lrpp {
+namespace latentregpp {
 
 namespace polytomous {
 
@@ -86,6 +86,6 @@ private:
 
 }
 
-} /* namespace lrpp */
+} /* namespace latentregpp */
 
 #endif /* ESTIMATION_MSTEP_H_ */
