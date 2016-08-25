@@ -46,8 +46,7 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
                       Rcpp::Named("Loglikelihood") = e.log_likelihood());;
 }
 
-
-NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
+List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
                            NumericMatrix Rzetas,   
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
@@ -76,8 +75,10 @@ NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   if ( method == "EAP" ) e.EAP(by_individuals);
   else                   e.MAP(by_individuals);
 
-  NumericMatrix traits(0, 0, 0);
+  NumericMatrix traits(4, 4, 4);
+  return List::create(Rcpp::Named("latent_traits") = traits);
+
+  
   //lrpp::convert_matrix(e.data.latent_traits, traits);
 
-  return traits;
 }

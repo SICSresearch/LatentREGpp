@@ -25,7 +25,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // ltraitscpp
-NumericMatrix ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individuals, NumericMatrix Rinit_traits);
+List ltraitscpp(IntegerMatrix Rdata, unsigned int dim, int model, NumericMatrix Rzetas, NumericMatrix Rtheta, NumericVector Rweights, std::string method, bool by_individuals, NumericMatrix Rinit_traits);
 RcppExport SEXP lrpp_ltraitscpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP RzetasSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP methodSEXP, SEXP by_individualsSEXP, SEXP Rinit_traitsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;

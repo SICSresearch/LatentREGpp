@@ -21,15 +21,6 @@ void convert_matrix ( Rcpp::NumericMatrix &mat, lrpp::matrix<T> &Y ) {
       Y(i, j) = (T)mat(i,j);
 }
 
-template <class T>
-void convert_matrix ( lrpp::matrix<T> &Y, Rcpp::NumericMatrix &mat ) {
-  Y = NumericMatrix(0, Y.rows(), Y.cols());
-  for ( int i = 0; i < Y.rows(); ++i )
-    for ( int j = 0; j < Y.cols(); ++j )
-      mat(i,j) = Y(i, j);
-}
-
-
 void convert_matrix ( std::vector<lrpp::optimizer_vector> &mat1, Rcpp::NumericMatrix &mat2 ) {
   mat2 = Rcpp::NumericMatrix(0, int(mat1.size()), int(mat1[0].size()));
   for ( size_t i = 0; i < mat1.size(); ++i ) 

@@ -37,7 +37,7 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
 // @param theta Quadrature Points
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
-NumericMatrix ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
+List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
                            NumericMatrix Rzetas,   
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
