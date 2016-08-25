@@ -71,27 +71,26 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 		}
 	}
 
-	q = quadPoints(dim = dim, quadrature_technique = quadrature_technique, 
+	q = quad_points(dim = dim, quadrature_technique = quadrature_technique, 
 				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights
 
 	# Type of data
-	dichotomous_data = TRUE
-	# TODO Find here the data type
-	# dichotomous_data = data_type(data)
-
+	dichotomous_data = is_data_dicho(data)
+	if ( dichotomous_data == -1 ) {
+		print("Inconsistent data")
+		return -1
+	}
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		if ( dichotomous_data )
-			lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights, 
-						Rindividual_weights = individual_weights,
-						dichotomous_data = dichotomous_data)
-		#else TODO
-		#	poly
+		lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+					Rtheta = theta, Rweights = weights, 
+					Rindividual_weights = individual_weights,
+					dichotomous_data = dichotomous_data)
 	} else {
+		#Initial values
 		if ( is.null(initial_values) ) {
 
 			if ( is.null(clusters) ) {
@@ -144,18 +143,13 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 			list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 			                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
 		}
-
-		# TODO Find pinned items
 	  
 		# Item parameters estimation
-		if ( dichotomous_data )
-			lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights, 
-						Rindividual_weights = individual_weights,
-						dichotomous_data = dichotomous_data,
-						Rclusters = clusters,
-						Rinitial_values = list_initial_values$coefs )
-		#else TODO
-		#	poly
+		lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+					Rtheta = theta, Rweights = weights, 
+					Rindividual_weights = individual_weights,
+					dichotomous_data = dichotomous_data,
+					Rclusters = clusters,
+					Rinitial_values = list_initial_values$coefs )
 	}
 }

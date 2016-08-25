@@ -37,26 +37,61 @@ List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilo
 
     for ( int i = 0; i < e.data.p; ++i ) {
       int j = 0;
+      //a's
       if ( parameters == lrpp::ONEPL )
         for ( ; j < e.data.d; ++j ) zetas(i, j) = lrpp::ALPHA_WITH_NO_ESTIMATION;
       else
         for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
       
+      //d
       zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      ++j;
+
+      //c
       if ( parameters == lrpp::THREEPL ) {
-        double &c = zetas(i, j + 1);
-        c = e.data.zeta[current_zeta][i](j + 1);
+        double &c = zetas(i, j);
+        c = e.data.zeta[current_zeta][i](j);
         c = 1.0 / (1.0 + exp(-c));
       }
       else 
-        zetas(i, j + 1) = 0;  
+        zetas(i, j) = 0;  
     }
 
     return List::create(Rcpp::Named("zetas") = zetas,
                         Rcpp::Named("Loglikelihood") = e.log_likelihood());
   }
 
-  //TODO poly
+  //polytomous data
+
+  //Estimation object  
+  lrpp::polytomous::estimation e(Y, dim, model, EMepsilon, 
+                                   theta, weights, individual_weights,
+                                   clusters, initial_values);
+  //EM
+  e.EMAlgorithm();
+  
+  int max_category = *std::max_element(e.data.categories_item.begin(), e.data.categories_item.end());
+  NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);
+  std::fill( zetas.begin(), zetas.end(), NumericVector::get_na() );
+  int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
+  int parameters = e.data.m.parameters;
+
+  for ( int i = 0; i < e.data.p; ++i ) {
+    int j = 0;
+    //a's
+    if ( parameters == lrpp::ONEPL )
+      for ( ; j < e.data.d; ++j ) zetas(i, j) = lrpp::ALPHA_WITH_NO_ESTIMATION;
+    else
+      for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
+
+    //d's
+    int categories_item_i = e.data.categories_item[i];
+    for ( int h = 0; h < categories_item_i; ++h, ++j )
+      zetas(i, j) = e.data.zeta[current_zeta][i](j);
+  }
+
+  return List::create(Rcpp::Named("zetas") = zetas,
+                      Rcpp::Named("Loglikelihood") = e.log_likelihood());
 }
 
 List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 

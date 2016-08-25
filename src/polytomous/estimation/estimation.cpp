@@ -13,11 +13,11 @@ namespace polytomous {
 
 estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
-					   std::vector<int> number_of_items,
-					   std::string quadrature_technique,
-					   int quadrature_points,
+					   matrix<double> theta,
+					   std::vector<double> weights,
 					   std::vector<int> individual_weights,
-					   std::string custom_initial_values_filename ) {
+					   std::vector<int> clusters,
+					   matrix<double> initial_values ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -101,21 +101,28 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		categories_item[i] = max_category;
 	}
 
-	if ( quadrature_technique == QMCEM )
-		sobol_quadrature(quadrature_points);
-	else
-		gaussian_quadrature();
+	data.theta = theta;
+	data.w = weights;
+	data.G = theta.rows();
+	build_matrixes();
 
-	//Pinned items in multidimensional case (the first of each dimension)
-	std::set<int> &pinned_items = data.pinned_items;
+	//TODO Change this temporary test
+	if ( d < 1000 ) compute_1D_initial_values();
+	else {
+		//Pinned items in multidimensional case (the first of each dimension)
+		std::set<int> &pinned_items = data.pinned_items;
 
-	//Number of items size MUST be equal to the number of dimensions
-	if ( number_of_items.size() == d ) {
-		int pinned = 0;
-		for ( unsigned int i = 0; i < number_of_items.size(); ++i ) {
-			pinned_items.insert(pinned);
-			pinned += number_of_items[i];
+		//clusters size MUST be equal to the number of dimensions
+		if ( clusters.size() == d ) {
+			int pinned = 0;
+			for ( unsigned int i = 0; i < clusters.size(); ++i ) {
+				pinned_items.insert(pinned);
+				pinned += clusters[i];
+			}
 		}
+
+		if ( initial_values.rows() > 0 )
+			load_multi_initial_values(initial_values);
 	}
 
 	//Configurations for the estimation
@@ -123,7 +130,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	m = model(themodel, d, &categories_item);
 	this->convergence_difference = convergence_difference;
 	this->iterations = 0;
-	this->custom_initial_values_filename = custom_initial_values_filename;
 }
 
 
@@ -178,70 +184,7 @@ void estimation::build_matrixes() {
 	pi = matrix<double>(G, s);
 }
 
-
-void estimation::sobol_quadrature (int g) {
-	//Dimension
-	int &d = data.d;
-
-	//Number of quadrature points
-	int &G = data.G;
-
-	//Latent trait vectors
-	matrix<double> &theta = data.theta;
-
-	//Weights
-	std::vector<double> &w = data.w;
-
-	input<double> in;
-	std::stringstream ss;
-	ss << "data/sobol" << d << ".data";
-	in.import_data(ss.str(), theta);
-
-	G = g;
-
-	w = std::vector<double>(G, 1.0);
-	build_matrixes();
-}
-
-void estimation::gaussian_quadrature () {
-	//Dimension
-	int &d = data.d;
-
-	//Number of quadrature points
-	int &G = data.G;
-
-	//Latent trait vectors
-	matrix<double> &theta = data.theta;
-
-	//Weights
-	std::vector<double> &w = data.w;
-
-	/**
-	 * Number of quadrature points (G) is computed based on
-	 * MAX_NUMBER_OF_QUADRATURE_POINTS and dimension of the problem, in this way
-	 *
-	 *
-	 * G will be in 1dimension = 40 ---> 40^1 = 40
-	 * 				2dimension = 20 ---> 20^2 = 400
-	 * 				3dimension = 10 ---> 10^3 = 1000
-	 * 				> 4dimension = 5 ---> 5^d
-	 * */
-
-	// Latent trait vectors loaded from file
-	theta = load_quadrature_points(d);
-
-	// Weights loaded from file
-	w = load_weights(d);
-
-	G = theta.rows();
-	build_matrixes();
-}
-
-void estimation::load_initial_values ( std::string filename ) {
-	matrix<double> mt;
-	input<double> in;
-	in.import_data(filename, mt);
-
+void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	//Dimension
 	int &d = data.d;
 	//Parameters of the items
@@ -283,7 +226,7 @@ void estimation::load_initial_values ( std::string filename ) {
 }
 
 
-void estimation::initial_values() {
+void estimation::compute_1D_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Dimension
@@ -419,13 +362,10 @@ void estimation::initial_values() {
 	data.loglikelihood = NOT_COMPUTED;
 }
 void estimation::EMAlgorithm() {
-	if ( custom_initial_values_filename == NONE || custom_initial_values_filename == BUILD ) initial_values();
-	else load_initial_values(custom_initial_values_filename);
+	Rprintf("EMAlgorithm started\n");
 	double dif = 0.0;
-
 	iterations = 0;
 	int current;
-
 	do {
 		current = iterations % ACCELERATION_PERIOD;
 		if ( current == 2 )
@@ -434,8 +374,7 @@ void estimation::EMAlgorithm() {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-
-		std::cout << "Iteration: " << iterations << " \tMax-Change: " << dif << std::endl;
+		Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
 }
 
@@ -589,67 +528,7 @@ void estimation::latent_traits_by_individuals () {
 	}
 }
 
-
-void estimation::print_item_parameters ( ) {
-	std::vector<optimizer_vector> &zeta = data.zeta[iterations % ACCELERATION_PERIOD];
-	int &p = data.p;
-
-	std::cout << "Finished after " << iterations << " iterations.\n";
-	for ( int i = 0; i < p; ++i ) {
-		std::cout << "Item " << i + 1 << '\n';
-		for ( int j = 0; j < zeta[i].size(); ++j )
-			std::cout << zeta[i](j) << ' ';
-		std::cout << '\n';
-	}
-}
-
-void estimation::print_item_parameters ( std::string filename, double elapsed ) {
-	std::ofstream fout(filename);
-	print_item_parameters(fout, elapsed);
-	fout.close();
-}
-
-void estimation::print_item_parameters ( std::ofstream &fout, double elapsed ) {
-	std::vector<optimizer_vector> &zeta = data.zeta[iterations % ACCELERATION_PERIOD];
-	int &p = data.p;
-
-	for ( int i = 0; i < p; ++i ) {
-		for ( int j = 0; j < zeta[i].size(); ++j ) {
-			if ( j ) fout << ';';
-			fout << zeta[i](j);
-		}
-		fout << ';' << iterations << ';' << elapsed << '\n';
-	}
-}
-
-void estimation::print_latent_traits ( ) {
-	std::vector<optimizer_vector> &latent_traits = data.latent_traits;
-	for ( size_t i = 0; i < latent_traits.size(); ++i ) {
-		std::cout << i + 1 << "\t";
-		for ( int j = 0; j < latent_traits[i].size(); ++j )
-			std::cout << latent_traits[i](j) << ' ';
-		std::cout << std::endl;
-	}
-}
-
-void estimation::print_latent_traits ( std::string filename ) {
-	std::ofstream out(filename);
-	print_latent_traits(out);
-	out.close();
-}
-
-void estimation::print_latent_traits ( std::ofstream &out ) {
-	std::vector<optimizer_vector> &latent_traits = data.latent_traits;
-	for ( size_t i = 0; i < latent_traits.size(); ++i ) {
-		for ( int j = 0; j < latent_traits[i].size(); ++j ) {
-			if ( j ) out << ';';
-			out << latent_traits[i](j);
-		}
-		out << '\n';
-	}
-}
-
-short estimation::get_iterations ( ) {
+unsigned int estimation::get_iterations ( ) {
 	return iterations;
 }
 

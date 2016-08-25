@@ -109,9 +109,7 @@ class estimation {
 
 		/**
 		 * Loads the initial values for every parameter of the items to start the estimation
-		 * from file. It is call if custom_initial_values_filename has a value different to none.
-		 * @param filename string with path for initial values.
-		 * @see custom_initial_values_filename
+		 * @param mt matrix containing initial values
 		 */
 		void load_multi_initial_values(matrix<double> &mt);
 

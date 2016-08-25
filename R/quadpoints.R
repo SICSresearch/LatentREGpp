@@ -1,6 +1,6 @@
 
 
-quadPoints = function(dim, quadrature_technique = "Gaussian", quadrature_points = NULL) {
+quad_points = function(dim, quadrature_technique = "Gaussian", quadrature_points = NULL) {
 	if ( quadrature_technique == "QMCEM" ) {
 
 		if ( is.null(quadrature_points) ) quadrature_points = 2000

@@ -25,6 +25,8 @@
 #include <map>
 #include <cmath>
 
+#include <Rcpp.h>
+
 namespace lrpp {
 
 namespace polytomous {
@@ -38,9 +40,8 @@ namespace polytomous {
 class estimation {
 	private:
 
-		short iterations; /**< Counts the actual number of iterations*/
+		unsigned int iterations; /**< Counts the actual number of iterations*/
 		double convergence_difference; /**< Epsilon to stop the EMAlgorithm*/
-		std::string custom_initial_values_filename; /**< path with custom initial values*/
 
 		/**
 		 * Class to maximize posterior function to estimate latent traits
@@ -77,36 +78,23 @@ class estimation {
 		estimation_data data; /**< Saves all data needed in the estimation process*/
 
 		/**
-		 * Receives:
-		 * 	1. A specific model to use -> [1, 3] that means 1PL, 2PL, or 3PL
-		 *  2. A matrix containing the answers of examinees
-		 *  3. The dimension of the problem
-		 *	4. The epsilon (convergences difference) that the algoritm will use
-		 *		as a criterion to stop
-		 *
-		 *	Optional parameters:
-		 *		quadrature_technique: [GAUSSIAN_QUADRATURE, SOBOL_QUADRATURE]
-		 *		quadrature_points: 	  Custom number of quadrature points
-		 *		cluster: 			  Vector that contains the number of item for each dimension
-		 *		custom_initial_values_filename:		  Custom initial values filename
-		 *
-		 *  Then it sets up all the data needed to start the estimation process
 		 *
 		 * @param dataset a matrix data type char template with data to estimate parameters.
 		 * @param d the dimension.
 		 * @param themodel model to use 1PL, 2PL or 3PL.
 		 * @param convergence_difference epsilon convergence difference.
-		 * @param quadrature_technique string. it can be Gaussian or Sobol.
-		 * @param quadrature_technique if Sobol. Number of points to use.
-		 * @param cluster a std vector integer template with number of items for each dimension.
-		 * @param custom_initial_values_filename string with path for custom initial_values. Default is none.
+		 * @param theta quadrature points
+		 * @param weights quadrature points' weights
+		 * @param clusters a std vector integer template with number of items for each dimension.
+		 * @param initial_values matrix containing initial values
 		 */
-		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, double convergence_difference = DEFAULT_EM_DELTA_STOP,
-								std::vector<int> cluster = EMPTY_INTEGER_VECTOR,
-								std::string quadrature_technique = GAUSSIAN,
-								int quadrature_points = DEFAULT_QMCEM_POINTS,
-								std::vector<int> individuals_weights = EMPTY_INTEGER_VECTOR,
-								std::string custom_initial_values_filename = NONE );
+		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, 
+						double convergence_difference = DEFAULT_EM_DELTA_STOP,
+						matrix<double> theta = EMPTY_REAL_MATRIX,
+					    std::vector<double> weights = EMPTY_REAL_VECTOR,
+					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR,
+					    std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
+					    matrix<double> initial_values = EMPTY_REAL_MATRIX );
 
 		/**
 		 * Destructor for estimation class.
@@ -118,15 +106,13 @@ class estimation {
 		 * it is called if custom_initial_values_filename is none by default.
 		 * @see custom_initial_values_filename
 		 */
-		void initial_values();
+		void compute_1D_initial_values();
 
 		/**
 		 * Loads the initial values for every parameter of the items to start the estimation
-		 * from file. It is call if custom_initial_values_filename has a value different to none.
-		 * @param filename string with path for initial values.
-		 * @see custom_initial_values_filename
+		 * @param mt matrix containing initial values
 		 */
-		void load_initial_values(std::string);
+		void load_multi_initial_values(matrix<double> &mt);
 
 		/**
 		 * Sobol quadrature, receives the number of points to use.
@@ -160,42 +146,6 @@ class estimation {
 		void MAP(bool);
 
 		/**
-		 * Prints the item parameters values of the estimated parameters.
-		 */
-		void print_item_parameters();
-
-		/**
-		 * Prints the item parameters to a specific file, including time elapsed in ms.
-		 * @param filename the filename of the where parameters will be saved
-		 * @param elapsed a double with time elapsed in EM estimation.
-		 */
-		void print_item_parameters(std::string, double elapsed = -1.0);
-
-		/**
-		 * Prints the results to a specific output stream, including time elapsed in ms.
-		 * @param fout the ofstream object from std library.
-		 * @param elapsed a double with time elpased in EM estimation.
-		 */
-		void print_item_parameters(std::ofstream &, double elapsed = -1.0);
-
-		/**
-		 * Prints the latent traits.
-		 */
-		void print_latent_traits();
-
-		/**
-		 * Prints the latent traits to a specific file
-		 * @param filename the filename of the where latent traits will be saved
-		 */
-		void print_latent_traits(std::string);
-
-		/**
-		 * Prints the latent traits to a specific output stream
-		 * @param fout the ofstream object from std library.
-		 */
-		void print_latent_traits(std::ofstream &);
-
-		/**
 		 * @return log_likehood of the estimation
 		 * */
 		double log_likelihood();
@@ -203,7 +153,7 @@ class estimation {
 		/**
 		 * @return number of iterations
 		 * */
-		short get_iterations();
+		unsigned int get_iterations();
 };
 
 }

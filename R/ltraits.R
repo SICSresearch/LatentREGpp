@@ -30,33 +30,29 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 		}
 	}
 
-	q = quadPoints(dim = dim, quadrature_technique = quadrature_technique, 
+	q = quad_points(dim = dim, quadrature_technique = quadrature_technique, 
 				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights
 
 	# Type of data
-	dichotomous_data = TRUE
-	# TODO Find here the data type
-	# dichotomous_data = data_type(data)
-
-	if ( dichotomous_data ) {
-		if ( method == "MAP" && !is.null(init_traits) ) {
-			init_traits = data.matrix(init_traits)
-			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
-									Rzetas = zetas, Rtheta = theta, Rweights = weights,
-									method = method, by_individuals = by_individuals,
-									dichotomous_data = dichotomous_data,
-									init_traits = init_traits)
-		} else {
-			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
-									Rzetas = zetas, Rtheta = theta, Rweights = weights,
-									method = method, by_individuals = by_individuals,
-									dichotomous_data = dichotomous_data)
-		}
-	} else {
-		# TODO poly case
+	dichotomous_data = is_data_dicho(data)
+	if ( dichotomous_data == -1 ) {
+		print("Inconsistent data")
+		return -1
 	}
 
-	
+	if ( method == "MAP" && !is.null(init_traits) ) {
+		init_traits = data.matrix(init_traits)
+		traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+								Rzetas = zetas, Rtheta = theta, Rweights = weights,
+								method = method, by_individuals = by_individuals,
+								dichotomous_data = dichotomous_data,
+								init_traits = init_traits)
+	} else {
+		traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+								Rzetas = zetas, Rtheta = theta, Rweights = weights,
+								method = method, by_individuals = by_individuals,
+								dichotomous_data = dichotomous_data)
+	}	
 }
