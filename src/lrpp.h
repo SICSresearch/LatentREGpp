@@ -3,7 +3,7 @@
 #include "dichotomous/estimation/estimation.h"
 #include "util/constants.h"
 #include "util/matrix.h"
-#include "util/general.h"
+#include "util/helper.h"
 
 using namespace Rcpp;
 
@@ -19,9 +19,10 @@ using namespace Rcpp;
 // @param theta Quadrature Points
 // @param weights Quadrature Points Weights
 // [[Rcpp::export]]
-List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights,
+                   bool dichotomous_data,
                    IntegerVector Rclusters = IntegerVector::create(),
                    NumericMatrix Rinitial_values = NumericMatrix(0, 0, 0) );
 

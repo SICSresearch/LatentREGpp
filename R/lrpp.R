@@ -85,9 +85,10 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	if ( dim == 1 ) {
 		# Item parameters estimation
 		if ( dichotomous_data )
-			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 						Rtheta = theta, Rweights = weights, 
-						Rindividual_weights = individual_weights)
+						Rindividual_weights = individual_weights,
+						dichotomous_data = dichotomous_data)
 		#else TODO
 		#	poly
 	} else {
@@ -148,9 +149,10 @@ lrpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	  
 		# Item parameters estimation
 		if ( dichotomous_data )
-			dichotomous(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			lrppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 						Rtheta = theta, Rweights = weights, 
 						Rindividual_weights = individual_weights,
+						dichotomous_data = dichotomous_data,
 						Rclusters = clusters,
 						Rinitial_values = list_initial_values$coefs )
 		#else TODO

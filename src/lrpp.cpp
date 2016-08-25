@@ -2,9 +2,11 @@
 
 using namespace Rcpp;
 
-List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List lrppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
-                   IntegerVector Rindividual_weights, IntegerVector Rclusters,
+                   IntegerVector Rindividual_weights, 
+                   bool dichotomous_data,
+                   IntegerVector Rclusters,
                    NumericMatrix Rinitial_values ) {
   // Converting data types
   lrpp::matrix<char> Y;
@@ -21,29 +23,40 @@ List dichotomous ( IntegerMatrix Rdata, unsigned int dim, int model, double EMep
   lrpp::convert_vector(Rclusters, clusters);
   lrpp::convert_matrix(Rinitial_values, initial_values);
 
-  //Estimation object  
-  lrpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
-                                   theta, weights, individual_weights,
-                                   clusters, initial_values);
+  if ( dichotomous_data ) {
+    //Estimation object  
+    lrpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
+                                     theta, weights, individual_weights,
+                                     clusters, initial_values);
+    //EM
+    e.EMAlgorithm();
+    
+    NumericMatrix zetas(e.data.p, e.data.d + 2);
+    int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
+    int parameters = e.data.m.parameters;
 
-  //EM
-  e.EMAlgorithm();
-  
+    for ( int i = 0; i < e.data.p; ++i ) {
+      int j = 0;
+      if ( parameters == lrpp::ONEPL )
+        for ( ; j < e.data.d; ++j ) zetas(i, j) = lrpp::ALPHA_WITH_NO_ESTIMATION;
+      else
+        for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      
+      zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      if ( parameters == lrpp::THREEPL ) {
+        double &c = zetas(i, j + 1);
+        c = e.data.zeta[current_zeta][i](j + 1);
+        c = 1.0 / (1.0 + exp(-c));
+      }
+      else 
+        zetas(i, j + 1) = 0;  
+    }
 
-  NumericMatrix zetas(e.data.p, e.data.d + 2);
-  int current_zeta = e.get_iterations() % lrpp::ACCELERATION_PERIOD;
-
-  for ( int i = 0; i < e.data.p; ++i ) {
-    int j = 0;
-    if ( e.data.m.parameters > 1 )
-      for ( ; j < e.data.d; ++j ) zetas(i,j) = e.data.zeta[current_zeta][i](j);
-    zetas(i,j) = e.data.zeta[current_zeta][i](j);
-    if ( e.data.m.parameters == 3 ) zetas(i,j+1) = e.data.zeta[current_zeta][i](j+1);
-    else zetas(i,j+1) = 0;
+    return List::create(Rcpp::Named("zetas") = zetas,
+                        Rcpp::Named("Loglikelihood") = e.log_likelihood());
   }
 
-  return List::create(Rcpp::Named("zetas") = zetas,
-                      Rcpp::Named("Loglikelihood") = e.log_likelihood());;
+  //TODO poly
 }
 
 List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
@@ -67,24 +80,30 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   lrpp::convert_matrix(Rinit_traits, init_traits);
   
   if ( dichotomous_data ) {
+    //Estimation object 
     lrpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
                                      theta, weights );
     e.load_multi_initial_values(zetas);
 
+    //Latent traits
     if ( method == "EAP" ) e.EAP(by_individuals);
-    else                   e.MAP(by_individuals);
+    else { 
+      if ( init_traits.rows() != 0 ) { 
+        //TODO load initial traits
+      }
+      e.MAP(by_individuals);
+    }
 
     NumericMatrix traits;
     lrpp::convert_matrix(e.data.latent_traits, traits);
     
     if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
-    else {
-      NumericMatrix patterns;
-      lrpp::convert_matrix(e.data.Y, patterns);  
-      return List::create(Rcpp::Named("latent_traits") = traits, 
-                          Rcpp::Named("patterns") = patterns);
-    }
-  } else {
-    //TODO poly
+
+    NumericMatrix patterns;
+    lrpp::convert_matrix(e.data.Y, patterns);  
+    return List::create(Rcpp::Named("latent_traits") = traits, 
+                        Rcpp::Named("patterns") = patterns);
   }
+
+  //TODO poly
 }

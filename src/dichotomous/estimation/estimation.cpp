@@ -161,11 +161,15 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
-		for ( int j = 0; j < total_parameters; ++j )
-			zeta[i](j) = mt(i, j);
-		if ( m.parameters == THREEPL ) {
-			double &c = zeta[i](total_parameters - 1);
-			c = std::log(c / (1.0 - c));
+		if ( m.parameters == ONEPL ) {
+			zeta[i](0) = mt(i, d);
+		} else {
+			for ( int j = 0; j < total_parameters; ++j )
+				zeta[i](j) = mt(i, j);
+			if ( m.parameters == THREEPL ) {
+				double &c = zeta[i](total_parameters - 1);
+				c = std::log(c / (1.0 - c));
+			}
 		}
 	}
 

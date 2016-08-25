@@ -52,6 +52,8 @@ namespace lrpp {
 
 	const double DEFAULT_EM_DELTA_STOP = 1e-4;
 	const double OPTIMIZER_DELTA_STOP = 1e-6;
+
+	const double ALPHA_WITH_NO_ESTIMATION = 1.0;
 }
 
 
