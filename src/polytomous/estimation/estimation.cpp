@@ -106,6 +106,9 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
+	//Configurations for the estimation
+	m = model(themodel, d, &categories_item);
+
 	//TODO Change this temporary test
 	if ( d < 1000 ) compute_1D_initial_values();
 	else {
@@ -123,11 +126,9 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 
 		if ( initial_values.rows() > 0 )
 			load_multi_initial_values(initial_values);
-	}
+	}	
 
-	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
-	m = model(themodel, d, &categories_item);
 	this->convergence_difference = convergence_difference;
 	this->iterations = 0;
 }
@@ -528,6 +529,19 @@ void estimation::latent_traits_by_individuals () {
 	}
 }
 
+void estimation::print_item_parameters ( ) {
+	std::vector<optimizer_vector> &zeta = data.zeta[iterations % ACCELERATION_PERIOD];
+	int &p = data.p;
+
+	Rcpp::Rcout << "Finished after " << iterations << " iterations.\n";
+	for ( int i = 0; i < p; ++i ) {
+		Rcpp::Rcout << "Item " << i + 1 << '\n';
+		for ( int j = 0; j < zeta[i].size(); ++j )
+			Rcpp::Rcout << zeta[i](j) << ' ';
+		Rcpp::Rcout << '\n';
+	}
+}
+
 unsigned int estimation::get_iterations ( ) {
 	return iterations;
 }
@@ -535,5 +549,7 @@ unsigned int estimation::get_iterations ( ) {
 estimation::~estimation() {}
 
 }
+
+
 
 } /* namespace latentregpp */

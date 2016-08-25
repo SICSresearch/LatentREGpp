@@ -154,6 +154,8 @@ class estimation {
 		 * @return number of iterations
 		 * */
 		unsigned int get_iterations();
+
+		void print_item_parameters();
 };
 
 }
