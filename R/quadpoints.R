@@ -1,5 +1,5 @@
-
 #'@name quadpoints
+#'@title Quadrature points
 #'@export
 quadpoints = function(dim, quadrature_technique = "Gaussian", quadrature_points = NULL) {
 	if ( quadrature_technique == "QMCEM" ) {

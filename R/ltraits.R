@@ -1,4 +1,5 @@
 #'@name ltraits
+#'@title Latent traits estimation
 #'@export
 ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
 					quadrature_technique = NULL, quadrature_points = NULL, 

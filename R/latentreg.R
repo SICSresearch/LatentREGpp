@@ -1,13 +1,13 @@
 #######################################################################
-#' @name latentregpp
+#' @name LatentREGpp
 #' @docType package
-#' @title latentregpp : Item Response Theory Implemented in R and Cpp
+#' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
 #' @description latentregpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 #' cappable of performing parameter and traits estimations. It also provides a list of options to 
 #' perform optiman analysis and provides usefull information about the obtained model.
 #' @details
 #' \tabular{ll}{
-#'Package: \tab latentregpp\cr
+#'Package: \tab LatentREGpp\cr
 #'Type: \tab Package\cr
 #'Version: \tab 0.0.5\cr
 #'Date: \tab 2016-08-22\cr
@@ -15,7 +15,7 @@
 #'}
 #'@author SICS Research Team
 #'@keywords IRT MIRT Psychometry 
-#'@useDynLib LatentRegpp
+#'@useDynLib LatentREGpp
 #'@importFrom Rcpp sourceCpp
 #'@importFrom randtoolbox sobol
 #'@importFrom fastGHQuad gaussHermiteData
@@ -27,10 +27,10 @@
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@section Getting Started:
-#'Get started with the latentregpp package browsing the index of this documentation
+#'Get started with the LatentREGpp package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
 #'@section Getting Started:
-#'The latentregpp package allows you to use the latentregpp methodology for simulating, analyzing and scoring tests \cr
+#'The LatentREGpp package allows you to use the LatentREGpp methodology for simulating, analyzing and scoring tests \cr
 #'You can browse the package vignettes to get started.
 #'
 NULL

@@ -2,6 +2,7 @@
 % Please edit documentation in R/ltraits.R
 \name{ltraits}
 \alias{ltraits}
+\title{Latent traits estimation}
 \usage{
 ltraits(data, dim, model = "2PL", zetas = NULL,
   quadrature_technique = NULL, quadrature_points = NULL,

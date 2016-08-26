@@ -140,5 +140,27 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                         Rcpp::Named("patterns") = patterns);
   }
 
-  //TODO poly
+  //Estimation object 
+  latentregpp::polytomous::estimation e( Y, dim, model, 1e-4, 
+                                   theta, weights );
+  e.load_multi_initial_values(zetas);
+
+  //Latent traits
+  if ( method == "EAP" ) e.EAP(by_individuals);
+  else { 
+    if ( init_traits.rows() != 0 ) { 
+      //TODO load initial traits
+    }
+    e.MAP(by_individuals);
+  }
+
+  NumericMatrix traits;
+  latentregpp::convert_matrix(e.data.latent_traits, traits);
+  
+  if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
+
+  NumericMatrix patterns;
+  latentregpp::convert_matrix(e.data.Y, patterns);  
+  return List::create(Rcpp::Named("latent_traits") = traits, 
+                      Rcpp::Named("patterns") = patterns);
 }

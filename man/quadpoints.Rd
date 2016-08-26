@@ -2,6 +2,7 @@
 % Please edit documentation in R/quadpoints.R
 \name{quadpoints}
 \alias{quadpoints}
+\title{Quadrature points}
 \usage{
 quadpoints(dim, quadrature_technique = "Gaussian", quadrature_points = NULL)
 }
