@@ -4,6 +4,6 @@
 \alias{quadpoints}
 \title{Quadrature points}
 \usage{
-quadpoints(dim, quadrature_technique = "Gaussian", quadrature_points = NULL)
+quadpoints(dim, quad_tech = "Gaussian", quad_points = NULL)
 }
 

@@ -5,9 +5,9 @@
 \title{Parameter estimation of a test}
 \usage{
 latentreg(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
-  quadrature_technique = NULL, quadrature_points = NULL,
+  quad_tech = NULL, quad_points = NULL,
   individual_weights = as.integer(c()), initial_values = NULL,
-  verbose = TRUE)
+  verbose = TRUE, save_time = TRUE)
 }
 \arguments{
 \item{data}{The matrix containing the answers of tested individuals}
@@ -20,7 +20,7 @@ latentreg(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
 
 \item{clusters}{Clusters per dimention}
 
-\item{quadrature_points}{Amount of quadrature points}
+\item{quad_points}{Amount of quadrature points}
 
 \item{individual_weights}{Weights of the quadrature points}
 

@@ -227,7 +227,7 @@ void estimation::compute_1D_initial_values() {
 }
 
 void estimation::EMAlgorithm() {
-	Rprintf("EMAlgorithm started\n");
+	Rprintf("EM Algorithm started\n");
 	double dif = 0.0;
 	iterations = 0;
 	int current;

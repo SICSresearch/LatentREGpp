@@ -26,6 +26,7 @@
 #'@importFrom IRTpp individual.traits
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
+#'@importFrom MASS polr
 #'@section Getting Started:
 #'Get started with the LatentREGpp package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
@@ -83,10 +84,8 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 
 	# Type of data
 	dichotomous_data = is_data_dicho(data)
-	if ( dichotomous_data == -1 ) {
-		print("Inconsistent data")
-		return (-1)
-	}
+	if ( dichotomous_data == -1 )
+		stop("Inconsistent data")
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
@@ -160,21 +159,28 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 								Rinitial_values = initial_values ))
 		} else {
 			# TODO find clusters
-			# TODO find initial values
+			if ( is.null(clusters) )
+				stop("You must specify clusters")
+
+			#Initial values
+			if ( is.null(initial_values) ) {
+				#Find initial values again
+				initial_values = inivals_MultiPoly(data_poly = data, size.cluster = clusters, verbose=F)
+			} else 
+				initial_values = data.matrix(initial_values)
 
 			# Item parameters estimation
-			#latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-			#			Rtheta = theta, Rweights = weights, 
-			#			Rindividual_weights = individual_weights,
-			#			dichotomous_data = dichotomous_data,
-			#			Rclusters = clusters,
-			#			Rinitial_values = list_initial_values$coefs )
+			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+									Rtheta = theta, Rweights = weights, 
+									Rindividual_weights = individual_weights,
+									dichotomous_data = dichotomous_data,
+									Rclusters = clusters,
+									Rinitial_values = initial_values )
 		}
 	}
 
 	if ( save_time ) second_time = Sys.time()
 	obj_return$time = second_time - first_time	
-
 
 	return (obj_return)
 }
