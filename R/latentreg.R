@@ -44,15 +44,28 @@ NULL
 #'@param EMepsilon Convergence value to determine the accuracy of the test
 #'@param clusters Clusters per dimention
 #'@param quadratura_technique Quasi-Monte Carlo or Gaussian
-#'@param quadrature_points Amount of quadrature points
+#'@param quad_points Amount of quadrature points
 #'@param individual_weights Weights of the quadrature points
 #'@param initial_values Initial Values of the estimation
 #'@export
 latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
-				  quadrature_technique = NULL, quadrature_points = NULL, 
+				  quad_tech = NULL, quad_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
 				  verbose = TRUE, save_time = TRUE ) {
+	# Quadrature technique
+	if ( is.null(quad_tech) ) {
+		if ( dim < 5 ) quad_tech = "Gaussian"
+		else quad_tech = "QMCEM"
+	} else {
+		if ( dim >= 5 && quad_tech == "Gaussian" ) {
+			message("For dim >= 5 QMCEM quadrature technique is recommended")
+			input = readline(prompt = "Are you sure you want continue with Gaussian quadrature? [y/n]: ")
+			if ( input == "n" || input == "N" )
+				quad_tech = "QMCEM"
+		}
+	}
+
 	if ( save_time ) first_time = Sys.time()
 
 	# Asserting matrix type of data
@@ -63,19 +76,8 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	else if ( model == "2PL" ) m = 2
 	else if ( model == "3PL" ) m = 3
 
-	# Quadrature technique
-	if ( is.null(quadrature_technique) ) {
-		if ( dim < 5 ) quadrature_technique = "Gaussian"
-		else quadrature_technique = "QMCEM"
-	} else {
-		if ( dim >= 5 && quadrature_technique == "Gaussian" ) {
-			print("Better use QMCEM")
-			# Try to change the qudrature technique
-		}
-	}
-
-	q = quadpoints(dim = dim, quadrature_technique = quadrature_technique, 
-				   quadrature_points = quadrature_points)
+	q = quadpoints(dim = dim, quad_tech = quad_tech, 
+				   quad_points = quad_points)
 	theta = q$theta
 	weights = q$weights
 

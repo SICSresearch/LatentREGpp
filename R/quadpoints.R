@@ -1,21 +1,21 @@
 #'@name quadpoints
 #'@title Quadrature points
 #'@export
-quadpoints = function(dim, quadrature_technique = "Gaussian", quadrature_points = NULL) {
-	if ( quadrature_technique == "QMCEM" ) {
+quadpoints = function(dim, quad_tech = "Gaussian", quad_points = NULL) {
+	if ( quad_tech == "QMCEM" ) {
 
-		if ( is.null(quadrature_points) ) quadrature_points = 2000
+		if ( is.null(quad_points) ) quad_points = 2000
 
-		theta = data.matrix(sobol(n = quadrature_points, dim = dim, normal = TRUE))
-		weights = rep(1, quadrature_points)
-	} else if ( quadrature_technique == "Gaussian" ) {
+		theta = data.matrix(sobol(n = quad_points, dim = dim, normal = TRUE))
+		weights = rep(1, quad_points)
+	} else if ( quad_tech == "Gaussian" ) {
 
-		if ( dim == 1 ) quadrature_points = 40
-		else if ( dim == 2 ) quadrature_points = 20
-		else if ( dim == 3 ) quadrature_points = 10
-		else quadrature_points = 5
+		if ( dim == 1 ) quad_points = 40
+		else if ( dim == 2 ) quad_points = 20
+		else if ( dim == 3 ) quad_points = 10
+		else quad_points = 5
 
-		g = gaussHermiteData(quadrature_points)
+		g = gaussHermiteData(quad_points)
 
 		nodes = g$x
 		weights = g$w
