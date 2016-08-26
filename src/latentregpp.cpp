@@ -58,7 +58,8 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
     }
 
     return List::create(Rcpp::Named("zetas") = zetas,
-                        Rcpp::Named("Loglikelihood") = e.log_likelihood());
+                        Rcpp::Named("Loglik") = e.log_likelihood(),
+                        Rcpp::Named("iterations") = e.get_iterations());
   }
 
   //polytomous data
@@ -91,7 +92,8 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
   }
 
   return List::create(Rcpp::Named("zetas") = zetas,
-                      Rcpp::Named("Loglikelihood") = e.log_likelihood());
+                      Rcpp::Named("Loglik") = e.log_likelihood(),
+                      Rcpp::Named("iterations") = e.get_iterations());
 }
 
 List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
@@ -106,13 +108,11 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   latentregpp::matrix<double> zetas;
   latentregpp::matrix<double> theta;
   std::vector<double> weights;
-  latentregpp::matrix<double> init_traits;
 
   latentregpp::convert_matrix(Rdata, Y);
   latentregpp::convert_matrix(Rzetas, zetas);
   latentregpp::convert_matrix(Rtheta, theta);
   latentregpp::convert_vector(Rweights, weights);
-  latentregpp::convert_matrix(Rinit_traits, init_traits);
   
   if ( dichotomous_data ) {
     //Estimation object 
@@ -123,9 +123,7 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
     //Latent traits
     if ( method == "EAP" ) e.EAP(by_individuals);
     else { 
-      if ( init_traits.rows() != 0 ) { 
-        //TODO load initial traits
-      }
+      latentregpp::convert_matrix(Rinit_traits, e.data.latent_traits);
       e.MAP(by_individuals);
     }
 
@@ -148,9 +146,7 @@ List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   //Latent traits
   if ( method == "EAP" ) e.EAP(by_individuals);
   else { 
-    if ( init_traits.rows() != 0 ) { 
-      //TODO load initial traits
-    }
+    latentregpp::convert_matrix(Rinit_traits, e.data.latent_traits);
     e.MAP(by_individuals);
   }
 

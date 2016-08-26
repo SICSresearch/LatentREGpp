@@ -61,6 +61,18 @@ void convert_matrix ( std::vector<latentregpp::optimizer_vector> &mat1, Rcpp::Nu
 }
 
 /**
+ * Converts from Rcpp::NumericMatrix to std::vector<latentregpp::optimizer_vector>
+ * @param mat1 source object
+ * @param mat2 destination object
+ */
+void convert_matrix ( Rcpp::NumericMatrix &mat1, std::vector<latentregpp::optimizer_vector> &mat2 ) {
+  mat2 = std::vector<optimizer_vector>(mat1.nrow(), latentregpp::optimizer_vector(mat1.ncol()));
+  for ( int i = 0; i < mat1.nrow(); ++i ) 
+    for ( int j = 0; j < mat1.ncol(); ++j )
+      mat2[i](j) = mat1(i, j);
+}
+
+/**
  * Converts from Rcpp::NumericVector to std::vector<T> 
  * @param rvector source object
  * @param cvector destination object

@@ -49,11 +49,27 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = method, by_individuals = by_individuals,
 								dichotomous_data = dichotomous_data,
-								init_traits = init_traits)
+								Rinit_traits = init_traits)
+
 	} else {
-		traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+		if ( method == "MAP" ) {
+			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+								Rzetas = zetas, Rtheta = theta, Rweights = weights,
+								method = "EAP", by_individuals = FALSE,
+								dichotomous_data = dichotomous_data)
+			traits$latent_traits = standarize(traits$latent_traits)
+			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+								Rzetas = zetas, Rtheta = theta, Rweights = weights,
+								method = method, by_individuals = by_individuals,
+								dichotomous_data = dichotomous_data,
+								Rinit_traits = traits$latent_traits)
+		} else {
+			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = method, by_individuals = by_individuals,
 								dichotomous_data = dichotomous_data)
+			traits$latent_traits = standarize(traits$latent_traits)
+			return (traits)
+		}
 	}	
 }

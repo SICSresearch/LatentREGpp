@@ -336,7 +336,6 @@ void estimation::EAP ( bool all_factors ) {
 
 
 void estimation::MAP ( bool all_factors ) {
-	EAP(false);
 	std::vector<optimizer_vector> &latent_traits = data.latent_traits;
 	int &s = data.s;
 

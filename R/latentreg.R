@@ -52,7 +52,9 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				  quadrature_technique = NULL, quadrature_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
-				  verbose = TRUE ) {
+				  verbose = TRUE, save_time = TRUE ) {
+	if ( save_time ) first_time = Sys.time()
+
 	# Asserting matrix type of data
 	data = data.matrix(data)
 
@@ -81,15 +83,15 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	dichotomous_data = is_data_dicho(data)
 	if ( dichotomous_data == -1 ) {
 		print("Inconsistent data")
-		return -1
+		return (-1)
 	}
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-					Rtheta = theta, Rweights = weights, 
-					Rindividual_weights = individual_weights,
-					dichotomous_data = dichotomous_data)
+		obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+							Rtheta = theta, Rweights = weights, 
+							Rindividual_weights = individual_weights,
+							dichotomous_data = dichotomous_data))
 	} else {
 		if ( dichotomous_data ) {
 
@@ -142,17 +144,18 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 			#Initial values
 			if ( is.null(initial_values) ) {
 				#Find initial values again
-				list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
-			}
+				initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
+				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)$coefs
+			} else 
+				initial_values = data.matrix(initial_values)
 		  
 			# Item parameters estimation
-			latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights, 
-						Rindividual_weights = individual_weights,
-						dichotomous_data = dichotomous_data,
-						Rclusters = clusters,
-						Rinitial_values = list_initial_values$coefs )
+			obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+								Rtheta = theta, Rweights = weights, 
+								Rindividual_weights = individual_weights,
+								dichotomous_data = dichotomous_data,
+								Rclusters = clusters,
+								Rinitial_values = initial_values ))
 		} else {
 			# TODO find clusters
 			# TODO find initial values
@@ -166,4 +169,10 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 			#			Rinitial_values = list_initial_values$coefs )
 		}
 	}
+
+	if ( save_time ) second_time = Sys.time()
+	obj_return$time = second_time - first_time	
+
+
+	return (obj_return)
 }
