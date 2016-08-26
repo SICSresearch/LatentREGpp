@@ -15,14 +15,14 @@
 #'}
 #'@author SICS Research Team
 #'@keywords IRT MIRT Psychometry 
-#'@useDynLib latentregpp
+#'@useDynLib LatentRegpp
 #'@importFrom Rcpp sourceCpp
 #'@importFrom randtoolbox sobol
 #'@importFrom fastGHQuad gaussHermiteData
 #'@importFrom RSpectra eigs
 #'@importFrom sirt noharm.sirt
-#'@importFrom latentregpp latentregpp
 #'@importFrom IRTpp irtpp
+#'@importFrom IRTpp parameter.matrix
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@section Getting Started:

@@ -6,7 +6,7 @@
 #
 #'@name inivals_MultiUni
 #'@title Initial Values for one or more dimention models
-#'@description
+#'@description Find initial values for any data and model
 #'@param data The end is near
 #'@param size.cluster waka said
 #'@param model and the fools cry

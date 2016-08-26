@@ -5,10 +5,37 @@
 \alias{latentregpp}
 \alias{latentregpp-package}
 \title{latentregpp : Item Response Theory Implemented in R and Cpp}
+\usage{
+latentregpp(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
+  quadrature_technique = NULL, quadrature_points = NULL,
+  individual_weights = as.integer(c()), initial_values = NULL,
+  verbose = TRUE)
+}
+\arguments{
+\item{data}{The matrix containing the answers of tested individuals}
+
+\item{dim}{The Dimensionality of the test}
+
+\item{model}{1PL, 2PL or 3PL}
+
+\item{EMepsilon}{Convergence value to determine the accuracy of the test}
+
+\item{clusters}{Clusters per dimention}
+
+\item{quadrature_points}{Amount of quadrature points}
+
+\item{individual_weights}{Weights of the quadrature points}
+
+\item{initial_values}{Initial Values of the estimation}
+
+\item{quadratura_technique}{Quasi-Monte Carlo or Gaussian}
+}
 \description{
 latentregpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 cappable of performing parameter and traits estimations. It also provides a list of options to 
 perform optiman analysis and provides usefull information about the obtained model.
+
+Estimates the test parameters according to the Multidimensional Item Response Theory
 }
 \details{
 \tabular{ll}{
