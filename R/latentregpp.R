@@ -23,6 +23,7 @@
 #'@importFrom sirt noharm.sirt
 #'@importFrom IRTpp irtpp
 #'@importFrom IRTpp parameter.matrix
+#'@importFrom IRTpp individual.traits
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@section Getting Started:
