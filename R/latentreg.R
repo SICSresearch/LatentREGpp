@@ -86,80 +86,84 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 					Rtheta = theta, Rweights = weights, 
 					Rindividual_weights = individual_weights,
 					dichotomous_data = dichotomous_data)
 	} else {
 		if ( dichotomous_data ) {
-			#Initial values
-			if ( is.null(initial_values) ) {
 
-				if ( is.null(clusters) ) {
-					#1. Find a temporal cluster
-					p = ncol(data)
-					d = dim
-					clusters = find_temporal_cluster(p=p,d=d)
+			if ( is.null(clusters) ) {
+				#1. Find a temporal cluster
+				p = ncol(data)
+				d = dim
+				clusters = find_temporal_cluster(p=p,d=d)
 
-					#2. Find initial values
-					III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-					                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
+				#2. Find initial values
+				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
+				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
 
-					#3. do something weird :v 
-					# Normalize Discrimination vectors per item
-					#A_matrix<- III$coefs[,1:d]
-					#Sigma<- cov(A_matrix)
-					#CholSigm<- chol(Sigma)
-					#A_asterisco<- A_matrix%*%solve(CholSigm)
-					#Betas<- normalize(t(A_asterisco))
-					#cov(t(Betas))
+				#3. do something weird :v 
+				# Normalize Discrimination vectors per item
+				#A_matrix<- III$coefs[,1:d]
+				#Sigma<- cov(A_matrix)
+				#CholSigm<- chol(Sigma)
+				#A_asterisco<- A_matrix%*%solve(CholSigm)
+				#Betas<- normalize(t(A_asterisco))
+				#cov(t(Betas))
 
-					#4. Clustering and find clustering
-					#CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
-					#unlist(lapply(CLUST,ncol))
-					#paste("N clust",length(CLUST))
-					#acpc<-PCA(CLUST[[1]])
+				#4. Clustering and find clustering
+				#CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
+				#unlist(lapply(CLUST,ncol))
+				#paste("N clust",length(CLUST))
+				#acpc<-PCA(CLUST[[1]])
 
 
-					#BONUS. Another Reclassify
-					acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
-					hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
-					CLUST_final<- list()
-					for (i in 1:length(table(hcpc$data.clust$clust))) {
-						CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
-					}
-
-					#5. Find Reclassify
-					#P_axes_filter<- Principal_axes(CLUST)
-					#CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=t(P_axes_filter))
-					#unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB));
-
-					#BONUS. Printing the clusters
-					#print("New Clusters are: ")
-					#print(CLUST_final)
-
-					clusters = unlist(lapply(CLUST_final, ncol))
+				#BONUS. Another Reclassify
+				acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
+				hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
+				CLUST_final<- list()
+				for (i in 1:length(table(hcpc$data.clust$clust))) {
+					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
 				}
 
+				#5. Find Reclassify
+				#P_axes_filter<- Principal_axes(CLUST)
+				#CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=t(P_axes_filter))
+				#unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB));
+
+				#BONUS. Printing the clusters
+				#print("New Clusters are: ")
+				#print(CLUST_final)
+
+				clusters = unlist(lapply(CLUST_final, ncol))
+			}
+
+			#Initial values
+			if ( is.null(initial_values) ) {
 				#Find initial values again
 				list_initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
 			}
 		  
 			# Item parameters estimation
-			latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 						Rtheta = theta, Rweights = weights, 
 						Rindividual_weights = individual_weights,
 						dichotomous_data = dichotomous_data,
 						Rclusters = clusters,
 						Rinitial_values = list_initial_values$coefs )
 		} else {
+			# TODO find clusters
+			# TODO find initial values
+
 			# Item parameters estimation
-			latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-						Rtheta = theta, Rweights = weights, 
-						Rindividual_weights = individual_weights,
-						dichotomous_data = dichotomous_data,
-						Rclusters = clusters )
+			#latentregppcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			#			Rtheta = theta, Rweights = weights, 
+			#			Rindividual_weights = individual_weights,
+			#			dichotomous_data = dichotomous_data,
+			#			Rclusters = clusters,
+			#			Rinitial_values = list_initial_values$coefs )
 		}
 	}
 }

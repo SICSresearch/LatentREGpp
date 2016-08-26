@@ -2,7 +2,7 @@
 
 using namespace Rcpp;
 
-List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights, 
                    bool dichotomous_data,

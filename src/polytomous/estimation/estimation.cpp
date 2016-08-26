@@ -109,8 +109,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	m = model(themodel, d, &categories_item);
 
 	//TODO Change this temporary test
-	//if ( d < 1000 ) compute_1D_initial_values();
-	if ( d > 1 ) {
+	if ( d == 1 ) compute_1D_initial_values();
+	else {
 		//Pinned items in multidimensional case (the first of each dimension)
 		std::set<int> &pinned_items = data.pinned_items;
 
@@ -123,8 +123,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			}
 		}
 
-		//if ( initial_values.rows() > 0 )
-		//	load_multi_initial_values(initial_values);
+		if ( initial_values.rows() > 0 )
+			load_multi_initial_values(initial_values);
 	}	
 
 	//Configurations for the estimation
@@ -363,7 +363,6 @@ void estimation::compute_1D_initial_values() {
 	data.loglikelihood = NOT_COMPUTED;
 }
 void estimation::EMAlgorithm() {
-	compute_1D_initial_values();
 	Rprintf("EMAlgorithm started\n");
 	double dif = 0.0;
 	iterations = 0;
