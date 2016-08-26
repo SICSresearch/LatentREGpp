@@ -35,7 +35,7 @@
 #'
 NULL
 
-#'@name latentregpp
+#'@name latentreg
 #'@title Parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
@@ -48,7 +48,7 @@ NULL
 #'@param individual_weights Weights of the quadrature points
 #'@param initial_values Initial Values of the estimation
 #'@export
-latentregpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
+latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quadrature_technique = NULL, quadrature_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
@@ -72,7 +72,7 @@ latentregpp = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NU
 		}
 	}
 
-	q = quad_points(dim = dim, quadrature_technique = quadrature_technique, 
+	q = quadpoints(dim = dim, quadrature_technique = quadrature_technique, 
 				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights

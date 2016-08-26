@@ -1,6 +1,6 @@
-Package: LatentRegpp
+Package: LatentREGpp
 Type: Package
-Title: LatentRegpp
+Title: LatentREGpp
 Version: 0.1.0
 Author: SICS Research Group
 Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>

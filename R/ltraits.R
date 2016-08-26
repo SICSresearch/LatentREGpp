@@ -1,5 +1,5 @@
-
-
+#'@name ltraits
+#'@export
 ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
 					quadrature_technique = NULL, quadrature_points = NULL, 
 					init_traits = NULL, method = "MAP", by_individuals = TRUE ) {
@@ -8,7 +8,7 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 
 	if ( is.null(zetas) ) {
 		print("Item parameters were not loaded\n")
-		zetas = latentregpp(data = data, dim = dim, model = model, quadrature_technique = quadrature_technique, 
+		zetas = latentreg(data = data, dim = dim, model = model, quadrature_technique = quadrature_technique, 
 			quadrature_points = quadrature_points)$zetas
 	} else {
 		zetas = data.matrix(zetas)
@@ -30,7 +30,7 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 		}
 	}
 
-	q = quad_points(dim = dim, quadrature_technique = quadrature_technique, 
+	q = quadpoints(dim = dim, quadrature_technique = quadrature_technique, 
 				   quadrature_points = quadrature_points)
 	theta = q$theta
 	weights = q$weights

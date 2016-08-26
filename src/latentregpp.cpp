@@ -72,7 +72,7 @@ List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double E
   
   int max_category = *std::max_element(e.data.categories_item.begin(), e.data.categories_item.end());
   NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);
-  std::fill( zetas.begin(), zetas.end(), NumericVector::get_na() );
+  std::fill(zetas.begin(), zetas.end(), NumericVector::get_na());
   int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
   int parameters = e.data.m.parameters;
 
@@ -86,7 +86,7 @@ List latentregppcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double E
 
     //d's
     int categories_item_i = e.data.categories_item[i];
-    for ( int h = 0; h < categories_item_i; ++h, ++j )
+    for ( int h = 1; h < categories_item_i; ++h, ++j )
       zetas(i, j) = e.data.zeta[current_zeta][i](j);
   }
 

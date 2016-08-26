@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 latentregppcpp <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters = as.integer( c()), Rinitial_values = matrix(0, 0, 0)) {
-    .Call('LatentRegpp_latentregppcpp', PACKAGE = 'LatentRegpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values)
+    .Call('LatentREGpp_latentregppcpp', PACKAGE = 'LatentREGpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values)
 }
 
 ltraitscpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits = matrix(0, 0, 0)) {
-    .Call('LatentRegpp_ltraitscpp', PACKAGE = 'LatentRegpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits)
+    .Call('LatentREGpp_ltraitscpp', PACKAGE = 'LatentREGpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits)
 }
 
