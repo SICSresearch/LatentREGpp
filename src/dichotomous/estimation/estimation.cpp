@@ -344,7 +344,7 @@ void estimation::MAP ( bool all_factors ) {
 		dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
 							   dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
 							   posterior(l, current_zeta, &data), latent_traits[l], -1);
-	}
+	}	
 
 	if ( all_factors ) latent_traits_by_individuals();
 }
@@ -364,7 +364,9 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	double value = 0.0;
 	for ( int h = 0; h < d; ++h )
 		value += theta_l(h) * theta_l(h);
-	value = std::exp(-0.5 * value) / std::pow( std::sqrt(2.0 * PI_), d );
+
+	value = std::exp(-0.5 * value);
+	value *= p;
 
 	for ( int i = 0; i < p; ++i )
 		value += Y(l, i) ? std::log(m.P(theta_l, zeta[i])) : std::log(1 - m.P(theta_l, zeta[i]));
