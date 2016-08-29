@@ -192,5 +192,10 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
   obj_return$iterations = estimcpp$iterations
   obj_return$convergence = obj_return$iterations<500
   obj_return$epsilon = EMepsilon
+  
+  #Give Name to Matrix Columns
+  colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
+  rownames(obj_return$zetas)=paste("Item",c(1:nrow(obj_return$zetas)))
+  
 	return (obj_return)
 }
