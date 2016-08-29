@@ -5,18 +5,18 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 					quad_tech = NULL, quad_points = NULL, 
 					init_traits = NULL, method = "MAP", by_individuals = TRUE ) {
 	# Quadrature technique
-	if ( is.null(quadrature_technique) ) {
+	if ( is.null(quad_tech) ) {
 		if ( dim < 5 ) quad_tech = "Gaussian"
 		else quad_tech = "QMCEM"
 	} else {
-		if ( dim >= 5 && quadrature_technique == "Gaussian" ) {
+		if ( dim >= 5 && quad_tech == "Gaussian" ) {
 			message("For dim >= 5 QMCEM quadrature technique is recommended")
 			input = readline(prompt = "Are you sure you want continue with Gaussian quadrature? [y/n]: ")
 			if ( input == "n" || input == "N" )
 				quad_tech = "QMCEM"
-			else quad_tech = quadrature_technique
+			else quad_tech = quad_tech
 		}
-	  else quad_tech = quadrature_technique
+	  else quad_tech = quad_tech
 	}
 
 	# Asserting matrix type
