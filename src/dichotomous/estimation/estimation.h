@@ -121,7 +121,7 @@ class estimation {
 		/**
 		 * Runs the EMAlgorithm to find out the parameters.
 		 */
-		void EMAlgorithm();
+		void EMAlgorithm(bool);
 
 		/*
 		 * EAP

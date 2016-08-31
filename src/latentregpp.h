@@ -24,7 +24,8 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
                    IntegerVector Rindividual_weights,
                    bool dichotomous_data,
                    IntegerVector Rclusters = IntegerVector::create(),
-                   NumericMatrix Rinitial_values = NumericMatrix(0, 0, 0) );
+                   NumericMatrix Rinitial_values = NumericMatrix(0, 0, 0),
+                   bool verbose = true );
 
 //[[Rcpp::plugins(cpp11)]]
 //[[Rcpp::plugins(openmp)]]

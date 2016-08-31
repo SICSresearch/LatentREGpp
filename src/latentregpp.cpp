@@ -7,7 +7,8 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
                    IntegerVector Rindividual_weights, 
                    bool dichotomous_data,
                    IntegerVector Rclusters,
-                   NumericMatrix Rinitial_values ) {
+                   NumericMatrix Rinitial_values,
+                   bool verbose ) {
   // Converting data types
   latentregpp::matrix<char> Y;
   latentregpp::matrix<double> theta;
@@ -29,7 +30,7 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
                                      theta, weights, individual_weights,
                                      clusters, initial_values);
     //EM
-    e.EMAlgorithm();
+    e.EMAlgorithm(verbose);
     
     NumericMatrix zetas(e.data.p, e.data.d + 2);
     int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
@@ -69,7 +70,7 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
                                    theta, weights, individual_weights,
                                    clusters, initial_values);
   //EM
-  e.EMAlgorithm();
+  e.EMAlgorithm(verbose);
   
   int max_category = *std::max_element(e.data.categories_item.begin(), e.data.categories_item.end());
   NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);

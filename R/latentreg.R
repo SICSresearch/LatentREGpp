@@ -89,10 +89,11 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 							Rtheta = theta, Rweights = weights, 
 							Rindividual_weights = individual_weights,
-							dichotomous_data = dichotomous_data))
+							dichotomous_data = dichotomous_data, 
+							verbose = verbose )
 	} else {
 		if ( dichotomous_data ) {
 
@@ -151,12 +152,13 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				initial_values = data.matrix(initial_values)
 		  
 			# Item parameters estimation
-			obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 								Rtheta = theta, Rweights = weights, 
 								Rindividual_weights = individual_weights,
 								dichotomous_data = dichotomous_data,
 								Rclusters = clusters,
-								Rinitial_values = initial_values ))
+								Rinitial_values = initial_values, 
+								verbose = verbose)
 		} else {
 			# TODO find clusters
 			if ( is.null(clusters) )
@@ -175,7 +177,8 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
 									Rclusters = clusters,
-									Rinitial_values = initial_values )
+									Rinitial_values = initial_values, 
+									verbose = verbose )
 		}
 	}
 
@@ -185,7 +188,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	}
 
 	obj_return$dimension = dim
-	obj_return$model = m
+	obj_return$model = model
 	obj_return$clusters = clusters
 	obj_return$removedItems = "Not Implemented Yet"
 	obj_return$convergence = obj_return$iterations < 500

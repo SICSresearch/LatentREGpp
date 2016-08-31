@@ -226,8 +226,8 @@ void estimation::compute_1D_initial_values() {
 	data.loglikelihood = NOT_COMPUTED;
 }
 
-void estimation::EMAlgorithm() {
-	Rprintf("EM Algorithm started\n");
+void estimation::EMAlgorithm ( bool verbose ) {
+	if ( verbose ) Rprintf("EM Algorithm started\n");
 	double dif = 0.0;
 	iterations = 0;
 	int current;
@@ -239,9 +239,9 @@ void estimation::EMAlgorithm() {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-		Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
+		if ( verbose ) Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
-	Rprintf("\n");
+	if ( verbose ) Rprintf("\n");
 }
 
 double estimation::log_likelihood() {
