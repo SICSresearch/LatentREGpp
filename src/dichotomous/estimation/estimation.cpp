@@ -241,6 +241,7 @@ void estimation::EMAlgorithm() {
 		++iterations;
 		Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
+	Rprintf("\n");
 }
 
 double estimation::log_likelihood() {

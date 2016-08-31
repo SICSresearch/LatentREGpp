@@ -89,7 +89,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		estimcpp = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 							Rtheta = theta, Rweights = weights, 
 							Rindividual_weights = individual_weights,
 							dichotomous_data = dichotomous_data))
@@ -151,7 +151,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				initial_values = data.matrix(initial_values)
 		  
 			# Item parameters estimation
-			estimcpp = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			obj_return = (latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 								Rtheta = theta, Rweights = weights, 
 								Rindividual_weights = individual_weights,
 								dichotomous_data = dichotomous_data,
@@ -170,7 +170,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				initial_values = data.matrix(initial_values)
 
 			# Item parameters estimation
-			estimcpp = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 									Rtheta = theta, Rweights = weights, 
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
@@ -179,23 +179,20 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 		}
 	}
 
-	if ( save_time ) second_time = Sys.time()
-	estimcpp$time = second_time - first_time	
-	obj_return = list()
-	obj_return$zetas = estimcpp$zetas
+	if ( save_time ) {
+		second_time = Sys.time()
+		obj_return$time = second_time - first_time	
+	}
+
 	obj_return$dimension = dim
 	obj_return$model = m
-	obj_return$time = estimcpp$time
-  obj_return$loglikelihood = estimcpp$Loglik
-  obj_return$clusters = clusters
-  obj_return$removedItems = "Not Yet Implemented"
-  obj_return$iterations = estimcpp$iterations
-  obj_return$convergence = obj_return$iterations<500
-  obj_return$epsilon = EMepsilon
+	obj_return$clusters = clusters
+	obj_return$removedItems = "Not Implemented Yet"
+	obj_return$convergence = obj_return$iterations < 500
+	obj_return$epsilon = EMepsilon
   
-  #Give Name to Matrix Columns
-  colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
-  rownames(obj_return$zetas)=paste("Item",c(1:nrow(obj_return$zetas)))
+	colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
+	rownames(obj_return$zetas) = paste("Item",c(1:nrow(obj_return$zetas)))
   
 	return (obj_return)
 }
