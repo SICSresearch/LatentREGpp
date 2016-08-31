@@ -1,7 +1,7 @@
 #
 #
-#	CALCULATE INIVALS MULTI UNI
-#	
+# CALCULATE INIVALS MULTI UNI
+# 
 #
 #
 #'@name inivals_MultiUni
@@ -44,7 +44,7 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
     for(i in 1:length(size.cluster)){
       C<- cor(cluster[[i]])
       E<- RSpectra::eigs(C, 1)   
-      Var_coords<- E$vectors*sqrt(E$values)		
+      Var_coords<- E$vectors*sqrt(E$values)   
       axe.1<- which(Var_coords==max(Var_coords))
       aux_names<-  colnames(cluster[[i]])
       cluster[[i]]<- cbind(cluster[[i]][,axe.1], cluster[[i]][,-axe.1])
@@ -63,17 +63,18 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   
   for(i in 1:length(size.cluster)){ # == for(i in 1:nc){
     
-    fit_latentregpp[[i]]<- irtpp(cluster[[i]], model=model)
-    z <- parameter.matrix(fit_latentregpp[[i]]$z)
+    fit_latentregpp[[i]]<- latentreg(data=cluster[[i]], dim=1, model=model, save_time=TRUE, verbose = FALSE)
+    z <- fit_latentregpp[[i]]$zetas
     coef[[i]]<- z
     
-    #    traits[[i]]<- individual.traits(fit_ltm[[i]], resp.patterns = cluster[[i]])
-    traits[[i]]<- individual.traits(model=model, itempars=z, dataset=as.matrix(cluster[[i]]), method="EAP", probability_matrix = fit_latentregpp[[i]]$prob_mat)
+    traits[[i]]<- ltraits(data= cluster[[i]], dim=1, model="2PL", zetas =fit_latentregpp[[i]]$zetas,  init_traits = NULL, method = "EAP")
     
-    pattern.matrix<- traits[[i]][,1:ncol(cluster[[i]])]
-    pattern.traits<- traits[[i]][,ncol(traits[[i]])]
     
-    data.traits[[i]]<-traits_patt2data(pattern = pattern.matrix, pattern.traits= pattern.traits, data=cluster[[i]])	
+    pattern.matrix<- traits[[i]]$latent_traits[,1]
+    pattern.traits<- traits[[i]]$latent_traits[,1]
+    data.traits[[i]]<- traits[[i]]$latent_traits[,1]
+    
+    
     if(verbose) {print(paste("Done", i, "of",length(size.cluster), "dimensions via MultiUni", sep=" " ))}
   }
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,15 +90,15 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   }
   
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  #	CUT EXTREME VALUES	   
+  # CUT EXTREME VALUES     
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
   for(i in 1:length(size.cluster))
   {
     coef[[i]][,3]<- ifelse(coef[[i]][,3] > 0.3, 0.3, coef[[i]][,3])
-    coef[[i]][,2]<- ifelse(coef[[i]][,2] > 4, 4, coef[[i]][,2])
-    coef[[i]][,2]<- ifelse(coef[[i]][,2] < -4, -4, coef[[i]][,2])
-    coef[[i]][,1]<- ifelse(coef[[i]][,1] > 4, 4, coef[[i]][,1])
+    coef[[i]][,2]<- ifelse(coef[[i]][,2] > 3, 3, coef[[i]][,2])
+    coef[[i]][,2]<- ifelse(coef[[i]][,2] < -3, -3, coef[[i]][,2])
+    coef[[i]][,1]<- ifelse(coef[[i]][,1] > 3, 3, coef[[i]][,1])
   }
   
   
@@ -155,8 +156,8 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 
 #
 #
-#	CALCULATE INIVALS MULTI UNI + NOHARM
-#	(complete Process)
+# CALCULATE INIVALS MULTI UNI + NOHARM
+# (complete Process)
 #
 #
 
@@ -170,12 +171,21 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #'@param verbose waka waka
 #'@param probit This is a waka test, waka
 #'@export
-inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE, verbose=FALSE, probit=FALSE)
+inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE,  correlated= FALSE,verbose=FALSE, probit=FALSE)
 {
   suppressWarnings({
-    fit_uni = inivals_MultiUni(data=data, size.cluster=size.cluster, find.restrictions=find.restrictions, verbose=verbose)
+    fit_uni = inivals_MultiUni(data=data, size.cluster=size.cluster, find.restrictions=find.restrictions,verbose=verbose)
   })
   fit = inivals_NOHARM(dat = data, init_uni = fit_uni$coefs, dim_clust = size.cluster, corr = fit_uni$corr, verbose = verbose, probit = probit)
+  
+  if(correlated==FALSE) 
+  {
+    A = fit$coefs[,1:length(size.cluster)]
+    C = cov(A); E= eigen(C); V=E$vectors; D= diag(E$values); S= V%*%sqrt(D)%*%t(V)
+    A_ast<- t(solve(S)%*%t(A))
+    colnames(A_ast) = colnames(A)
+    fit$coefs[,1:length(size.cluster)]<- A_ast
+  }
   fit
 }
 
@@ -197,8 +207,8 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
 
 #
 #
-#	CALCULATE INIVALS NOHARM
-#	
+# CALCULATE INIVALS NOHARM
+# 
 #
 #
 
@@ -296,8 +306,8 @@ inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probi
 
 ####################################################################
 #
-#	FUNCTION TO FIND LATENT TRAITS FOR ALL INDIVIDUALS
-#	HAVING LATENT TRAIT FOR PATTERNS
+# FUNCTION TO FIND LATENT TRAITS FOR ALL INDIVIDUALS
+# HAVING LATENT TRAIT FOR PATTERNS
 #
 ####################################################################
 #'@name traits_patt2data
