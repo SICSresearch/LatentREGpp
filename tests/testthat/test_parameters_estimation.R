@@ -21,4 +21,4 @@ test.latentreg.multidicho = function () {
 }
 
 test_that(desc = "Unidimensional dichotomous test", code = test.latentreg.unidicho())
-test_that(desc = "Multidimensional dichotomous test", code = test.latentreg.multidicho())
+#test_that(desc = "Multidimensional dichotomous test", code = test.latentreg.multidicho())

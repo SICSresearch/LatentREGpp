@@ -3,7 +3,8 @@
 #'@export
 ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
 					quad_tech = NULL, quad_points = NULL, 
-					init_traits = NULL, method = "MAP", by_individuals = TRUE ) {
+					init_traits = NULL, method = "MAP", by_individuals = TRUE,
+					verbose = FALSE ) {
 	# Quadrature technique
 	if ( is.null(quad_tech) ) {
 		if ( dim < 5 ) quad_tech = "Gaussian"
@@ -35,9 +36,14 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	# Type of data
 	dichotomous_data = is_data_dicho(data)
 	if ( dichotomous_data == -1 ) {
-		print("Inconsistent data")
+		stop("Inconsistent data")
 		return -1
 	}
+
+	if ( is.null(zetas) ) 
+		zetas = latentreg(data = data, dim = dim, model = model,
+						quad_tech = quad_tech, quad_points = quad_points,
+						verbose = verbose)$zetas
 
 	if ( method == "MAP" && !is.null(init_traits) ) {
 		init_traits = data.matrix(init_traits)
