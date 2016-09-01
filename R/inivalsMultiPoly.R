@@ -74,7 +74,7 @@ for(i in 1:ncol(data_poly))
 MODEL[[i]] <- polr(as.factor(data_poly[,i]) ~ traits,
 	method="logistic",Hess=TRUE, model=T)
 
-d<- MODEL[[i]]$zeta
+d<- -MODEL[[i]]$zeta
 a<- MODEL[[i]]$coef
 M<- matrix(c(a,d), nrow=1)
 colnames(M)<- c(paste("a",seq(1,length(a)), sep="") ,paste("d",seq(1,length(d)), sep="") )

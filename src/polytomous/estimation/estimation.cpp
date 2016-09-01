@@ -109,7 +109,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	m = model(themodel, d, &categories_item);
 
 	//TODO Change this temporary test
-	if ( d < 1000 ) compute_1D_initial_values();
+	if ( d == 1 ) compute_1D_initial_values();
 	else {
 		//Pinned items in multidimensional case (the first of each dimension)
 		std::set<int> &pinned_items = data.pinned_items;
@@ -199,8 +199,6 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	zeta = std::vector<optimizer_vector>(p);
 
-	Rcpp::Rcout << mt << std::endl;
-
 	for ( int i = 0; i < p; ++i ) {
 		int total_parameters = m.parameters == ONEPL ? categories_item[i] - 1 : categories_item[i] - 1 + d;
 		zeta[i] = optimizer_vector(total_parameters);
@@ -228,8 +226,8 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	for ( auto pinned : pinned_items ) {
 		optimizer_vector &item = zeta[pinned];
 		for ( int h = 0; h < d; ++h )
-			item(h) = 0;
-		item(j) = DEFAULT_INITIAL_VALUE;
+			if ( h != j )
+				item(h) = 0;
 		++j;
 	}
 
