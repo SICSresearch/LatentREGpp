@@ -73,6 +73,7 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
     pattern.matrix<- traits[[i]]$latent_traits[,1]
     pattern.traits<- traits[[i]]$latent_traits[,1]
     data.traits[[i]]<- traits[[i]]$latent_traits[,1]
+
     
     
     if(verbose) {print(paste("Done", i, "of",length(size.cluster), "dimensions via MultiUni", sep=" " ))}

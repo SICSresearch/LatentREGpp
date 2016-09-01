@@ -193,9 +193,14 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	obj_return$removedItems = "Not Implemented Yet"
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
-  
-	#colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
-	#rownames(obj_return$zetas) = paste("Item",c(1:nrow(obj_return$zetas)))
+  	
+  	if ( dichotomous_data )
+		colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
+	else {
+		max_ncat = ncol(obj_return$zetas) - obj_return$dimension
+		colnames(obj_return$zetas)<- c(paste("a",c(1:obj_return$dimension), sep=""),
+			paste("d",c(1:max_ncat), sep=""))
+	}
   
 	return (obj_return)
 }
