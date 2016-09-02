@@ -54,11 +54,15 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
 				  verbose = TRUE, save_time = TRUE ) {
+	
 	# Quadrature technique
 	if ( is.null(quad_tech) ) {
 		if ( dim < 5 ) quad_tech = "Gaussian"
 		else quad_tech = "QMCEM"
 	} else {
+		if ( quad_tech != "Gaussian" && quad_tech != "QMCEM" )
+			stop("Quadrature technique not found")
+
 		if ( dim >= 5 && quad_tech == "Gaussian" ) {
 			message("For dim >= 5 QMCEM quadrature technique is recommended")
 			input = readline(prompt = "Are you sure you want continue with Gaussian quadrature? [y/n]: ")
@@ -72,6 +76,11 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	# Asserting matrix type of data
 	data = data.matrix(data)
 
+	# Type of data
+	dichotomous_data = is_data_dicho(data)
+	if ( dichotomous_data == -1 )
+		stop("Inconsistent data")
+
 	# Model id
 	if ( model == "1PL" ) m = 1
 	else if ( model == "2PL" ) m = 2
@@ -81,11 +90,6 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				   quad_points = quad_points)
 	theta = q$theta
 	weights = q$weights
-
-	# Type of data
-	dichotomous_data = is_data_dicho(data)
-	if ( dichotomous_data == -1 )
-		stop("Inconsistent data")
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
@@ -107,23 +111,6 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
 
-				#3. do something weird :v 
-				# Normalize Discrimination vectors per item
-				#A_matrix<- III$coefs[,1:d]
-				#Sigma<- cov(A_matrix)
-				#CholSigm<- chol(Sigma)
-				#A_asterisco<- A_matrix%*%solve(CholSigm)
-				#Betas<- normalize(t(A_asterisco))
-				#cov(t(Betas))
-
-				#4. Clustering and find clustering
-				#CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
-				#unlist(lapply(CLUST,ncol))
-				#paste("N clust",length(CLUST))
-				#acpc<-PCA(CLUST[[1]])
-
-
-				#BONUS. Another Reclassify
 				acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
 				hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
 				CLUST_final<- list()
@@ -131,25 +118,21 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
 				}
 
-				#5. Find Reclassify
-				#P_axes_filter<- Principal_axes(CLUST)
-				#CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=t(P_axes_filter))
-				#unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB));
-
-				#BONUS. Printing the clusters
-				#print("New Clusters are: ")
-				#print(CLUST_final)
-
 				clusters = unlist(lapply(CLUST_final, ncol))
-			}
+			} else
+				if ( length(clusters) != dim )
+					stop("Clusters length must be equal to the number of dimensions")
 
 			#Initial values
 			if ( is.null(initial_values) ) {
 				#Find initial values again
 				initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)$coefs
-			} else 
+			} else {
 				initial_values = data.matrix(initial_values)
+				if ( nrow(initial_values) != ncol(data) )
+					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
+			}
 		  
 			# Item parameters estimation
 			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
@@ -160,7 +143,6 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 								Rinitial_values = initial_values, 
 								verbose = verbose)
 		} else {
-			# TODO find clusters
 			if ( is.null(clusters) )
 				stop("You must specify clusters")
 
@@ -168,8 +150,11 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 			if ( is.null(initial_values) ) {
 				#Find initial values again
 				initial_values = inivals_MultiPoly(data_poly = data, size.cluster = clusters, verbose=F)
-			} else 
+			} else {
 				initial_values = data.matrix(initial_values)
+				if ( nrow(initial_values) != ncol(data) )
+					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
+			}
 
 			# Item parameters estimation
 			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
@@ -190,7 +175,6 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 	obj_return$dimension = dim
 	obj_return$model = model
 	obj_return$clusters = clusters
-	obj_return$removedItems = "Not Implemented Yet"
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
   	

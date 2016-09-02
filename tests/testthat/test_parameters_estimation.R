@@ -1,3 +1,4 @@
+context("Item parameters estimation")
 
 test.latentreg.unidicho = function () {
   print("1D 1000x50 dicho")

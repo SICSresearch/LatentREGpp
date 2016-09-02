@@ -10,6 +10,9 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 		if ( dim < 5 ) quad_tech = "Gaussian"
 		else quad_tech = "QMCEM"
 	} else {
+		if ( quad_tech != "Gaussian" && quad_tech != "QMCEM" )
+			stop("Quadrature technique not found")
+
 		if ( dim >= 5 && quad_tech == "Gaussian" ) {
 			message("For dim >= 5 QMCEM quadrature technique is recommended")
 			input = readline(prompt = "Are you sure you want continue with Gaussian quadrature? [y/n]: ")
@@ -23,6 +26,11 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	# Asserting matrix type
 	data = data.matrix(data)
 
+	# Type of data
+	dichotomous_data = is_data_dicho(data)
+	if ( dichotomous_data == -1 )
+		stop("Inconsistent data")
+
 	# Model id
 	if ( model == "1PL" ) m = 1
 	else if ( model == "2PL" ) m = 2
@@ -32,13 +40,6 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 				   quad_points = quad_points)
 	theta = q$theta
 	weights = q$weights
-
-	# Type of data
-	dichotomous_data = is_data_dicho(data)
-	if ( dichotomous_data == -1 ) {
-		stop("Inconsistent data")
-		return -1
-	}
 
 	if ( is.null(zetas) ) 
 		zetas = latentreg(data = data, dim = dim, model = model,
