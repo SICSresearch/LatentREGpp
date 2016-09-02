@@ -12,23 +12,44 @@ latentreg(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
 \arguments{
 \item{data}{The matrix containing the answers of tested individuals}
 
-\item{dim}{The Dimensionality of the test}
+\item{dim}{The dimensionality of the test}
 
-\item{model}{1PL, 2PL or 3PL}
+\item{model}{"1PL", "2PL" or "3PL"}
 
 \item{EMepsilon}{Convergence value to determine the accuracy of the test}
 
-\item{clusters}{Clusters per dimention}
+\item{clusters}{A vector with cluster per dimension}
 
-\item{quad_points}{Amount of quadrature points}
+\item{quad_tech}{A string with technique. "Gaussian" for Gaussian quadrature 
+or "QMCEM" for Quasi-Monte Carlo quadrature}
 
-\item{individual_weights}{Weights of the quadrature points}
+\item{quad_points}{Amount of quadrature points. If quadratura_technique is "Gaussian". It can be NULL}
 
-\item{initial_values}{Initial Values of the estimation}
+\item{individual_weights}{A vector with Weights of the quadrature points.}
 
-\item{quadratura_technique}{Quasi-Monte Carlo or Gaussian}
+\item{initial_values}{A matrix with initial values for estimation process. Be sure about
+dimension, model and consistency with data.}
+
+\item{verbose}{True for get information about estimation process in runtime. False in otherwise.}
+
+\item{save_time}{True for save estimation time. False otherwise.}
 }
 \description{
 Estimates the test parameters according to the Multidimensional Item Response Theory
+}
+\examples{
+Example 1
+
+data_dir = "data path"
+data = read.table(file = data_dir, sep = ";")
+est <- latentreg(data = data, dim = 1)
+
+Example 2
+
+Dichotomous and multidimensional data
+
+clust <- c(20,20,15)
+st <- latentreg(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
+clusters = clus, quad_tech = "Gaussian")
 }
 

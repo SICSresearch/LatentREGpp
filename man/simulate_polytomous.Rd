@@ -2,9 +2,20 @@
 % Please edit documentation in R/simulate_polytomous.R
 \name{simulate_polytomous}
 \alias{simulate_polytomous}
-\title{data simulation}
+\title{Polytomous data simulation}
 \usage{
 simulate_polytomous(dim.data = 1, sample.size = 1000,
   size.cluster = c(20), ncatgs = rep(4, 20), seed_data)
+}
+\arguments{
+\item{dim.data}{Data dimension}
+
+\item{sample.size}{Size of the population that will be simulated}
+
+\item{size.cluster}{Vector containing the number of items by dimension}
+
+\item{ncatgs}{Vector containing the number of categories for each item}
+
+\item{seed_data}{Seed for simulation}
 }
 

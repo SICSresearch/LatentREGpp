@@ -7,20 +7,4 @@
 inivals_NOHARM(dat, init_uni, dim_clust, corr, verbose = FALSE,
   probit = FALSE)
 }
-\arguments{
-\item{dat}{waka}
-
-\item{init_uni}{waka waka}
-
-\item{dim_clust}{waka wakiri waka waka}
-
-\item{corr}{wukuru waka wa}
-
-\item{verbose}{kawa waka burm bum}
-
-\item{probit}{waka false waka}
-}
-\description{
-Auxiliar function, maybe
-}
 

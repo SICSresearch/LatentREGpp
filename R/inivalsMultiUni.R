@@ -7,12 +7,6 @@
 #'@name inivals_MultiUni
 #'@title Initial Values for one or more dimention models
 #'@description Find initial values for any data and model
-#'@param data The end is near
-#'@param size.cluster waka said
-#'@param model and the fools cry
-#'@param find.restrictions because why not
-#'@param verbose waka waka
-#'@export
 inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FALSE, verbose=FALSE){
   #Input:
   # data: (matrix) dichotomous data set
@@ -163,14 +157,14 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #
 
 #'@name inivals_MultiUni_NOHARM
-#'@title Initial Values with Noharm for one or more dimention models
-#'@description Initial Values with Noharm for one or more dimention models
-#'@param data The end is near
-#'@param size.cluster waka said
-#'@param model and the fools cry
-#'@param find.restrictions because why not
-#'@param verbose waka waka
-#'@param probit This is a waka test, waka
+#'@title Initial Values with Noharm for one or more dimension models
+#'@description Initial Values with Noharm for one or more dimension models
+#'@param data data matrix to get initial values.
+#'@param size.cluster A vector with dimensionality test.
+#'@param model "1PL", "2PL" or "3PL"
+#'@param find.restrictions False by default.
+#'@param verbose True for get information about process in runtime. False in otherwise.
+#'@param probit False by default.
 #'@export
 inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE,  correlated= FALSE,verbose=FALSE, probit=FALSE)
 {
@@ -218,14 +212,6 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
 
 #'@name inivals_NOHARM
 #'@title Noharm's initial values
-#'@description Auxiliar function, maybe
-#'@param dat waka
-#'@param init_uni waka waka
-#'@param dim_clust waka wakiri waka waka
-#'@param corr wukuru waka wa
-#'@param verbose kawa waka burm bum
-#'@param probit waka false waka
-#'@export
 inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probit = FALSE){
   #Input:
   # dat: (matrix) it's dichotomic dataset
@@ -317,7 +303,6 @@ inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probi
 #'@param pattern Is the list with all response patterns
 #'@param pattern.traits Is the list with the trait for each pattern response
 #'@param the data used to make the estimation of traits and paramters
-#'@export
 traits_patt2data<- function(pattern, pattern.traits, data)
 {
   PATTERNS <- pattern

@@ -40,14 +40,32 @@ NULL
 #'@title Parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
-#'@param dim The Dimensionality of the test
-#'@param model 1PL, 2PL or 3PL
+#'@param dim The dimensionality of the test
+#'@param model "1PL", "2PL" or "3PL"
 #'@param EMepsilon Convergence value to determine the accuracy of the test
-#'@param clusters Clusters per dimention
-#'@param quadratura_technique Quasi-Monte Carlo or Gaussian
-#'@param quad_points Amount of quadrature points
-#'@param individual_weights Weights of the quadrature points
-#'@param initial_values Initial Values of the estimation
+#'@param clusters A vector with cluster per dimension 
+#'@param quad_tech A string with technique. "Gaussian" for Gaussian quadrature 
+#'or "QMCEM" for Quasi-Monte Carlo quadrature
+#'@param quad_points Amount of quadrature points. If quadratura_technique is "Gaussian". It can be NULL
+#'@param individual_weights A vector with Weights of the quadrature points.
+#'@param initial_values A matrix with initial values for estimation process. Be sure about
+#'dimension, model and consistency with data. 
+#'@param verbose True for get information about estimation process in runtime. False in otherwise. 
+#'@param save_time True for save estimation time. False otherwise.
+#'@examples
+#'Example 1
+#'
+#' data_dir = "data path"
+#' data = read.table(file = data_dir, sep = ";")
+#' est <- latentreg(data = data, dim = 1)
+#'
+#'Example 2
+#'
+#' Dichotomous and multidimensional data
+#' 
+#' clust <- c(20,20,15)
+#' st <- latentreg(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
+#' clusters = clus, quad_tech = "Gaussian")
 #'@export
 latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 

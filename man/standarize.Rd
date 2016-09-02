@@ -6,4 +6,7 @@
 \usage{
 standarize(M)
 }
+\arguments{
+\item{M}{A matrix with data}
+}
 

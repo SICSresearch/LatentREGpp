@@ -7,17 +7,6 @@
 inivals_MultiUni(data, size.cluster, model = "2PL",
   find.restrictions = FALSE, verbose = FALSE)
 }
-\arguments{
-\item{data}{The end is near}
-
-\item{size.cluster}{waka said}
-
-\item{model}{and the fools cry}
-
-\item{find.restrictions}{because why not}
-
-\item{verbose}{waka waka}
-}
 \description{
 Find initial values for any data and model
 }

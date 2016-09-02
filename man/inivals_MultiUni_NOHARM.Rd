@@ -2,26 +2,26 @@
 % Please edit documentation in R/inivalsMultiUni.R
 \name{inivals_MultiUni_NOHARM}
 \alias{inivals_MultiUni_NOHARM}
-\title{Initial Values with Noharm for one or more dimention models}
+\title{Initial Values with Noharm for one or more dimension models}
 \usage{
 inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
   find.restrictions = FALSE, correlated = FALSE, verbose = FALSE,
   probit = FALSE)
 }
 \arguments{
-\item{data}{The end is near}
+\item{data}{data matrix to get initial values.}
 
-\item{size.cluster}{waka said}
+\item{size.cluster}{A vector with dimensionality test.}
 
-\item{model}{and the fools cry}
+\item{model}{"1PL", "2PL" or "3PL"}
 
-\item{find.restrictions}{because why not}
+\item{find.restrictions}{False by default.}
 
-\item{verbose}{waka waka}
+\item{verbose}{True for get information about process in runtime. False in otherwise.}
 
-\item{probit}{This is a waka test, waka}
+\item{probit}{False by default.}
 }
 \description{
-Initial Values with Noharm for one or more dimention models
+Initial Values with Noharm for one or more dimension models
 }
 

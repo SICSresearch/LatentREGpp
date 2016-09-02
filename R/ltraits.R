@@ -1,5 +1,17 @@
 #'@name ltraits
 #'@title Latent traits estimation
+#'@description Estimates the latent traits by response pattern according to the Multidimensional Item Response Theory
+#'@param data The matrix containing the answers of tested individuals
+#'@param dim The dimensionality of the test
+#'@param model "1PL", "2PL" or "3PL"
+#'@param zetas A matrix with item parameters by item. (can use principal function)
+#'@param quad_tech A string with technique. "Gaussian" for Gaussian quadrature 
+#'or "QMCEM" for Quasi-Monte Carlo quadrature
+#'@param quad_points Amount of quadrature points. If quadratura_technique is "Gaussian". It can be NULL
+#'@param init_traits Initial values for MAP latent trait. If EAP it can be NULL
+#'@param method "EAP" or "MAP". "MAP" by default.
+#'@param by_individuals if True, return latent trait by individual, otherwsie by response pattern. True by default.
+#'@param verbose True for get information about estimation process in runtime. False in otherwise.
 #'@export
 ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
 					quad_tech = NULL, quad_points = NULL, 

@@ -19,6 +19,15 @@
 #	function
 #
 ############################################################################
+
+#'@name inivals_MultiPoly
+#'@title Initial values for multidimensional polytomous data 
+#'@description Get initial values for polytomous data according dataset categories and
+#'size cluster for dimensionality. It has no 3PL model. Then, no initial values for c parameter.
+#'@param data_poly Polytomous data to get initial values.
+#'@param size.cluster A vector with dimensionality test.
+#'@param verbose True for get information about process in runtime. False in otherwise. False by default.
+#'@export
 inivals_MultiPoly<- function(data_poly, size.cluster, verbose=F)
 {
 

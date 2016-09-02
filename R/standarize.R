@@ -1,6 +1,6 @@
-
 #'@name standarize
 #'@title Standarize function
+#'@param M A matrix with data
 #'@export
 standarize = function( M ) {
 	d = ncol(M)

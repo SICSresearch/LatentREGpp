@@ -2,9 +2,18 @@
 % Please edit documentation in R/simulate_dichotomous.R
 \name{simulate_dichotomous}
 \alias{simulate_dichotomous}
-\title{data simulation}
+\title{Dichotomous data simulation}
 \usage{
 simulate_dichotomous(dim.data = 1, sample.size = 1000,
   size.cluster = c(20), seed_data)
+}
+\arguments{
+\item{dim.data}{Data dimension}
+
+\item{sample.size}{Size of the population that will be simulated}
+
+\item{size.cluster}{Vector containing the number of items by dimension}
+
+\item{seed_data}{Seed for simulation}
 }
 

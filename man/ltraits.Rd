@@ -8,4 +8,29 @@ ltraits(data, dim, model = "2PL", zetas = NULL, quad_tech = NULL,
   quad_points = NULL, init_traits = NULL, method = "MAP",
   by_individuals = TRUE, verbose = FALSE)
 }
+\arguments{
+\item{data}{The matrix containing the answers of tested individuals}
+
+\item{dim}{The dimensionality of the test}
+
+\item{model}{"1PL", "2PL" or "3PL"}
+
+\item{zetas}{A matrix with item parameters by item. (can use principal function)}
+
+\item{quad_tech}{A string with technique. "Gaussian" for Gaussian quadrature 
+or "QMCEM" for Quasi-Monte Carlo quadrature}
+
+\item{quad_points}{Amount of quadrature points. If quadratura_technique is "Gaussian". It can be NULL}
+
+\item{init_traits}{Initial values for MAP latent trait. If EAP it can be NULL}
+
+\item{method}{"EAP" or "MAP". "MAP" by default.}
+
+\item{by_individuals}{if True, return latent trait by individual, otherwsie by response pattern. True by default.}
+
+\item{verbose}{True for get information about estimation process in runtime. False in otherwise.}
+}
+\description{
+Estimates the latent traits by response pattern according to the Multidimensional Item Response Theory
+}
 
