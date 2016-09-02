@@ -2,7 +2,7 @@
 #' @name LatentREGpp
 #' @docType package
 #' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
-#' @description latentregpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
+#' @description LatentREGpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 #' cappable of performing parameter and traits estimations. It also provides a list of options to 
 #' perform optiman analysis and provides usefull information about the obtained model.
 #' @details
@@ -21,9 +21,6 @@
 #'@importFrom fastGHQuad gaussHermiteData
 #'@importFrom RSpectra eigs
 #'@importFrom sirt noharm.sirt
-#'@importFrom IRTpp irtpp
-#'@importFrom IRTpp parameter.matrix
-#'@importFrom IRTpp individual.traits
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@importFrom MASS polr
@@ -36,7 +33,7 @@
 #'
 NULL
 
-#'@name latentreg
+#'@name itemfit
 #'@title Parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
@@ -57,17 +54,17 @@ NULL
 #'
 #' data_dir = "data path"
 #' data = read.table(file = data_dir, sep = ";")
-#' est <- latentreg(data = data, dim = 1)
+#' est <- itemfit(data = data, dim = 1)
 #'
 #'Example 2
 #'
 #' Dichotomous and multidimensional data
 #' 
 #' clust <- c(20,20,15)
-#' st <- latentreg(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
+#' st <- itemfit(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
 #' clusters = clus, quad_tech = "Gaussian")
 #'@export
-latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
+itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
 				  individual_weights = as.integer(c()),
 				  initial_values = NULL,
@@ -111,7 +108,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 
 	if ( dim == 1 ) {
 		# Item parameters estimation
-		obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+		obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 							Rtheta = theta, Rweights = weights, 
 							Rindividual_weights = individual_weights,
 							dichotomous_data = dichotomous_data, 
@@ -153,7 +150,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 			}
 		  
 			# Item parameters estimation
-			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 								Rtheta = theta, Rweights = weights, 
 								Rindividual_weights = individual_weights,
 								dichotomous_data = dichotomous_data,
@@ -175,7 +172,7 @@ latentreg = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL
 			}
 
 			# Item parameters estimation
-			obj_return = latentregcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
 									Rtheta = theta, Rweights = weights, 
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,

@@ -1,4 +1,4 @@
-#'@name ltraits
+#'@name personfit
 #'@title Latent traits estimation
 #'@description Estimates the latent traits by response pattern according to the Multidimensional Item Response Theory
 #'@param data The matrix containing the answers of tested individuals
@@ -13,7 +13,7 @@
 #'@param by_individuals if True, return latent trait by individual, otherwsie by response pattern. True by default.
 #'@param verbose True for get information about estimation process in runtime. False in otherwise.
 #'@export
-ltraits = function ( data, dim, model = "2PL", zetas = NULL, 
+personfit = function ( data, dim, model = "2PL", zetas = NULL, 
 					quad_tech = NULL, quad_points = NULL, 
 					init_traits = NULL, method = "MAP", by_individuals = TRUE,
 					verbose = FALSE ) {
@@ -54,13 +54,13 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 	weights = q$weights
 
 	if ( is.null(zetas) ) 
-		zetas = latentreg(data = data, dim = dim, model = model,
+		zetas = itemfit(data = data, dim = dim, model = model,
 						quad_tech = quad_tech, quad_points = quad_points,
 						verbose = verbose)$zetas
 
 	if ( method == "MAP" && !is.null(init_traits) ) {
 		init_traits = data.matrix(init_traits)
-		traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+		traits = personfitcpp(Rdata = data, dim = dim, model = m, 
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = method, by_individuals = by_individuals,
 								dichotomous_data = dichotomous_data,
@@ -68,18 +68,18 @@ ltraits = function ( data, dim, model = "2PL", zetas = NULL,
 
 	} else {
 		if ( method == "MAP" ) {
-			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+			traits = personfitcpp(Rdata = data, dim = dim, model = m, 
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = "EAP", by_individuals = FALSE,
 								dichotomous_data = dichotomous_data)
 			traits$latent_traits = standarize(traits$latent_traits)
-			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+			traits = personfitcpp(Rdata = data, dim = dim, model = m, 
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = method, by_individuals = by_individuals,
 								dichotomous_data = dichotomous_data,
 								Rinit_traits = traits$latent_traits)
 		} else {
-			traits = ltraitscpp(Rdata = data, dim = dim, model = m, 
+			traits = personfitcpp(Rdata = data, dim = dim, model = m, 
 								Rzetas = zetas, Rtheta = theta, Rweights = weights,
 								method = method, by_individuals = by_individuals,
 								dichotomous_data = dichotomous_data)

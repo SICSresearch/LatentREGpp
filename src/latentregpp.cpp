@@ -2,7 +2,7 @@
 
 using namespace Rcpp;
 
-List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights, 
                    bool dichotomous_data,
@@ -97,7 +97,7 @@ List latentregcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMe
                       Rcpp::Named("iterations") = e.get_iterations());
 }
 
-List ltraitscpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
+List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
                            NumericMatrix Rzetas,   
                            NumericMatrix Rtheta, NumericVector Rweights, 
                            std::string method,
