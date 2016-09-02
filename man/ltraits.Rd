@@ -6,6 +6,6 @@
 \usage{
 ltraits(data, dim, model = "2PL", zetas = NULL, quad_tech = NULL,
   quad_points = NULL, init_traits = NULL, method = "MAP",
-  by_individuals = TRUE)
+  by_individuals = TRUE, verbose = FALSE)
 }
 

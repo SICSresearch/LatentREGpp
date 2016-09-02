@@ -5,7 +5,8 @@
 \title{Initial Values with Noharm for one or more dimention models}
 \usage{
 inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
-  find.restrictions = FALSE, verbose = FALSE, probit = FALSE)
+  find.restrictions = FALSE, correlated = FALSE, verbose = FALSE,
+  probit = FALSE)
 }
 \arguments{
 \item{data}{The end is near}
