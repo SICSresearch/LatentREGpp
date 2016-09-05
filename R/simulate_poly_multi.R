@@ -3,7 +3,7 @@ simulate.poly.multi=function(size.cluster=c(25,25,25,25),
                              dim.data=3,sample.size=1000,
                              ncatgs=rep(3,sum(size.cluster)), seed_data = 1273  ){
   
-  #tamaño del test(num. de items)
+  #tamano del test(num. de items)
   K=sum(size.cluster)
   
   #dimension teorica, numero de clusters

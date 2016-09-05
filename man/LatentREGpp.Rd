@@ -6,7 +6,7 @@
 \alias{LatentREGpp-package}
 \title{LatentREGpp : Item Response Theory Implemented in R and Cpp}
 \description{
-LatentREGpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
+This Package is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 cappable of performing parameter and traits estimations. It also provides a list of options to 
 perform optiman analysis and provides usefull information about the obtained model.
 }

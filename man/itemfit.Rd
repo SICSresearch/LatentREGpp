@@ -38,18 +38,24 @@ dimension, model and consistency with data.}
 Estimates the test parameters according to the Multidimensional Item Response Theory
 }
 \examples{
-Example 1
+#Example 1
 
-data_dir = "data path"
+dir = system.file(package="LatentREGpp")
+folder = "/dataset/1D/dicho/"
+file = "1000x50-1.csv"
+data_dir = paste(c(dir, folder, file), collapse = "")
 data = read.table(file = data_dir, sep = ";")
 est <- itemfit(data = data, dim = 1)
 
-Example 2
+#Example 2
 
-Dichotomous and multidimensional data
-
+#Dichotomous and multidimensional data
+dir = system.file(package="LatentREGpp")
+folder = "/dataset/3D/dicho/"
+file = "1000x55-1.csv"
+data_dir = paste(c(dir, folder, file), collapse = "")
+data = read.table(file = data_dir, sep = ";")
 clust <- c(20,20,15)
-st <- itemfit(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
-clusters = clus, quad_tech = "Gaussian")
+st <- itemfit(data = data, model = "2PL",dim = 3, EMepsilon = 1e-03, clusters = clust, quad_tech = "Gaussian")
 }
 

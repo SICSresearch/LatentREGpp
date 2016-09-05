@@ -12,7 +12,7 @@
     #include <boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_common.hpp>
 	
 	#if !defined(BOOST_NO_LONG_LONG)
-        #include <boost/numeric/conversion/detail/preprocessed/numeric_cast_traits_long_long.hpp>
+        #include <boost/numeric/conversion/detail/preprocessed/num_cast_traits_long_long.hpp>
 	#endif
 	
 #else
@@ -73,7 +73,7 @@ namespace boost { namespace numeric {
 	    #undef BOOST_NUMERIC_CONVERSION_SEQ_B
 
 	    #if defined(__WAVE__) && defined(BOOST_NUMERIC_CONVERSION_CREATE_PREPROCESSED_FILES)
-            #pragma wave option(preserve: 2, line: 0, output: "preprocessed/numeric_cast_traits_long_long.hpp")
+            #pragma wave option(preserve: 2, line: 0, output: "preprocessed/num_cast_traits_long_long.hpp")
         #endif
 
 //

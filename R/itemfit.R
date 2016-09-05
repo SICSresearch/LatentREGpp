@@ -2,7 +2,7 @@
 #' @name LatentREGpp
 #' @docType package
 #' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
-#' @description LatentREGpp is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
+#' @description This Package is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
 #' cappable of performing parameter and traits estimations. It also provides a list of options to 
 #' perform optiman analysis and provides usefull information about the obtained model.
 #' @details
@@ -24,6 +24,9 @@
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
 #'@importFrom MASS polr
+#'@importFrom ade4 dudi.pca
+#'@importFrom stats cor cov dist plogis quantile rexp rnorm runif
+#'@importFrom utils head
 #'@section Getting Started:
 #'Get started with the LatentREGpp package browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
@@ -50,19 +53,25 @@ NULL
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
 #'@examples
-#'Example 1
+#' #Example 1
 #'
-#' data_dir = "data path"
+#' dir = system.file(package="LatentREGpp")
+#' folder = "/dataset/1D/dicho/"
+#' file = "1000x50-1.csv"
+#' data_dir = paste(c(dir, folder, file), collapse = "")
 #' data = read.table(file = data_dir, sep = ";")
 #' est <- itemfit(data = data, dim = 1)
 #'
-#'Example 2
+#' #Example 2
 #'
-#' Dichotomous and multidimensional data
-#' 
+#' #Dichotomous and multidimensional data
+#' dir = system.file(package="LatentREGpp")
+#' folder = "/dataset/3D/dicho/"
+#' file = "1000x55-1.csv"
+#' data_dir = paste(c(dir, folder, file), collapse = "")
+#' data = read.table(file = data_dir, sep = ";")
 #' clust <- c(20,20,15)
-#' st <- itemfit(data = data, model = "3PL",dim = 3, EMepsilon = 1e-03, 
-#' clusters = clus, quad_tech = "Gaussian")
+#' st <- itemfit(data = data, model = "2PL",dim = 3, EMepsilon = 1e-03, clusters = clust, quad_tech = "Gaussian")
 #'@export
 itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
@@ -126,8 +135,8 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
 				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
 
-				acp = FactoMineR::PCA(X = III$coefs,graph = FALSE)
-				hcpc = FactoMineR::HCPC(acp,nb.clust = d,graph = FALSE)
+				acp = PCA(X = III$coefs,graph = FALSE)
+				hcpc = HCPC(acp,nb.clust = d,graph = FALSE)
 				CLUST_final<- list()
 				for (i in 1:length(table(hcpc$data.clust$clust))) {
 					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]

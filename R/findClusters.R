@@ -6,26 +6,13 @@
 #	3) Cluster via OUR ALGORITHM
 #
 ##################################################################
-#rm(list=ls())
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	Directory
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#setwd("E:/Juan David/")
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	Libraries
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-library(IRTpp)
-library(FactoMineR)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #	Necesary Functions (clustering function)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-find_cluster<- function(data = data7d, ang=22.5, h7=0.8, q_proy=0.75)
+find_cluster<- function(data, ang=22.5, h7=0.8, q_proy=0.75)
 {
   i=1
   aux_data_fix<- list()
@@ -36,7 +23,7 @@ find_cluster<- function(data = data7d, ang=22.5, h7=0.8, q_proy=0.75)
   
   while(continue==TRUE)
   {
-    acp<- ade4::dudi.pca(data_work, scannf=FALSE, nf=2)
+    acp<- dudi.pca(data_work, scannf=FALSE, nf=2)
     names(acp)
     index_aux<- -1*acp$co[,1]
     index_aux2<- acp$co[,2]
@@ -78,7 +65,7 @@ Principal_axes<- function(CLUSTERS, as_matrix=TRUE)
   {
     if(is.vector(CLUST[[i]])==FALSE){
       CLUST_aux[[j]] = CLUST[[i]]
-      acp_clust<- ade4::dudi.pca(CLUST_aux[[j]], scannf=FALSE, nf=2)
+      acp_clust<- dudi.pca(CLUST_aux[[j]], scannf=FALSE, nf=2)
       P_axes_filter[[j]]<- -acp_clust$li[,1]
       j=j+1
     }
