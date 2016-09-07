@@ -1,12 +1,4 @@
-#
-#
-# CALCULATE INIVALS MULTI UNI
-# 
-#
-#
-#'@name inivals_MultiUni
-#'@title Initial Values for one or more dimention models
-#'@description Find initial values for any data and model
+
 inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FALSE, verbose=FALSE){
   #Input:
   # data: (matrix) dichotomous data set
@@ -157,14 +149,18 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #
 
 #'@name inivals_MultiUni_NOHARM
-#'@title Initial Values with Noharm for one or more dimension models
-#'@description Initial Values with Noharm for one or more dimension models
+#'@title Initial Values with Noharm for one or higher dimension models
+#'@description Initial Values with Noharm for one or higher dimension models
 #'@param data data matrix to get initial values.
 #'@param size.cluster A vector with dimensionality test.
 #'@param model "1PL", "2PL" or "3PL"
 #'@param find.restrictions False by default.
+#'@param correlated If TRUE, no correlation process is made
 #'@param verbose True for get information about process in runtime. False in otherwise.
 #'@param probit False by default.
+#'@examples
+#'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
+#'iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))
 #'@export
 inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE,  correlated= FALSE,verbose=FALSE, probit=FALSE)
 {
@@ -185,20 +181,6 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
 }
 
 
-#III<- inivals_MultiUni_NOHARM(data=DATOS, size.cluster=size.cluster, model="2PL", verbose=TRUE)
-
-#fit_uni = inivals_MultiUni(data=DATOS, size.cluster=size.cluster, find.restrictions=FALSE, verbose=TRUE)
-#inivals_NOHARM(dat = data, init_uni = fit_uni$coefs, dim_clust = size.cluster, corr = fit_uni$corr, verbose = TRUE, probit = FALSE)
-
-
-
-
-
-
-
-
-
-
 
 #
 #
@@ -207,11 +189,6 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
 #
 #
 
-
-
-
-#'@name inivals_NOHARM
-#'@title Noharm's initial values
 inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probit = FALSE){
   #Input:
   # dat: (matrix) it's dichotomic dataset
@@ -281,11 +258,7 @@ inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probi
   if(verbose) print("Done")
   
   ret
-} #END FUNCTION .... inivals_NOHARM
-
-
-
-#inivals_MultiUni_NOHARM(data=datam, size.cluster=size.cluster, find.restrictions=FALSE, verbose=TRUE, probit=FALSE)
+}
 
 
 
@@ -297,12 +270,6 @@ inivals_NOHARM<- function(dat, init_uni, dim_clust, corr, verbose = FALSE, probi
 # HAVING LATENT TRAIT FOR PATTERNS
 #
 ####################################################################
-#'@name traits_patt2data
-#'@title Returns a list with the trait of every individual
-#'@description Returns a list with the trait of every individual
-#'@param pattern Is the list with all response patterns
-#'@param pattern.traits Is the list with the trait for each pattern response
-#'@param the data used to make the estimation of traits and paramters
 traits_patt2data<- function(pattern, pattern.traits, data)
 {
   PATTERNS <- pattern

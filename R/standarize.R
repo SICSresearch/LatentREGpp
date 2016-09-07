@@ -1,5 +1,6 @@
 #'@name standarize
 #'@title Standarize function
+#'@description This function takes as input any data matrix and standarizes it.
 #'@param M A matrix with data
 #'@export
 standarize = function( M ) {

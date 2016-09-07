@@ -1,5 +1,7 @@
 #'@name simulate_polytomous
 #'@title Polytomous data simulation
+#'@description This function generates dichotomous test of an specified dimension and size. The items per dimension are specified in the size.cluster vector, and the individuals are specified in sample.size.
+#'The amout of categories of each item is determined with ncatgs.
 #'@param dim.data Data dimension
 #'@param sample.size Size of the population that will be simulated
 #'@param size.cluster Vector containing the number of items by dimension

@@ -9,4 +9,7 @@ standarize(M)
 \arguments{
 \item{M}{A matrix with data}
 }
+\description{
+This function takes as input any data matrix and standarizes it.
+}
 

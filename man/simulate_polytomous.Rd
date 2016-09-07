@@ -18,4 +18,8 @@ simulate_polytomous(dim.data = 1, sample.size = 1000,
 
 \item{seed_data}{Seed for simulation}
 }
+\description{
+This function generates dichotomous test of an specified dimension and size. The items per dimension are specified in the size.cluster vector, and the individuals are specified in sample.size.
+The amout of categories of each item is determined with ncatgs.
+}
 

@@ -2,18 +2,25 @@
 #' @name LatentREGpp
 #' @docType package
 #' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
-#' @description This Package is a c++ implementation of the Multidimensional Item Respone Theory (MIRT)
-#' cappable of performing parameter and traits estimations. It also provides a list of options to 
-#' perform optiman analysis and provides usefull information about the obtained model.
+#' @description This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model.\cr
+#' This package is a work of SICS Research Group, Universidad Nacional de Colombia.\cr
 #' @details
 #' \tabular{ll}{
 #'Package: \tab LatentREGpp\cr
 #'Type: \tab Package\cr
-#'Version: \tab 0.0.5\cr
-#'Date: \tab 2016-08-22\cr
+#'Version: \tab 1.0\cr
+#'Date: \tab 2016-09-07\cr
 #'License: \tab MIT + file LICENSE \cr
 #'}
-#'@author SICS Research Team
+#'@author Milder Hernandez Cagua <milhernandezcag@unal.edu.co>
+#'@author Jhonatan Javier Guzman del Rio <jhjguzmanri@unal.edu.co>
+#'@author Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
+#'@author Alvaro Mauricio Montenegro <ammontenegrod@unal.edu.co>
+#'@author Sergio Paez Moncaleano <spaezm@unal.edu.co>
+#'@author Juan David Cortes Castillo <jdcortesc@unal.edu.co>
+#'@author Campo Elias Pardo Turriago <cepardot@unal.edu.co>
+#'@author Luisa Fernanda Parra Arboleda <lfparraar@unal.edu.co>
+#'@author Emilio Pablo Berdugo Camacho <epberdugoc@unal.edu.co>
 #'@keywords IRT MIRT Psychometry 
 #'@useDynLib LatentREGpp
 #'@importFrom Rcpp sourceCpp
@@ -33,8 +40,10 @@
 #'@section Getting Started:
 #'The LatentREGpp package allows you to use the LatentREGpp methodology for simulating, analyzing and scoring tests \cr
 #'You can browse the package vignettes to get started.
-#'
+#'@section Acknowledgment:
+#'This work was Supported by Colciencias Research Grant 0039-2013 and SICS Research Group, Universidad Nacional de Colombia.
 NULL
+
 
 #'@name itemfit
 #'@title Parameter estimation of a test

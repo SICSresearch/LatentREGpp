@@ -61,10 +61,10 @@ Principal_axes<- function(CLUSTERS, as_matrix=TRUE)
   j=1
   CLUST_aux<- CLUSTERS
   P_axes_filter<- list()
-  for(i in 1:length(CLUST))
+  for(i in 1:length(CLUST_aux))
   {
-    if(is.vector(CLUST[[i]])==FALSE){
-      CLUST_aux[[j]] = CLUST[[i]]
+    if(is.vector(CLUST_aux[[i]])==FALSE){
+      CLUST_aux[[j]] = CLUST_aux[[i]]
       acp_clust<- dudi.pca(CLUST_aux[[j]], scannf=FALSE, nf=2)
       P_axes_filter[[j]]<- -acp_clust$li[,1]
       j=j+1
@@ -123,80 +123,3 @@ find_temporal_cluster = function(p,d) {
   }
   return(vector)
 }
-
-#AAA<- Principal_axes(CLUST)
-#CLUSTB<- reclass_data_Praxes(data=data, Principal_axes=AAA)
-#unlist(lapply(CLUSTB, ncol))
-
-
-
-#
-#
-#	TEST 1: Data with noise
-#
-#
-
-#data<- read.table("data_without_NA.txt", header=T, sep=";")[,-1]
-#head(data); dim(data)
-#sc<- c(15,26,29,29,14)
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	Compute Inivals
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#!!!!! STOP!!!!!
-# first charge the Inivals_MultiUni_NOHARM function
-# look for "All_FUNCTIONS_multi_uni_plus_NOHARM_IRTpp.R" archive
-#!!!!! STOP!!!!!
-
-#III<- inivals_MultiUni_NOHARM(data=data, size.cluster=sc, model="3PL", find.restrictions=TRUE,verbose=TRUE, probit=FALSE)
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	Normalize Discrimination vectors per item
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#A_matrix<- III$coefs[,1:5]  ##length size cluster
-#Sigma<- cov(A_matrix)
-#CholSigm<- chol(Sigma)  
-#t(chol(corr))%*%chol(corr)
-#t(chol(Sigma))%*%chol(Sigma)
-#A_asterisco<- A_matrix%*%solve(CholSigm)
-#round(cov(A_asterisco),10)
-#Betas<- normalize(t(A_asterisco))
-# colSums(Betas^2)
-#cov(t(Betas))
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#	Clustering
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#++++++ Find Clusters+++++++#
-#CLUST<- find_cluster(data=t(A_matrix), ang=22.5, h7=0.9, q_proy= 0.6)
-#unlist(lapply(CLUST,ncol))
-#paste("N clust",length(CLUST))
-
-
-#acpc<-PCA(CLUST[[1]])
-#barplot(acpc$eig[,1])
-#++++++ Find Reclassify+++++++#
-
-#P_axes_filter<- Principal_axes(CLUST)
-#CLUSTB<- reclass_data_Praxes(data=t(A_matrix), Principal_axes=P_axes_filter)
-#unlist(lapply(CLUSTB, ncol)); paste("N clust",length(CLUSTB))
-
-
-
-
-
-
-
-
-
-
-
-#
-#
-#	TEST 2: Data without noise
-#
-#

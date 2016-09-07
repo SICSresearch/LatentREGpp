@@ -1,24 +1,4 @@
-######################################################################
-#
-#		MAIN CODE TO STUDY 
-#
-######################################################################
-#rm(list = ls())
 
-#	READ THIS...READ THIS...READ THIS...READ THIS...READ THIS...
-#
-#	Uses FactoMineR PARA ENCONTRAR LOS TRAZOS DE LOS INDIVIDUOS
-#	Uses MASS (polr) PARA ENCONTRAR LOS PARAMETROS DE LOS ITEMS
-#	This code is for "P" items all whith "k" categories
-#
-
-###########################################################################
-#
-#
-#					ini__multi_poly 
-#	function
-#
-############################################################################
 
 #'@name inivals_MultiPoly
 #'@title Initial values for multidimensional polytomous data 
@@ -116,5 +96,5 @@ if(verbose){print("Done")}
 res<- coef
 return(res)
 
-}# END FUNCTION ini_multi_poly(data_poly, size.cluster)
+}
 

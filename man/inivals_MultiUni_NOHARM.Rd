@@ -2,7 +2,7 @@
 % Please edit documentation in R/inivalsMultiUni.R
 \name{inivals_MultiUni_NOHARM}
 \alias{inivals_MultiUni_NOHARM}
-\title{Initial Values with Noharm for one or more dimension models}
+\title{Initial Values with Noharm for one or higher dimension models}
 \usage{
 inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
   find.restrictions = FALSE, correlated = FALSE, verbose = FALSE,
@@ -17,11 +17,17 @@ inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
 
 \item{find.restrictions}{False by default.}
 
+\item{correlated}{If TRUE, no correlation process is made}
+
 \item{verbose}{True for get information about process in runtime. False in otherwise.}
 
 \item{probit}{False by default.}
 }
 \description{
-Initial Values with Noharm for one or more dimension models
+Initial Values with Noharm for one or higher dimension models
+}
+\examples{
+sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
+iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))
 }
 

@@ -2,11 +2,13 @@
 #'@title Quadrature points
 #'@description Return a list with quadrature points according dimensionality, technique
 #'and number of points.
-#'@param data The matrix containing the answers of tested individuals.
+#'@param dim Dimension of the quadrature
 #'@param quad_tech A string with technique. "Gaussian" for Gaussian quadrature. 
 #'or "QMCEM" for Quasi-Monte Carlo quadrature.
 #'@param quad_points Amount of quadrature points. If quadratura_technique is "Gaussian". 
 #'It can be NULL, in Quasi-Monte Carlo it is 2000 by default. 
+#'@examples
+#'qp = quadpoints(dim = 4,quad_tech = "QMCEM",quad_points = 3000)
 #'@export
 quadpoints = function(dim, quad_tech = "Gaussian", quad_points = NULL) {
 	if ( quad_tech == "QMCEM" ) {
