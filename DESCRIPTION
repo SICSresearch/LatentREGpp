@@ -1,7 +1,7 @@
 Package: LatentREGpp
 Type: Package
 Title: LatentREGpp
-Version: 1.0
+Version: 0.1
 Author@R:c(
   person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
   person("Jhonatan Javier Guzman del Rio",email = "jhjguzmanri@unal.edu.co",role = "aut"),

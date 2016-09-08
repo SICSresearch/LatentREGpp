@@ -1,5 +1,5 @@
 
-inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FALSE, verbose=FALSE){
+inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FALSE, canonical=FALSE, verbose=FALSE){ 
   #Input:
   # data: (matrix) dichotomous data set
   # size.cluster: (vector) size of each cluster whom will be adjusted a unidimensional model
@@ -42,25 +42,23 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   #Recover Unidimensional IRT models to obtain
   #Initial values for NOHARM
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  fit_itemfitpp<- list()
+  fit_latentregpp<- list()
   traits<- list()
   coef<- list()
   data.traits<- list()
   
   for(i in 1:length(size.cluster)){ # == for(i in 1:nc){
     
-    fit_itemfitpp[[i]]<- itemfit(data=cluster[[i]], dim=1, model=model, save_time=TRUE, verbose = FALSE)
-    z <- fit_itemfitpp[[i]]$zetas
+    fit_latentregpp[[i]]<- itemfit(data=cluster[[i]], dim=1, model=model, save_time=TRUE, verbose = FALSE)
+    z <- fit_latentregpp[[i]]$zetas
     coef[[i]]<- z
     
-    traits[[i]]<- personfit(data= cluster[[i]], dim=1, model="2PL", zetas =fit_itemfitpp[[i]]$zetas,  init_traits = NULL, method = "EAP")
+    traits[[i]]<- personfit(data= cluster[[i]], dim=1, model=model, zetas =fit_latentregpp[[i]]$zetas,  init_traits = NULL, method = "EAP")
     
     
     pattern.matrix<- traits[[i]]$latent_traits[,1]
     pattern.traits<- traits[[i]]$latent_traits[,1]
     data.traits[[i]]<- traits[[i]]$latent_traits[,1]
-
-    
     
     if(verbose) {print(paste("Done", i, "of",length(size.cluster), "dimensions via MultiUni", sep=" " ))}
   }
@@ -82,7 +80,7 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   
   for(i in 1:length(size.cluster))
   {
-    coef[[i]][,3]<- ifelse(coef[[i]][,3] > 0.3, 0.3, coef[[i]][,3])
+    coef[[i]][,3]<- ifelse(coef[[i]][,3] > 0.1, 0.1, coef[[i]][,3])
     coef[[i]][,2]<- ifelse(coef[[i]][,2] > 3, 3, coef[[i]][,2])
     coef[[i]][,2]<- ifelse(coef[[i]][,2] < -3, -3, coef[[i]][,2])
     coef[[i]][,1]<- ifelse(coef[[i]][,1] > 3, 3, coef[[i]][,1])
@@ -117,7 +115,8 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
                      rep(NA, sum(size.cluster[(col+1):length(size.cluster)])))
     }
   }
-  
+
+
   A_matrix<- ifelse(is.na(aux2), 0,aux2)
   sigma<- cov(theta)
   corr<- cor(theta)
@@ -136,11 +135,27 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
   #     A%*%t(theta)
   #     A_asterisco%*%Cholcorr%*%solve(CholSigm)%*%t(theta)
   
+
+#############################################################
+# MAKING CANONICAL BASE FOR FIXED ITEMS
+#############################################################
+
+
+  if(canonical==TRUE){
+    aux_can_index<- cumsum(c(1,size.cluster[ length(size.cluster)]))
+    aux_dim<- length(size.cluster)
+    aux_can_m<- cbind(diag(aux_dim))
+  coef_d[aux_can_index]<- rep(0,aux_dim)
+  coef_c[aux_can_index]<- rep(0,aux_dim)
+    A_asterisco[aux_can_index,]<- aux_can_m
+  }
+
+
   if(verbose) print("Done")
+  
   list(coefs = cbind(A_asterisco, coef_d, coef_c), corr = corr, uni.traits=theta)
   
 } #END FUNCTION .... inivals_MultiUni
-
 #
 #
 # CALCULATE INIVALS MULTI UNI + NOHARM
@@ -162,10 +177,10 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
 #'iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))
 #'@export
-inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE,  correlated= FALSE,verbose=FALSE, probit=FALSE)
+inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE, correlated= FALSE , canonical=FALSE,verbose=FALSE, probit=FALSE)
 {
   suppressWarnings({
-    fit_uni = inivals_MultiUni(data=data, size.cluster=size.cluster, find.restrictions=find.restrictions,verbose=verbose)
+    fit_uni = inivals_MultiUni(data=data, size.cluster=size.cluster, model=model, find.restrictions=find.restrictions,verbose=verbose, canonical=canonical)
   })
   fit = inivals_NOHARM(dat = data, init_uni = fit_uni$coefs, dim_clust = size.cluster, corr = fit_uni$corr, verbose = verbose, probit = probit)
   
@@ -179,7 +194,6 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
   }
   fit
 }
-
 
 
 #
