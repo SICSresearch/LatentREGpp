@@ -217,7 +217,7 @@ void estimation::compute_1D_initial_values() {
 		if ( m.parameters > ONEPL ) {
 			item_i(0) = alpha[i];
 			item_i(1) = gamma[i];
-			if ( m.parameters == THREEPL ) item_i(2) = -1.1;
+			if ( m.parameters == THREEPL ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
 		} else {
 			item_i(0) = gamma[i];
 		}

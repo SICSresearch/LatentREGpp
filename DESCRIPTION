@@ -3,7 +3,7 @@ Type: Package
 Title: LatentREGpp
 Version: 1.0
 Author@R:c(
-  person("Milder Hernandez Cagua",email = "milhernandezcag@unal.edu.co",role = "aut"),
+  person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
   person("Jhonatan Javier Guzman del Rio",email = "jhjguzmanri@unal.edu.co",role = "aut"),
   person("Camilo Antonio Suarez Bolanos",email = "caasuarezbo@unal.edu.co",role = "cre"),
   person("Alvaro Mauricio Montenegro",email = "ammontenegrod@unal.edu.co",role = "aut"),
