@@ -183,6 +183,15 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 			pinned_items.insert(i);
 	}
 
+	int j = 0;
+	for ( auto pinned : pinned_items ) {
+		optimizer_vector &item = zeta[pinned];
+		for ( int h = 0; h < d; ++h )
+			if ( h != j )
+				item(h) = 0;
+		++j;
+	}
+
 	data.loglikelihood = NOT_COMPUTED;
 	iterations = 0;
 }

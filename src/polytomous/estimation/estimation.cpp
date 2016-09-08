@@ -363,8 +363,8 @@ void estimation::compute_1D_initial_values() {
 		for ( auto pinned : pinned_items ) {
 			optimizer_vector &item = zeta[pinned];
 			for ( int h = 0; h < d; ++h )
-				item(h) = 0;
-			item(j) = DEFAULT_INITIAL_VALUE;
+				if ( h != j )
+					item(h) = 0;
 			++j;
 		}
 	}
