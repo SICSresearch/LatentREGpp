@@ -2,7 +2,7 @@ Package: LatentREGpp
 Type: Package
 Title: LatentREGpp
 Version: 0.1
-Author@R:c(
+Authors@R:c(
   person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
   person("Jhonatan Javier Guzman del Rio",email = "jhjguzmanri@unal.edu.co",role = "aut"),
   person("Camilo Antonio Suarez Bolanos",email = "caasuarezbo@unal.edu.co",role = "cre"),
@@ -13,6 +13,15 @@ Author@R:c(
   person("Luisa Fernanda Parra Arboleda",email = "lfparraar@unal.edu.co",role = "aut"),
   person("Emilio Pablo Berdugo Camacho",email = "epberdugoc@unal.edu.co",role = "aut"),
   person("SICS Research Group",email = "sics_fcbog@unal.edu.co",role = "cph"))
+Author: Milder Hernandez Cagua <milhernandezcag@unal.edu.co>,
+  Jhonatan Javier Guzman del Rio <jhjguzmanri@unal.edu.co>,
+  Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>,
+  Alvaro Mauricio Montenegro <ammontenegrod@unal.edu.co>,
+  Sergio Paez Moncaleano <spaezm@unal.edu.co>,
+  Juan David Cortes Castillo <jdcortesc@unal.edu.co>,
+  Campo Elias Pardo Turriago <cepardot@unal.edu.co>,
+  Luisa Fernanda Parra Arboleda <lfparraar@unal.edu.co>,
+  Emilio Pablo Berdugo Camacho <epberdugoc@unal.edu.co>
 Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
 Description: This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model. Acknowledgment: This work was Supported by Colciencias Research Grant 0039-2013 and SICS Research Group, Universidad Nacional de Colombia.
 License: MIT + file LICENSE

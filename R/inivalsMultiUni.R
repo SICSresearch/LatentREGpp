@@ -173,6 +173,7 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #'@param correlated If TRUE, no correlation process is made
 #'@param verbose True for get information about process in runtime. False in otherwise.
 #'@param probit False by default.
+#'@param canonical Makes Cannonical base for fixed items
 #'@examples
 #'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
 #'iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))

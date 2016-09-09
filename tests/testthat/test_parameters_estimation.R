@@ -31,7 +31,7 @@ test.itemfit.multidicho = function () {
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
   est = itemfit(data = data, dim = 3, clusters = size.cluster)
-  expect_identical(est$iterations, 46)
+  expect_identical(est$iterations, 40)
 }
 
 test.itemfit.multipoly = function () {

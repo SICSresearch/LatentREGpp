@@ -13,7 +13,7 @@ This package is a work of SICS Research Group, Universidad Nacional de Colombia.
 \tabular{ll}{
 Package: \tab LatentREGpp\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
+Version: \tab 0.1\cr
 Date: \tab 2016-09-07\cr
 License: \tab MIT + file LICENSE \cr
 }

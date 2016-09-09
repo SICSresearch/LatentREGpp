@@ -5,8 +5,8 @@
 \title{Initial Values with Noharm for one or higher dimension models}
 \usage{
 inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
-  find.restrictions = FALSE, correlated = FALSE, verbose = FALSE,
-  probit = FALSE)
+  find.restrictions = FALSE, correlated = FALSE, canonical = FALSE,
+  verbose = FALSE, probit = FALSE)
 }
 \arguments{
 \item{data}{data matrix to get initial values.}
@@ -18,6 +18,8 @@ inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
 \item{find.restrictions}{False by default.}
 
 \item{correlated}{If TRUE, no correlation process is made}
+
+\item{canonical}{Makes Cannonical base for fixed items}
 
 \item{verbose}{True for get information about process in runtime. False in otherwise.}
 
