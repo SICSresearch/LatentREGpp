@@ -1,6 +1,6 @@
 Package: LatentREGpp
 Type: Package
-Title: LatentREGpp
+Title: LatentREGpp : Item Response Theory Implemented in R and Cpp
 Version: 0.1
 Authors@R:c(
   person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
@@ -27,7 +27,7 @@ Description: This Package is a c++ implementation of the Multidimensional Item R
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
-    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4, testthat
+    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4
 LinkingTo: Rcpp
 SystemRequirements: c++11
 RoxygenNote: 5.0.1
