@@ -24,7 +24,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
                    IntegerVector Rindividual_weights,
                    bool dichotomous_data,
                    IntegerVector Rclusters = IntegerVector::create(),
-                   NumericMatrix Rinitial_values = NumericMatrix(0, 0),
+                   NumericMatrix Rinitial_values = NumericMatrix(1, 1),
                    bool verbose = true );
 
 //[[Rcpp::plugins(cpp11)]]
@@ -45,4 +45,4 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
                            std::string method,
                            bool by_individuals,
                            bool dichotomous_data,
-                           NumericMatrix Rinit_traits = NumericMatrix(0, 0) );
+                           NumericMatrix Rinit_traits = NumericMatrix(1, 1) );
