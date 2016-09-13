@@ -31,7 +31,7 @@ namespace dichotomous {
  * @param current_zeta the current zeta estimation (Ramsay and Squarem accelerate).
  * @return the max difference between current zeta optimized and previous zeta
  */
-double Mstep(estimation_data&, int current_zeta);
+double Mstep(estimation_data&, int);
 
 /**
  * Class with Log likelihood Function to maximize
