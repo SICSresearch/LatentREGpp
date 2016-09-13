@@ -33,7 +33,7 @@ You can browse the package vignettes to get started.
 This work was Supported by Colciencias Research Grant 0039-2013 and SICS Research Group, Universidad Nacional de Colombia.
 }
 \author{
-Milder Hernandez Cagua <milhernandezcag@unal.edu.co>
+Milder Hernandez Cagua <milderhc@gmail.com>
 
 Jhonatan Javier Guzman del Rio <jhjguzmanri@unal.edu.co>
 

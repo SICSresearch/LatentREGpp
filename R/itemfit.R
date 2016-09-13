@@ -12,7 +12,7 @@
 #'Date: \tab 2016-09-07\cr
 #'License: \tab MIT + file LICENSE \cr
 #'}
-#'@author Milder Hernandez Cagua <milhernandezcag@unal.edu.co>
+#'@author Milder Hernandez Cagua <milderhc@gmail.com>
 #'@author Jhonatan Javier Guzman del Rio <jhjguzmanri@unal.edu.co>
 #'@author Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
 #'@author Alvaro Mauricio Montenegro <ammontenegrod@unal.edu.co>
