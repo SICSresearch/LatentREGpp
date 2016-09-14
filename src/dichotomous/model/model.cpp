@@ -64,8 +64,10 @@ double model::P(std::vector<double> &theta, const optimizer_vector &parameters) 
 	/**
 	 * 3PL Approach
 	 * */
-	double c = parameters(parameters.size() - 1);
-	c = 1.0 / (1.0 + exp(-c));
+	double gamma_parameter = parameters(parameters.size() - 1);
+	
+	//uncommented line below for reparameter a c value [0,1] from gamma in R
+	double c = 1.0 / (1.0 + exp(-gamma_parameter));
 
 	//Initialized with gamma value
 	double eta = parameters(parameters.size() - 2);
@@ -74,7 +76,17 @@ double model::P(std::vector<double> &theta, const optimizer_vector &parameters) 
 	for ( size_t i = 0; i < theta.size(); ++i )
 		eta += parameters(i) * theta[i];
 
+	/**three differente formulas**/
+	
+	//with clear
+	//double P = (1.0 / (1.0 + exp(-gamma_parameter))) + (1.0 - (1.0 / (1.0 + exp(-gamma_parameter)))) / (1.0 + exp(-eta));
+	
+	//without clear
+	//double P = (1.0 / (1.0 + std::exp(-gamma_parameter))) + (1.0 / (1.0 + std::exp(gamma_parameter))) * (1.0 / (1.0 + std::exp(-eta)));
+	
+	//with reparameter
 	double P = c + (1.0 - c) / (1.0 + exp(-eta));
+	
 	P = std::max(P, LOWER_BOUND_);
 	P = std::min(P, UPPER_BOUND_);
 	return P;

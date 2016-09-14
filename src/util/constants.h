@@ -48,7 +48,7 @@ namespace latentregpp {
 	const double NOT_COMPUTED = -INT_MAX;
 
 	const double DEFAULT_INITIAL_VALUE = 1.0;
-	const double DEFAULT_C_INITIAL_VALUE = -2.20;
+	const double DEFAULT_C_INITIAL_VALUE = -2.19;
 
 	const double DEFAULT_EM_DELTA_STOP = 1e-4;
 	const double OPTIMIZER_DELTA_STOP = 1e-6;
