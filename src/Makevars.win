@@ -4,7 +4,7 @@ CXX_STD = CXX11
 INCPATH=../inst/include
 BUILDPATH = ../inst/include
 PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
-PKG_CXXFLAGS = -O3 $(SHLIB_OPENMP_CXXFLAGS) `Rscript -e 'Rcpp:::CxxFlags()'` `Rscript -e 'writeLines(paste("-I",system.file(package="BH"),"/include",sep = ""))'`
+PKG_CXXFLAGS = -O3 $(SHLIB_OPENMP_CXXFLAGS) $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "Rcpp:::CxxFlags()") $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "writeLines(paste("-I",system.file(package="BH"),"/include",sep = ""))")
 PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) -L$(INCPATH) -lfull $(LIBM)
 LIBS =-L./ -L/../inst
 # -L Path to lib

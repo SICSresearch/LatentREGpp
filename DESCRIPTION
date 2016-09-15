@@ -1,6 +1,6 @@
 Package: LatentREGpp
 Type: Package
-Title: LatentREGpp : Item Response Theory Implemented in R and Cpp
+Title: Item Response Theory Implemented in R and Cpp
 Version: 0.1
 Authors@R:c(
   person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
@@ -29,7 +29,5 @@ LazyData: TRUE
 Imports:
     Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4
 LinkingTo: Rcpp, BH
-Suggests: knitr
-VignetteBuilder: knitr
 SystemRequirements: c++11
 RoxygenNote: 5.0.1
