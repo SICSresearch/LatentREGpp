@@ -12,6 +12,7 @@
 #include "mstep.h"
 
 #include "../model/model.h"
+#include "../model/onepl.h"
 #include "../model/twopl.h"
 
 #include "../../util/matrix.h"
@@ -88,7 +89,7 @@ class estimation {
 		 * @param clusters a std vector integer template with number of items for each dimension.
 		 * @param initial_values matrix containing initial values
 		 */
-		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, 
+		estimation(matrix<char>&, unsigned int, int themodel = model_type::twopl,
 						double convergence_difference = DEFAULT_EM_DELTA_STOP,
 						matrix<double> theta = EMPTY_REAL_MATRIX,
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,

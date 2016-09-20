@@ -7,7 +7,7 @@ test.itemfit.unidicho = function () {
   file = "1000x50-1.csv"
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
-  est = itemfit(data = data, dim = 1)
+  est = itemfit(data = data, dim = 1, model = "1PL", EMepsilon = 0.1)
   expect_identical(est$iterations, 38)
 }
 
@@ -18,7 +18,7 @@ test.itemfit.unipoly = function () {
   file = "1000x50-1.csv"
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
-  est = itemfit(data = data, dim = 1)
+  est = itemfit(data = data, dim = 1, model = "1PL")
   expect_identical(est$iterations, 39)
 }
 
@@ -30,7 +30,7 @@ test.itemfit.multidicho = function () {
   size.cluster = c(20, 20, 15)
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
-  est = itemfit(data = data, dim = 3, clusters = size.cluster)
+  est = itemfit(data = data, dim = 3, clusters = size.cluster, EMepsilon = 0.01, model = "1PL")
   expect_identical(est$iterations, 40)
 }
 
@@ -42,7 +42,7 @@ test.itemfit.multipoly = function () {
   size.cluster = c(20, 20, 20)
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
-  est = itemfit(data = data, dim = 3, clusters = size.cluster)
+  est = itemfit(data = data, dim = 3, clusters = size.cluster, EMepsilon = 0.01, model = "1PL")
   expect_identical(est$iterations, 71)
 }
 

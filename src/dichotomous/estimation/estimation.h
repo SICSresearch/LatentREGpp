@@ -19,13 +19,15 @@
 #include <map>
 #include <cmath>
 #include <functional>
+#include <cstdio>
 
 #include "../estimation/estep.h"
 #include "../estimation/mstep.h"
 #include "../model/model.h"
+#include "../model/onepl.h"
+#include "../model/twopl.h"
+#include "../model/threepl.h"
 #include "../type/estimationdata.h"
-
-#include <Rcpp.h>
 
 namespace latentregpp {
 
@@ -87,7 +89,7 @@ class estimation {
 		 * @param clusters a std vector integer template with number of items for each dimension.
 		 * @param initial_values matrix containing initial values
 		 */
-		estimation(matrix<char>&, unsigned int, int themodel = TWOPL, 
+		estimation(matrix<char>&, unsigned int, int themodel = model_type::twopl,
 						double convergence_difference = DEFAULT_EM_DELTA_STOP,
 						matrix<double> theta = EMPTY_REAL_MATRIX,
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,

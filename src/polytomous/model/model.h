@@ -47,9 +47,17 @@ public:
 	model(model_type, int, int, std::vector<int>*);
 
 	/**
-	 * Destructor for model class.
+	 * This method computes the probability that a response pattern U_l has the category k to item
+	 * i, given that its latent trait vector theta, and the item parameters. According to equation 89
+	 * in IRT_engineers document.
+	 * @param theta a std vector double template with theta values.
+	 * @param parameters a typedef optimizer_vector to extract eta values.
+	 * @param i number of items.
+	 * @param k number of categories.
+	 * @return the probability for polytomous.
 	 */
-	virtual ~model();
+	double Pik(const optimizer_vector&, const optimizer_vector&, int i, int k);
+
 
 	/**
 	 * This method computes the probability that a response pattern U_l has the category k to item
@@ -62,7 +70,11 @@ public:
 	 * @return the probability for polytomous.
 	 */
 	virtual double Pik(std::vector<double>&, const optimizer_vector&, int i, int k) = 0;
-	double Pik(const optimizer_vector&, const optimizer_vector&, int i, int k);
+
+	/**
+	 * Destructor for model class.
+	 */
+	virtual ~model();
 };
 
 }

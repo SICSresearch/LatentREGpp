@@ -20,8 +20,6 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   int G = data->G;
   //Matrix r
   matrix<double> &r = data->r;
-  //Model used
-  model &m = data->m;
   //Latent trait vectors
   matrix<double> &theta = data->theta;
   //f
@@ -35,7 +33,7 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   
   for ( int g = 0; g < G; ++g ) {
     std::vector<double> &theta_g = *theta.get_pointer_row(g);
-    double P_gi = m.P(theta_g, item_i);
+    double P_gi = data->m->P(theta_g, item_i);
     value += r(g, i) * log(P_gi) + (f[g] - r(g, i)) * log(1 - P_gi);
   }
   
@@ -46,7 +44,7 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
     double coef = -(Nind/2);
     
     double pzetai = 0;
-    bool guessing_parameter = m.parameters == THREEPL;
+    bool guessing_parameter = data->m->parameters == THREE_PARAMETERS;
     
     for (int j = 0; j < current_zeta[i].size()-guessing_parameter; ++j)
     {
@@ -82,7 +80,6 @@ double Mstep(estimation_data &data, int current) {
   int next = (current + 1) % ACCELERATION_PERIOD;
   
   int &p = data.p;
-  model &m = data.m;
   std::vector<optimizer_vector> &current_zeta = data.zeta[current];
   std::vector<optimizer_vector> &next_zeta = data.zeta[next];
   
@@ -97,7 +94,7 @@ double Mstep(estimation_data &data, int current) {
   * Log likelihood must be optimized for every item
   * */
   
-#pragma omp parallel for schedule(dynamic) reduction(max:max_difference)
+  #pragma omp parallel for schedule(dynamic) reduction(max:max_difference)
   for ( int i = 0; i < p; ++i ) {
     /**
     * If it is multidimensional and this is one of the pinned items
@@ -114,9 +111,12 @@ double Mstep(estimation_data &data, int current) {
     dlib::find_max_using_approximate_derivatives(dlib::bfgs_search_strategy(),
                                                  dlib::objective_delta_stop_strategy(OPTIMIZER_DELTA_STOP),
                                                  Qi(i, &data, current), next_zeta[i], -1);
+
+    //for ( int j = 0; j < next_zeta[i].size(); ++j )
+      //Rprintf("%lf %lf\n", current_zeta[i](j), next_zeta[i](j));
     
     //Computing difference of current item
-    if ( m.parameters < 3 ) {
+    if ( data.m->parameters < THREE_PARAMETERS ) {
       for ( int j = 0; j < next_zeta[i].size(); ++j )
         max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
     } else {

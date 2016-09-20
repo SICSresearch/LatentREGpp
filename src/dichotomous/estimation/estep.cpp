@@ -18,8 +18,6 @@ void Estep ( estimation_data &data, int current ) {
 	int &s = data.s;
 	//Number of quadrature points
 	int &G = data.G;
-	//Model used
-	model &m = data.m;
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
@@ -56,7 +54,7 @@ void Estep ( estimation_data &data, int current ) {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = m.P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i]);
 		}
 	}
 

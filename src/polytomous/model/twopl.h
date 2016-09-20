@@ -2,7 +2,7 @@
  * twopl.h
  *
  *  Created on: Sep 19, 2016
- *      Author: Milder
+ *      Author: milder
  */
 
 #ifndef POLYTOMOUS_MODEL_TWOPL_H_

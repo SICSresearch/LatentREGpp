@@ -30,11 +30,6 @@ namespace latentregpp {
 	const std::string NONE = "NONE";
 	const std::string BUILD = "BUILD";
 
-	//Models
-	const int ONEPL = 1;
-	const int TWOPL = 2;
-	const int THREEPL = 3;
-
 	const std::vector<int> EMPTY_INTEGER_VECTOR = std::vector<int>();
 	const std::vector<double> EMPTY_REAL_VECTOR = std::vector<double>();
 	const matrix<double> EMPTY_REAL_MATRIX = matrix<double>(0, 0);
@@ -58,11 +53,11 @@ namespace latentregpp {
 	const double ALPHA_WITH_NO_ESTIMATION = 1.0;
 
 	enum nparameters {
-		ONE_PARAMETER = 1, TWO_PARAMETERS, THREE_PARAMETERS
+		ONE_PARAMETER = 1, TWO_PARAMETERS = 2, THREE_PARAMETERS = 3
 	};
 
-	enum class model_type {
-		onepl = 1, twopl, threepl
+	enum model_type {
+		onepl = 1, twopl = 2, threepl = 3
 	};
 }
 

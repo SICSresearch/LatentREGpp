@@ -34,12 +34,12 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
     
     NumericMatrix zetas(e.data.p, e.data.d + 2);
     int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
-    int parameters = e.data.m.parameters;
+    int parameters = e.data.m->parameters;
 
     for ( int i = 0; i < e.data.p; ++i ) {
       int j = 0;
       //a's
-      if ( parameters == latentregpp::ONEPL )
+      if ( parameters == latentregpp::ONE_PARAMETER )
         for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
       else
         for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
@@ -49,7 +49,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
       ++j;
 
       //c
-      if ( parameters == latentregpp::THREEPL ) {
+      if ( parameters == latentregpp::THREE_PARAMETERS ) {
         double &c = zetas(i, j);
         c = e.data.zeta[current_zeta][i](j);
         c = 1.0 / (1.0 + exp(-c));
@@ -81,7 +81,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;
     //a's
-    if ( parameters == latentregpp::ONEPL )
+    if ( parameters == latentregpp::ONE_PARAMETER )
       for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
     else
       for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);

@@ -26,9 +26,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 
 	//-------------------------------------------------------------------------------------
 
-	//Model to be used
-	model &m = data.m;
-
 	//Number of examinees
 	int &N = data.N;
 
@@ -85,8 +82,21 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	m = model(themodel);
-	
+	switch ( themodel ) {
+		case model_type::onepl:
+			data.m = new onepl();
+			break;
+		case model_type::twopl:
+			data.m = new twopl();
+			break;
+		case model_type::threepl:
+			data.m = new threepl();
+			break;
+		default:
+			data.m = new twopl();
+	}
+
+
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
 		//Pinned items in multidimensional case (the first of each dimension)
@@ -154,20 +164,18 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Number of items
 	int &p = data.p;
-	//Model used in the problem
-	model &m = data.m;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = m.parameters == ONEPL ? 1 : m.parameters - 1 + d;
+	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + d;
 	
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
-		if ( m.parameters == ONEPL ) {
+		if ( data.m->parameters == ONE_PARAMETER ) {
 			zeta[i](0) = mt(i, d);
 		} else {
 			for ( int j = 0; j < total_parameters; ++j )
 				zeta[i](j) = mt(i, j);
-			if ( m.parameters == THREEPL ) {
+			if ( data.m->parameters == THREE_PARAMETERS ) {
 				double &c = zeta[i](total_parameters - 1);
 				c = std::log(c / (1.0 - c));
 			}
@@ -199,17 +207,13 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 void estimation::compute_1D_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
-	//Dimension
-	int &d = data.d;
 	//Number of examinees
 	int &p = data.p;
-	//Model used in the problem
-	model &m = data.m;
 	//Matrix of answers of the examinees
 	matrix<char> &dataset = *data.dataset;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = m.parameters;
+	int total_parameters = data.m->parameters;
 
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
@@ -223,10 +227,10 @@ void estimation::compute_1D_initial_values() {
 	for ( int i = 0; i < p; ++i ) {
 		optimizer_vector &item_i = zeta[i];
 
-		if ( m.parameters > ONEPL ) {
+		if ( data.m->parameters > ONE_PARAMETER ) {
 			item_i(0) = alpha[i];
 			item_i(1) = gamma[i];
-			if ( m.parameters == THREEPL ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
+			if ( data.m->parameters == THREE_PARAMETERS ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
 		} else {
 			item_i(0) = gamma[i];
 		}
@@ -263,8 +267,6 @@ double estimation::log_likelihood() {
 	int &s = data.s;
 	//Number of quadrature points
 	int &G = data.G;
-	//Model used
-	model &m = data.m;
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
@@ -283,7 +285,7 @@ double estimation::log_likelihood() {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = m.P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i]);
 		}
 	}
 
@@ -368,7 +370,6 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	int p = data->p;
 	int d = data->d;
 	matrix<char> &Y = data->Y;
-	model &m = data->m;
 	std::vector<optimizer_vector> &zeta = data->zeta[current_zeta];
 
 	double value = 0.0;
@@ -379,7 +380,7 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	value *= p;
 
 	for ( int i = 0; i < p; ++i )
-		value += Y(l, i) ? std::log(m.P(theta_l, zeta[i])) : std::log(1 - m.P(theta_l, zeta[i]));
+		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i])) : std::log(1 - data->m->P(theta_l, zeta[i]));
 
 	return value;
 }

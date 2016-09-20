@@ -2,7 +2,7 @@
  * twopl.cpp
  *
  *  Created on: Sep 19, 2016
- *      Author: Milder
+ *      Author: milder
  */
 
 #include "twopl.h"

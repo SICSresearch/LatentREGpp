@@ -103,7 +103,16 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	data.m = new twopl(d, &categories_item);
+	switch ( themodel ) {
+		case model_type::onepl:
+			data.m = new onepl(d, &categories_item);
+			break;
+		case model_type::twopl:
+			data.m = new twopl(d, &categories_item);
+			break;
+		default:
+			data.m = new twopl(d, &categories_item);
+	}
 
 	if ( d == 1 ) compute_1D_initial_values();
 	else {

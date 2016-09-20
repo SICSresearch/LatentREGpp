@@ -2,7 +2,7 @@
  * onepl.h
  *
  *  Created on: Sep 20, 2016
- *      Author: Milder
+ *      Author: milder
  */
 
 #ifndef POLYTOMOUS_MODEL_ONEPL_H_

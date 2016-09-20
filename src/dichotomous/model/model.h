@@ -26,6 +26,7 @@ namespace dichotomous {
 class model {
 
 public:
+	model_type type; /**< model type */
 	int parameters; /**< Number of parameters of the model*/
 
 	/**
@@ -35,14 +36,10 @@ public:
 
 	/**
 	 * Constructor that receives 1, 2 or 3. Depending on the model to use.
+	 * @param type an model_type that represents the type of the model
 	 * @param parameters number of parameters according model to use.
 	 */
-	model(int);
-
-	/**
-	 * Destructor for model class.
-	 */
-	virtual ~model();
+	model(model_type, int);
 
 	/**
 	 * Function to calculate the probability according model to use and
@@ -60,7 +57,12 @@ public:
 	 * @param parameters a optimizer_vector to extract eta values.
 	 * @return the probability given the model. It can be 1PL, 2PL or 3PL
 	 */
-	double P(std::vector<double>&, const optimizer_vector&);
+	virtual double P(std::vector<double>&, const optimizer_vector&) = 0;
+
+	/**
+	 * Destructor for model class.
+	 */
+	virtual ~model();
 };
 
 }
