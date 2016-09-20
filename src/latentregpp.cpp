@@ -38,14 +38,16 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
 
     for ( int i = 0; i < e.data.p; ++i ) {
       int j = 0;
-      //a's
-      if ( parameters == latentregpp::ONE_PARAMETER )
+      //a's and d
+      if ( parameters == latentregpp::ONE_PARAMETER ) {
         for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
-      else
+        zetas(i, j) = e.data.zeta[current_zeta][i](j - e.data.d);
+      }
+      else {
         for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
+        zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      }
       
-      //d
-      zetas(i, j) = e.data.zeta[current_zeta][i](j);
       ++j;
 
       //c
@@ -80,16 +82,21 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
 
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;
-    //a's
-    if ( parameters == latentregpp::ONE_PARAMETER )
+    //a' and d's
+    if ( parameters == latentregpp::ONE_PARAMETER ) {
       for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
-    else
+      int categories_item_i = e.data.categories_item[i];
+      for ( int h = 1; h < categories_item_i; ++h, ++j )
+        zetas(i, j) = e.data.zeta[current_zeta][i](j - e.data.d);
+    }
+    else {
       for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      int categories_item_i = e.data.categories_item[i];
+      for ( int h = 1; h < categories_item_i; ++h, ++j )
+        zetas(i, j) = e.data.zeta[current_zeta][i](j);
+    }
 
-    //d's
-    int categories_item_i = e.data.categories_item[i];
-    for ( int h = 1; h < categories_item_i; ++h, ++j )
-      zetas(i, j) = e.data.zeta[current_zeta][i](j);
+    
   }
 
   return List::create(Rcpp::Named("zetas") = zetas,
