@@ -26,9 +26,6 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 
 	//-------------------------------------------------------------------------------------
 
-	//Model to be used
-	model &m = data.m;
-
 	//Number of examinees
 	int &N = data.N;
 
@@ -106,9 +103,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	m = model(themodel, d, &categories_item);
+	data.m = new twopl(d, &categories_item);
 
-	//TODO Change this temporary test
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
 		//Pinned items in multidimensional case (the first of each dimension)
@@ -192,15 +188,14 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Number of items
 	int &p = data.p;
-	//Model used in the problem
-	model &m = data.m;
 	//Number of categories of each item
 	std::vector<int> &categories_item = data.categories_item;
 
 	zeta = std::vector<optimizer_vector>(p);
 
 	for ( int i = 0; i < p; ++i ) {
-		int total_parameters = m.parameters == ONEPL ? categories_item[i] - 1 : categories_item[i] - 1 + d;
+		int total_parameters = data.m->parameters == ONE_PARAMETER ?
+				categories_item[i] - 1 : categories_item[i] - 1 + d;
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
 			zeta[i](j) = mt(i, j);
@@ -247,15 +242,14 @@ void estimation::compute_1D_initial_values() {
 	int &p = data.p;
 	//Number of categories of each item
 	std::vector<int> &categories_item = data.categories_item;
-	//Model used in the problem
-	model &m = data.m;
 	//Matrix of answers of the examinees
 	matrix<char> &dataset = *data.dataset;
 
 	zeta = std::vector<optimizer_vector>(p);
 
 	for ( int i = 0; i < p; ++i ) {
-		int total_parameters = m.parameters == ONEPL ? categories_item[i] - 1 : categories_item[i] - 1 + d;
+		int total_parameters = data.m->parameters == ONE_PARAMETER ?
+				categories_item[i] - 1 : categories_item[i] - 1 + d;
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
 			zeta[i](j) = DEFAULT_INITIAL_VALUE;
@@ -288,7 +282,7 @@ void estimation::compute_1D_initial_values() {
 
 			double a = mean(alpha);
 
-			if ( m.parameters > ONEPL ) {
+			if ( data.m->parameters > ONE_PARAMETER ) {
 				item_i(0) = a;
 				for ( int k = 0; k < mi - 1; ++k )
 					item_i(k + 1) = gamma[k];
@@ -318,7 +312,7 @@ void estimation::compute_1D_initial_values() {
 		 * Multidimensional case
 		 * */
 
-		int alphas = m.parameters == TWOPL ? d : 0;
+		int alphas = data.m->parameters == TWO_PARAMETERS ? d : 0;
 		/**
 		 * Polytomous case
 		 *
@@ -401,8 +395,6 @@ double estimation::log_likelihood() {
 	int &s = data.s;
 	//Number of quadrature points
 	int &G = data.G;
-	//Model used
-	model &m = data.m;
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
@@ -425,7 +417,7 @@ double estimation::log_likelihood() {
 		for ( int i = 0; i < p; ++i ) {
 			int mi = categories_item[i];
 			for ( int k = 0; k < mi; ++k )
-				P[g](i, k) = m.Pik(theta_g, zeta[i], i, k);
+				P[g](i, k) = data.m->Pik(theta_g, zeta[i], i, k);
 		}
 	}
 
@@ -513,7 +505,6 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	int p = data->p;
 	int d = data->d;
 	matrix<char> &Y = data->Y;
-	model &m = data->m;
 	std::vector<optimizer_vector> &zeta = data->zeta[current_zeta];
 
 	double value = 0.0;
@@ -522,7 +513,7 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	value = std::exp(-0.5 * value) / std::pow( std::sqrt(2.0 * PI_), d );
 
 	for ( int i = 0; i < p; ++i )
-		value += std::log(m.Pik(theta_l, zeta[i], i, Y(l, i) - 1));
+		value += std::log(data->m->Pik(theta_l, zeta[i], i, Y(l, i) - 1));
 
 	return value;
 }
@@ -544,12 +535,16 @@ void estimation::print_item_parameters ( ) {
 	std::vector<optimizer_vector> &zeta = data.zeta[iterations % ACCELERATION_PERIOD];
 	int &p = data.p;
 
-	Rcpp::Rcout << "Finished after " << iterations << " iterations.\n";
+	//Rcpp::Rcout << "Finished after " << iterations << " iterations.\n";
+	std::cout << "Finished after " << iterations << " iterations.\n";
 	for ( int i = 0; i < p; ++i ) {
-		Rcpp::Rcout << "Item " << i + 1 << '\n';
+//		Rcpp::Rcout << "Item " << i + 1 << '\n';
+		std::cout << "Item " << i + 1 << '\n';
 		for ( int j = 0; j < zeta[i].size(); ++j )
-			Rcpp::Rcout << zeta[i](j) << ' ';
-		Rcpp::Rcout << '\n';
+//			Rcpp::Rcout << zeta[i](j) << ' ';
+			std::cout << zeta[i](j) << ' ';
+//		Rcpp::Rcout << '\n';
+		std::cout << '\n';
 	}
 }
 

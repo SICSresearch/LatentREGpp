@@ -12,6 +12,7 @@
 #include "mstep.h"
 
 #include "../model/model.h"
+#include "../model/twopl.h"
 
 #include "../../util/matrix.h"
 #include "../../util/input.h"
@@ -24,8 +25,7 @@
 
 #include <map>
 #include <cmath>
-
-#include <Rcpp.h>
+#include <cstdio>
 
 namespace latentregpp {
 

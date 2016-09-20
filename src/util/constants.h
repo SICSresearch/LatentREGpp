@@ -11,6 +11,8 @@
 #include <string>
 #include "matrix.h"
 
+#include <Rcpp.h>
+
 //including optimization files from dlib library
 #include <dlib/optimization.h>
 
@@ -54,6 +56,14 @@ namespace latentregpp {
 	const double OPTIMIZER_DELTA_STOP = 1e-6;
 
 	const double ALPHA_WITH_NO_ESTIMATION = 1.0;
+
+	enum nparameters {
+		ONE_PARAMETER = 1, TWO_PARAMETERS, THREE_PARAMETERS
+	};
+
+	enum class model_type {
+		onepl = 1, twopl, threepl
+	};
 }
 
 

@@ -76,7 +76,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   NumericMatrix zetas(e.data.p, e.data.d + max_category - 1);
   std::fill(zetas.begin(), zetas.end(), NumericVector::get_na());
   int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
-  int parameters = e.data.m.parameters;
+  int parameters = e.data.m->parameters;
 
   for ( int i = 0; i < e.data.p; ++i ) {
     int j = 0;

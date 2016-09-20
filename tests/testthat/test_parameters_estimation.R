@@ -19,7 +19,7 @@ test.itemfit.unipoly = function () {
   data_dir = paste(c(dir, folder, file), collapse = "")
   data = read.table(file = data_dir, sep = ";")
   est = itemfit(data = data, dim = 1)
-  expect_identical(est$iterations, 41)
+  expect_identical(est$iterations, 39)
 }
 
 test.itemfit.multidicho = function () {

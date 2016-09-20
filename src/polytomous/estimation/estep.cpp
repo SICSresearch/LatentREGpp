@@ -18,8 +18,6 @@ void Estep ( estimation_data &data, int current ) {
 	int &s = data.s;
 	//Number of quadrature points
 	int &G = data.G;
-	//Model used
-	model &m = data.m;
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
@@ -68,7 +66,7 @@ void Estep ( estimation_data &data, int current ) {
 		for ( int i = 0; i < p; ++i ) {
 			int mi = categories_item[i];
 			for ( int k = 0; k < mi; ++k )
-				P[g](i, k) = m.Pik(theta_g, zeta[i], i, k);
+				P[g](i, k) = data.m->Pik(theta_g, zeta[i], i, k);
 		}
 	}
 
