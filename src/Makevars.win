@@ -11,59 +11,37 @@ LIBS =-L./ -L/../inst
 # -l Path to lib implmentation
 # -I Path to header
 
-DME=$(INCPATH)/dichotomous/estimation
-DMM=$(INCPATH)/dichotomous/model
-DMT=$(INCPATH)/dichotomous/type
+# Source Directories
+DICHO_ESTIMATION = dichotomous/estimation
+DICHO_MODEL 	 = dichotomous/model
+DICHO_TYPE 		 = dichotomous/type
+POLY_ESTIMATION  = polytomous/estimation
+POLY_MODEL 	 	 = polytomous/model
+POLY_TYPE 		 = polytomous/type
+OTHER_TEST 		 = test
+OTHER_UTIL 		 = util
 
-PME=$(INCPATH)/polytomous/estimation
-PMM=$(INCPATH)/polytomous/model
-PMT=$(INCPATH)/polytomous/type
+MYSOURCES := $(wildcard $(DICHO_ESTIMATION)/*.cpp)
+MYSOURCES += $(wildcard $(DICHO_MODEL)/*.cpp)
+MYSOURCES += $(wildcard $(DICHO_TYPE)/*.cpp)
+MYSOURCES += $(wildcard $(POLY_ESTIMATION)/*.cpp)
+MYSOURCES += $(wildcard $(POLY_MODEL)/*.cpp)
+MYSOURCES += $(wildcard $(POLY_TYPE)/*.cpp)
+MYSOURCES += $(wildcard $(OTHER_TEST)/*.cpp)
+MYSOURCES += $(wildcard $(OTHER_UTIL)/*.cpp)
 
-PTEST=test
-PUTIL=$(INCPATH)/util
-
-# SOURCES
-## DME
-DMESOURCES=estep.cpp estimation.cpp mstep.cpp
-## DMM
-DMMSOURCES=model.cpp
-## DMT
-DMTSOURCES=estimationdata.cpp
-## PME
-PMESOURCES=estep.cpp estimation.cpp mstep.cpp
-## PMM
-PMMSOURCES=model.cpp
-## PMT
-PMTSOURCES=estimationdata.cpp
-## PUTIL
-UTILSOURCES=initial_values.cpp quadraturepoints.cpp ramsay.cpp
-
-DMPATH=dichotomous
-PMPATH=polytomous
-## Targets
+MYOBJECTS	= $(MYSOURCES:.cpp=.o)
 
 .PHONY: all mylibs
-# All
-all:$(SHLIB) mylibs
+all: $(SHLIB) mylibs
 $(SHLIB): mylibs
 
-mylibs:
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/estimation/mstep.o dichotomous/estimation/mstep.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/quadraturepoints.o util/quadraturepoints.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/model/model.o dichotomous/model/model.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/type/estimationdata.o dichotomous/type/estimationdata.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/estimation/estimation.o dichotomous/estimation/estimation.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/type/estimationdata.o polytomous/type/estimationdata.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/mstep.o polytomous/estimation/mstep.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o dichotomous/estimation/estep.o dichotomous/estimation/estep.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/estimation.o polytomous/estimation/estimation.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/estimation/estep.o polytomous/estimation/estep.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o polytomous/model/model.o polytomous/model/model.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/initial_values.o util/initial_values.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/ramsay.o util/ramsay.cpp
-	$(CXX) $(PKG_CPPFLAGS) -c $(PKG_CXXFLAGS) -o util/directories.o util/directories.cpp
-	$(AR) rcs $(INCPATH)/libfull.a dichotomous/estimation/estep.o dichotomous/estimation/estimation.o dichotomous/estimation/mstep.o dichotomous/model/model.o dichotomous/type/estimationdata.o polytomous/estimation/estep.o polytomous/estimation/estimation.o polytomous/estimation/mstep.o polytomous/model/model.o polytomous/type/estimationdata.o util/initial_values.o util/quadraturepoints.o util/ramsay.o util/directories.o
-	$(RANLIB) $(INCPATH)/libfull.a
+mylibs:	$(MYOBJECTS)
+	$(AR) rcs ../inst/include/libfull.a $(MYOBJECTS)
+	$(RANLIB) ../inst/include/libfull.a
+	
+$(MYOBJECTS): %.o: %.cpp
+	$(CXX) $(PKG_CPPFLAGS) -c $< $(PKG_CXXFLAGS) -o $@
 
 clean:
-	rm -rf polytomous/type/estimationdata.o polytomous/type/estimationdata.d MIRTcpp util/ramsay.d util/ramsay.o polytomous/estimation/mstep.o polytomous/estimation/mstep.d dichotomous/model/model.o dichotomous/model/model.d dichotomous/type/estimationdata.o dichotomous/type/estimationdata.d polytomous/estimation/estep.o polytomous/estimation/estep.d polytomous/estimation/estimation.d dichotomous/estimation/estimation.o dichotomous/estimation/estimation.d polytomous/estimation/estimation.o latentregpp.o latentregpp.d util/initial_values.d util/initial_values.o polytomous/model/model.d polytomous/model/model.o dichotomous/estimation/mstep.d dichotomous/estimation/mstep.o  dichotomous/estimation/estep.d dichotomous/estimation/estep.o util/quadraturepoints.o util/quadraturepoints.d util/directories.o util/directories.d
+	rm -rf $(MYOBJECTS) $(INCPATH)/libfull.a
