@@ -21,14 +21,6 @@ POLY_TYPE 		 = polytomous/type
 OTHER_TEST 		 = test
 OTHER_UTIL 		 = util
 
-#MYSOURCES = $(wildcard $(DICHO_ESTIMATION)/*.cpp)
-#MYSOURCES += $(wildcard $(DICHO_MODEL)/*.cpp)
-#MYSOURCES += $(wildcard $(DICHO_TYPE)/*.cpp)
-#MYSOURCES += $(wildcard $(POLY_ESTIMATION)/*.cpp)
-#MYSOURCES += $(wildcard $(POLY_MODEL)/*.cpp)
-#MYSOURCES += $(wildcard $(POLY_TYPE)/*.cpp)
-#MYSOURCES += $(wildcard $(OTHER_TEST)/*.cpp)
-#MYSOURCES += $(wildcard $(OTHER_UTIL)/*.cpp)
 
 MYSOURCES = $(DICHO_ESTIMATION)/estep.cpp $(DICHO_ESTIMATION)/estimation.cpp $(DICHO_ESTIMATION)/mstep.cpp $(DICHO_MODEL)/model.cpp $(DICHO_MODEL)/onepl.cpp $(DICHO_MODEL)/twopl.cpp $(DICHO_MODEL)/threepl.cpp $(DICHO_TYPE)/estimationdata.cpp $(POLY_ESTIMATION)/estep.cpp $(POLY_ESTIMATION)/mstep.cpp $(POLY_ESTIMATION)/estimation.cpp $(POLY_MODEL)/onepl.cpp $(POLY_MODEL)/twopl.cpp $(POLY_MODEL)/model.cpp $(POLY_TYPE)/estimationdata.cpp $(OTHER_TEST)/test.cpp $(OTHER_UTIL)/directories.cpp $(OTHER_UTIL)/initial_values.cpp $(OTHER_UTIL)/quadraturepoints.cpp $(OTHER_UTIL)/ramsay.cpp
 

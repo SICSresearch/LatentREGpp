@@ -32,11 +32,11 @@ MYSOURCES += $(wildcard $(OTHER_UTIL)/*.cpp)
 
 MYOBJECTS	= $(MYSOURCES:.cpp=.o)
 
-.PHONY: all mylibs
-all: $(SHLIB) mylibs
-$(SHLIB): mylibs
+.PHONY: all mylib
+all: $(SHLIB) mylib
+$(SHLIB): mylib
 
-mylibs:	$(MYOBJECTS)
+mylib:	$(MYOBJECTS)
 	$(AR) rcs ../inst/include/libfull.a $(MYOBJECTS)
 	$(RANLIB) ../inst/include/libfull.a
 	
