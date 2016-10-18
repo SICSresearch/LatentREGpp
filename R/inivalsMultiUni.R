@@ -175,8 +175,10 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #'@param probit False by default.
 #'@param canonical Makes Cannonical base for fixed items
 #'@examples
-#'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
-#'iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))
+#'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,
+#'      size.cluster = c(20,20,20,20),seed_data = 500L)
+#'iniVals = inivals_MultiUni_NOHARM(data = sim$data,
+#'    size.cluster = c(20,20,20,20))
 #'@export
 inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE, correlated= FALSE , canonical=FALSE,verbose=FALSE, probit=FALSE)
 {
@@ -187,11 +189,11 @@ inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restric
   
   if(correlated==FALSE) 
   {
-    A = fit$coefs[,1:length(size.cluster)]
+    A = fit$coefs[,1:(length(size.cluster)-1)]
     C = cov(A); E= eigen(C); V=E$vectors; D= diag(E$values); S= V%*%sqrt(D)%*%t(V)
     A_ast<- t(solve(S)%*%t(A))
     colnames(A_ast) = colnames(A)
-    fit$coefs[,1:length(size.cluster)]<- A_ast
+    fit$coefs[,1:(length(size.cluster)-1)]<- A_ast
   }
   fit
 }

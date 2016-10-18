@@ -56,6 +56,7 @@ file = "1000x55-1.csv"
 data_dir = paste(c(dir, folder, file), collapse = "")
 data = read.table(file = data_dir, sep = ";")
 clust <- c(20,20,15)
-st <- itemfit(data = data, model = "2PL",dim = 3, EMepsilon = 1e-03, clusters = clust, quad_tech = "Gaussian")
+st <- itemfit(data = data, model = "2PL",dim = 3, 
+       EMepsilon = 1e-03, clusters = clust, quad_tech = "Gaussian")
 }
 

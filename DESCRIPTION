@@ -27,7 +27,7 @@ Description: This Package is a c++ implementation of the Multidimensional Item R
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
-    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4,testthat, lattice
+    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4
 LinkingTo: Rcpp, BH
 SystemRequirements: c++11
 RoxygenNote: 5.0.1

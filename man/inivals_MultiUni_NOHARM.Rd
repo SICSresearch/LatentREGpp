@@ -29,7 +29,9 @@ inivals_MultiUni_NOHARM(data, size.cluster, model = "2PL",
 Initial Values with Noharm for one or higher dimension models
 }
 \examples{
-sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,size.cluster = c(20,20,20,20),seed_data = 500L)
-iniVals = inivals_MultiUni_NOHARM(data = sim$data,size.cluster = c(20,20,20,20))
+sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,
+     size.cluster = c(20,20,20,20),seed_data = 500L)
+iniVals = inivals_MultiUni_NOHARM(data = sim$data,
+   size.cluster = c(20,20,20,20))
 }
 
