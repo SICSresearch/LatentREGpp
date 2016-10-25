@@ -175,10 +175,12 @@ inivals_MultiUni<- function(data, size.cluster, model="2PL",find.restrictions=FA
 #'@param probit False by default.
 #'@param canonical Makes Cannonical base for fixed items
 #'@examples
+#'\dontrun{
 #'sim = simulate_dichotomous(dim.data = 4,sample.size = 1000,
 #'      size.cluster = c(20,20,20,20),seed_data = 500L)
 #'iniVals = inivals_MultiUni_NOHARM(data = sim$data,
 #'    size.cluster = c(20,20,20,20))
+#'}
 #'@export
 inivals_MultiUni_NOHARM<- function(data, size.cluster, model="2PL", find.restrictions=FALSE, correlated= FALSE , canonical=FALSE,verbose=FALSE, probit=FALSE)
 {

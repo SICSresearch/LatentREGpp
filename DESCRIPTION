@@ -13,15 +13,6 @@ Authors@R:c(
   person("Luisa Fernanda Parra Arboleda",email = "lfparraar@unal.edu.co",role = "aut"),
   person("Emilio Pablo Berdugo Camacho",email = "epberdugoc@unal.edu.co",role = "aut"),
   person("SICS Research Group",email = "sics_fcbog@unal.edu.co",role = "cph"))
-Author: Milder Hernandez Cagua <milhernandezcag@unal.edu.co>,
-  Jhonatan Javier Guzman del Rio <jhjguzmanri@unal.edu.co>,
-  Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>,
-  Alvaro Mauricio Montenegro <ammontenegrod@unal.edu.co>,
-  Sergio Paez Moncaleano <spaezm@unal.edu.co>,
-  Juan David Cortes Castillo <jdcortesc@unal.edu.co>,
-  Campo Elias Pardo Turriago <cepardot@unal.edu.co>,
-  Luisa Fernanda Parra Arboleda <lfparraar@unal.edu.co>,
-  Emilio Pablo Berdugo Camacho <epberdugoc@unal.edu.co>
 Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
 Description: This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model. Acknowledgment: This work was Supported by Colciencias Research Grant 0039-2013 and SICS Research Group, Universidad Nacional de Colombia.
 License: MIT + file LICENSE
@@ -29,5 +20,5 @@ LazyData: TRUE
 Imports:
     Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, sirt,FactoMineR, MASS, ade4
 LinkingTo: Rcpp, BH
-SystemRequirements: c++11
+SystemRequirements: c++11, OpenMP
 RoxygenNote: 5.0.1

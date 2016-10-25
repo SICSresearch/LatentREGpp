@@ -20,6 +20,6 @@ Return a list with quadrature points according dimensionality, technique
 and number of points.
 }
 \examples{
-qp = quadpoints(dim = 4,quad_tech = "QMCEM",quad_points = 3000)
+\dontrun{qp = quadpoints(dim = 4,quad_tech = "QMCEM",quad_points = 3000)}
 }
 
