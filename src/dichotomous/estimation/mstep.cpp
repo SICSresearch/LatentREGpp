@@ -94,7 +94,7 @@ double Mstep(estimation_data &data, int current) {
   * Log likelihood must be optimized for every item
   * */
   
-  #pragma omp parallel for schedule(dynamic) reduction(max:max_difference)
+  #pragma omp parallel for schedule(dynamic)
   for ( int i = 0; i < p; ++i ) {
     /**
     * If it is multidimensional and this is one of the pinned items
@@ -118,7 +118,7 @@ double Mstep(estimation_data &data, int current) {
     //Computing difference of current item
     if ( data.m->parameters < THREE_PARAMETERS ) {
       for ( int j = 0; j < next_zeta[i].size(); ++j )
-        max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
+        max_difference = maxp(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
     } else {
       for ( int j = 0; j < next_zeta[i].size() - 1; ++j )
         max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
@@ -128,7 +128,7 @@ double Mstep(estimation_data &data, int current) {
       c_current = 1.0 / (1.0 + exp(-c_current));
       c_next = 1.0 / (1.0 + exp(-c_next));
       
-      max_difference = std::max(max_difference, std::abs(c_next - c_current));
+      max_difference = maxp(max_difference, std::abs(c_next - c_current));
     }
   }
   
