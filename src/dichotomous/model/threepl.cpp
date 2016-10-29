@@ -13,7 +13,7 @@ namespace dichotomous {
 
 threepl::threepl() : model(model_type::threepl, THREE_PARAMETERS) {}
 
-double threepl::P(std::vector<double> &theta, const optimizer_vector &parameters) {
+double threepl::P(std::vector<double> &theta, const optimizer_vector &parameters, int i) {
 	double gamma_parameter = parameters(parameters.size() - 1);
 
 	//uncommented line below for reparameter a c value [0,1] from gamma in R
@@ -23,8 +23,8 @@ double threepl::P(std::vector<double> &theta, const optimizer_vector &parameters
 	double eta = parameters(parameters.size() - 2);
 
 	//Computing dot product
-	for ( size_t i = 0; i < theta.size(); ++i )
-		eta += parameters(i) * theta[i];
+	for ( size_t j = 0; j < theta.size(); ++j )
+		eta += parameters(j) * theta[j];
 
 	/**three different formulas**/
 

@@ -54,7 +54,7 @@ void Estep ( estimation_data &data, int current ) {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = data.m->P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i], i);
 		}
 	}
 

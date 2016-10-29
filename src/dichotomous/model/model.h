@@ -37,7 +37,7 @@ public:
 	/**
 	 * Constructor that receives 1, 2 or 3. Depending on the model to use.
 	 * @param type an model_type that represents the type of the model
-	 * @param parameters number of parameters according model to use.
+	 * @param parameters number of parameters according to the model to use.
 	 */
 	model(model_type, int);
 
@@ -48,16 +48,17 @@ public:
 	 * @param parameters a optimizer_vector to extract eta values.
 	 * @return the probability given the model. It can be 1PL, 2PL or 3PL
 	 */
-	double P(const optimizer_vector &, const optimizer_vector &);
+	double P(const optimizer_vector &, const optimizer_vector&, int);
 
 	/**
 	 * Function to calculate the probability according model to use and
 	 * equation 13 from IRT_engineers document.
 	 * @param theta a std vector double template with theta values.
 	 * @param parameters a optimizer_vector to extract eta values.
+	 * @param .
 	 * @return the probability given the model. It can be 1PL, 2PL or 3PL
 	 */
-	virtual double P(std::vector<double>&, const optimizer_vector&) = 0;
+	virtual double P(std::vector<double>&, const optimizer_vector&, int) = 0;
 
 	/**
 	 * Destructor for model class.

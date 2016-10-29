@@ -33,7 +33,7 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   
   for ( int g = 0; g < G; ++g ) {
     std::vector<double> &theta_g = *theta.get_pointer_row(g);
-    double P_gi = data->m->P(theta_g, item_i);
+    double P_gi = data->m->P(theta_g, item_i, i);
     value += r(g, i) * log(P_gi) + (f[g] - r(g, i)) * log(1 - P_gi);
   }
   

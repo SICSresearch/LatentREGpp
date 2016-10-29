@@ -285,7 +285,7 @@ double estimation::log_likelihood() {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = data.m->P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i], i);
 		}
 	}
 
@@ -380,7 +380,8 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	value *= p;
 
 	for ( int i = 0; i < p; ++i )
-		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i])) : std::log(1 - data->m->P(theta_l, zeta[i]));
+		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i], i)) : 
+						   std::log(1 - data->m->P(theta_l, zeta[i], i));
 
 	return value;
 }
