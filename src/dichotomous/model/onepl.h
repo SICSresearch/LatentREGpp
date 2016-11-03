@@ -18,7 +18,7 @@ class onepl: public dichotomous::model {
 public:
 	onepl();
 	virtual ~onepl();
-	double P(std::vector<double>&, const optimizer_vector&);
+	double P(std::vector<double>&, const optimizer_vector&, int);
 };
 
 }
