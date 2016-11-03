@@ -19,7 +19,7 @@ public:
 	//bayesian();
 	bayesian(matrix<double>&);
 	virtual ~bayesian();
-	double P(std::vector<double>&, const optimizer_vector&);
+	double P(std::vector<double>&, const optimizer_vector&, int);
 
 private:
 	matrix<double> c_values; 

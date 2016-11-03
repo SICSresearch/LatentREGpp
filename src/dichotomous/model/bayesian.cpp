@@ -19,23 +19,23 @@ bayesian::bayesian(matrix<double> &c) : model(model_type::bayesian, THREE_PARAME
   //this->parameters = THREE_PARAMETERS;
 }
 
-double bayesian::P(std::vector<double> &theta, const optimizer_vector &parameters) {
+double bayesian::P(std::vector<double> &theta, const optimizer_vector &parameters, int i) {
 	double gamma_parameter = parameters(parameters.size() - 1);
 
 	//uncommented line below for reparameter a c value [0,1] from gamma in R
 	//double c = 1.0 / (1.0 + exp(-gamma_parameter));
 
 	//need to put c initial value here
-	int item = 0;
-	double c = 0.1;
-	c = c_values(item,c_values.columns(item)-1); 
+	int item = i;
+	//double c = 0.1;
+	double c = c_values(item,c_values.columns(item)-1); 
 
 	//Initialized with gamma value
 	double eta = parameters(parameters.size() - 1);
 
 	//Computing dot product
-	for ( size_t i = 0; i < theta.size(); ++i )
-		eta += parameters(i) * theta[i];
+	for ( size_t j = 0; j < theta.size(); ++j )
+		eta += parameters(j) * theta[j];
 
 	/**three different formulas**/
 
