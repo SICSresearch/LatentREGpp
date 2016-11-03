@@ -11,6 +11,8 @@ namespace latentregpp {
 
 namespace dichotomous {
 
+model::model() {}
+
 model::model(model_type type, int parameters) {
 	this->type = type;
 	this->parameters = parameters;

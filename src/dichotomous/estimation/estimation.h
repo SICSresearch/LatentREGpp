@@ -27,6 +27,7 @@
 #include "../model/onepl.h"
 #include "../model/twopl.h"
 #include "../model/threepl.h"
+#include "../model/bayesian.h"
 #include "../type/estimationdata.h"
 
 namespace latentregpp {

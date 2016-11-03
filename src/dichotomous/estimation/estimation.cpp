@@ -156,52 +156,70 @@ void estimation::build_matrixes() {
 	f = std::vector<double>(G);
 }
 
-
 void estimation::load_multi_initial_values ( matrix<double> &mt ) {
-	//Dimension
-	int &d = data.d;
-	//Parameters of the items
-	std::vector<optimizer_vector> &zeta = data.zeta[0];
-	//Number of items
-	int &p = data.p;
-
-	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + d;
-	
-	for ( int i = 0; i < p; ++i ) {
-		zeta[i] = optimizer_vector(total_parameters);
-		if ( data.m->parameters == ONE_PARAMETER ) {
-			zeta[i](0) = mt(i, d);
-		} else {
-			for ( int j = 0; j < total_parameters; ++j )
-				zeta[i](j) = mt(i, j);
-			if ( data.m->parameters == THREE_PARAMETERS ) {
-				double &c = zeta[i](total_parameters - 1);
-				c = std::log(c / (1.0 - c));
-			}
-		}
-	}
-
-	//Items that will not be estimated
-	std::set<int> &pinned_items = data.pinned_items;
-
-	if ( d > 1 && pinned_items.empty() ) {
-		int items_for_dimension = (p + d - 1) / d;
-		for ( int i = 0, j = 0; i < p; i += items_for_dimension, ++j )
-			pinned_items.insert(i);
-	}
-
-	int j = 0;
-	for ( auto pinned : pinned_items ) {
-		optimizer_vector &item = zeta[pinned];
-		for ( int h = 0; h < d; ++h )
-			if ( h != j )
-				item(h) = 0;
-		++j;
-	}
-
-	data.loglikelihood = NOT_COMPUTED;
-	iterations = 0;
+  //Dimension
+  int &d = data.d;
+  //Parameters of the items
+  std::vector<optimizer_vector> &zeta = data.zeta[0];
+  //Number of items
+  int &p = data.p;
+  
+  zeta = std::vector<optimizer_vector>(p);
+  
+  int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + d;
+  
+  //For bayesian
+  int has_c_value = 0;
+  if(data.m->parameters==3) {
+    total_parameters--;
+    has_c_value = 1;
+  }
+  
+  data.initial_values(p,total_parameters+has_c_value);
+  
+  for ( int i = 0; i < p; ++i ) {
+    zeta[i] = optimizer_vector(total_parameters);
+    if ( data.m->parameters == ONE_PARAMETER ) {
+      zeta[i](0) = mt(i, d);
+      data.initial_values(i,0) = mt(i, d);
+    } else {
+      for ( int j = 0; j < total_parameters; ++j ) {
+        zeta[i](j) = mt(i, j);
+        data.initial_values(i,j) = mt(i, j);
+      }
+      //If I've three parameters - correct
+      if ( data.m->parameters == THREE_PARAMETERS && !(data.m->type==4)) {
+        double &c = zeta[i](total_parameters - 1);
+        c = std::log(c / (1.0 - c));
+      }else if(data.m->parameters == THREE_PARAMETERS && data.m->type==4) {
+        double c = mt(i,total_parameters);
+        data.initial_values(i,total_parameters) = c;
+      }
+    }
+  }
+  
+  //Items that will not be estimated
+  std::set<int> &pinned_items = data.pinned_items;
+  
+  if ( d > 1 && pinned_items.empty() ) {
+    int items_for_dimension = (p + d - 1) / d;
+    for ( int i = 0, j = 0; i < p; i += items_for_dimension, ++j )
+      pinned_items.insert(i);
+  }
+  
+  int j = 0;
+  for ( auto pinned : pinned_items ) {
+    optimizer_vector &item = zeta[pinned];
+    for ( int h = 0; h < d; ++h )
+      if ( h != j )
+        item(h) = 0;
+      ++j;
+  }
+  
+  data.loglikelihood = NOT_COMPUTED;
+  iterations = 0;
+  
+  //Be sure about initial values matrix in estimation_data instance
 }
 
 void estimation::compute_1D_initial_values() {
