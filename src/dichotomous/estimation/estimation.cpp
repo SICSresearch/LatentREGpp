@@ -92,10 +92,10 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		case model_type::threepl:
 			data.m = new threepl();
 			break;
-  	case model_type::bayesian:
-  	  //Here call my method for matrix to optimizer vector
-  	  data.m = new bayesian(initial_values);
-  	  break;
+      	case model_type::bayesian:
+      	  //Here call my method for matrix to optimizer vector
+      	  data.m = new bayesian(initial_values);
+      	  break;
 		default:
 			data.m = new twopl();
 	}
