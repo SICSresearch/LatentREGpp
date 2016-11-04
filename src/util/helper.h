@@ -85,6 +85,18 @@ void convert_vector ( Rcpp::NumericVector &rvector, std::vector<T> &cvector ) {
 }
 
 /**
+ * Converts from std::vector<T> to Rcpp::NumericVector
+ * @param cvector source object
+ * @param rvector destination object
+ */
+template <class T>
+void convert_vector ( std::vector<T> &cvector, Rcpp::NumericVector &rvector ) {
+  rvector = Rcpp::NumericVector(int(cvector.size()));
+  for ( int i = 0; i < cvector.size(); ++i )
+    rvector[i] = cvector[i];
+}
+
+/**
  * Converts from Rcpp::IntegerVector to std::vector<T> 
  * @param rvector source object
  * @param cvector destination object
