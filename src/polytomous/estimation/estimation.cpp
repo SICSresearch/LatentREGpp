@@ -128,8 +128,10 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			}
 		}
 
-		if ( initial_values.rows() > 0 )
+		if ( initial_values.rows() > 1 )
 			load_multi_initial_values(initial_values);
+		else
+			compute_1D_initial_values();
 	}	
 
 	//Configurations for the estimation

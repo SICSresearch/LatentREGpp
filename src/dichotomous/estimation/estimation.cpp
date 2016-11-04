@@ -115,8 +115,10 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			}
 		}
 
-		if ( initial_values.rows() > 0 )
+		if ( initial_values.rows() > 1 )
 			load_multi_initial_values(initial_values);
+		else
+			compute_1D_initial_values();
 	}
 
 	//Configurations for the estimation
@@ -233,31 +235,66 @@ void estimation::compute_1D_initial_values() {
 	int &p = data.p;
 	//Matrix of answers of the examinees
 	matrix<char> &dataset = *data.dataset;
+	//Dimension
+	int &d = data.d;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = data.m->parameters;
+	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + data.d;
 
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
 		for ( int j = 0; j < total_parameters; ++j )
 			zeta[i](j) = DEFAULT_INITIAL_VALUE;
 	}
+	
+	if ( d == 1 ) {
+		std::vector<double> alpha, gamma;
+		find_initial_values(dataset, alpha, gamma);
 
-	std::vector<double> alpha, gamma;
-	find_initial_values(dataset, alpha, gamma);
+		for ( int i = 0; i < p; ++i ) {
+			optimizer_vector &item_i = zeta[i];
 
-	for ( int i = 0; i < p; ++i ) {
-		optimizer_vector &item_i = zeta[i];
+			if ( data.m->parameters > ONE_PARAMETER ) {
+				item_i(0) = alpha[i];
+				item_i(1) = gamma[i];
+				if ( data.m->parameters == THREE_PARAMETERS ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
+			} else {
+				item_i(0) = gamma[i];
+			}
+		}
 
-		if ( data.m->parameters > ONE_PARAMETER ) {
-			item_i(0) = alpha[i];
-			item_i(1) = gamma[i];
-			if ( data.m->parameters == THREE_PARAMETERS ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
-		} else {
-			item_i(0) = gamma[i];
+	} else {
+		std::vector<double> alpha, gamma;
+		find_initial_values(dataset, alpha, gamma);
+
+		for ( int i = 0; i < p; ++i ) {
+			optimizer_vector &item_i = zeta[i];
+
+			if ( data.m->parameters < THREE_PARAMETERS ) item_i(item_i.size() - 1) = gamma[i];
+			else {
+				item_i(item_i.size() - 2) = gamma[i];
+				item_i(item_i.size() - 1) = DEFAULT_C_INITIAL_VALUE;
+			}
+		}
+
+		//Items that will not be estimated
+		std::set<int> &pinned_items = data.pinned_items;
+
+		if ( pinned_items.empty() ) {
+			int items_for_dimension = (p + d - 1) / d;
+			for ( int i = 0, j = 0; i < p; i += items_for_dimension, ++j )
+				pinned_items.insert(i);
+		}
+
+		int j = 0;
+		for ( auto pinned : pinned_items ) {
+			optimizer_vector &item = zeta[pinned];
+			for ( int h = 0; h < d; ++h )
+				item(h) = 0;
+			item(j) = DEFAULT_INITIAL_VALUE;
+			++j;
 		}
 	}
-
 	data.loglikelihood = NOT_COMPUTED;
 }
 
