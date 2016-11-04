@@ -108,4 +108,16 @@ void convert_vector ( Rcpp::IntegerVector &rvector, std::vector<T> &cvector ) {
     cvector[i] = rvector[i];
 }
 
+/**
+ * Converts from std::vector<T> to Rcpp::IntegerVector
+ * @param cvector source object
+ * @param rvector destination object
+ */
+template <class T>
+void convert_vector ( std::vector<T> &cvector, Rcpp::IntegerVector &rvector ) {
+  rvector = Rcpp::IntegerVector(int(cvector.size()));
+  for ( int i = 0; i < cvector.size(); ++i )
+    rvector[i] = cvector[i];
+}
+
 }

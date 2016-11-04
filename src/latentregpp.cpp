@@ -158,9 +158,12 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
     if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
 
     NumericMatrix patterns;
+    IntegerMatrix freq;
     latentregpp::convert_matrix(e.data.Y, patterns);  
+    latentregpp::convert_vector(e.data.nl, freq);
     return List::create(Rcpp::Named("latent_traits") = traits, 
-                        Rcpp::Named("patterns") = patterns);
+                        Rcpp::Named("patterns") = patterns,
+                        Rcpp::Named("freq") = freq);
   }
 
   //Estimation object 
@@ -181,7 +184,10 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
 
   NumericMatrix patterns;
+  IntegerMatrix freq;
   latentregpp::convert_matrix(e.data.Y, patterns);  
+  latentregpp::convert_vector(e.data.nl, freq);
   return List::create(Rcpp::Named("latent_traits") = traits, 
-                      Rcpp::Named("patterns") = patterns);
+                      Rcpp::Named("patterns") = patterns,
+                      Rcpp::Named("freq") = freq);
 }
