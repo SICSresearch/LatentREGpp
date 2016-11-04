@@ -60,9 +60,17 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
         zetas(i, j) = 0;  
     }
 
+
+    NumericMatrix Rr;
+    NumericVector Rf;
+    latentregpp::convert_matrix(e.data.r, Rr);
+    latentregpp::convert_vector(e.data.f, Rf);
+
     return List::create(Rcpp::Named("zetas") = zetas,
                         Rcpp::Named("Loglik") = e.log_likelihood(),
-                        Rcpp::Named("iterations") = e.get_iterations());
+                        Rcpp::Named("iterations") = e.get_iterations(),
+                        Rcpp::Named("r") = Rr,
+                        Rcpp::Named("f") = Rf);
   }
 
   //polytomous data
@@ -99,9 +107,18 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
     
   }
 
+  int G = e.data.r.size();
+  List Rr(G);
+  for ( int g = 0; g < G; ++g ) {
+    NumericMatrix Rrg;
+    latentregpp::convert_matrix(e.data.r[g],  Rrg);
+    Rr[g] = Rrg;
+  }
+
   return List::create(Rcpp::Named("zetas") = zetas,
                       Rcpp::Named("Loglik") = e.log_likelihood(),
-                      Rcpp::Named("iterations") = e.get_iterations());
+                      Rcpp::Named("iterations") = e.get_iterations(),
+                      Rcpp::Named("r") = Rr);
 }
 
 List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
@@ -141,9 +158,12 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
     if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
 
     NumericMatrix patterns;
+    IntegerMatrix freq;
     latentregpp::convert_matrix(e.data.Y, patterns);  
+    latentregpp::convert_vector(e.data.nl, freq);
     return List::create(Rcpp::Named("latent_traits") = traits, 
-                        Rcpp::Named("patterns") = patterns);
+                        Rcpp::Named("patterns") = patterns,
+                        Rcpp::Named("freq") = freq);
   }
 
   //Estimation object 
@@ -164,7 +184,10 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   if ( by_individuals ) return List::create(Rcpp::Named("latent_traits") = traits);
 
   NumericMatrix patterns;
+  IntegerMatrix freq;
   latentregpp::convert_matrix(e.data.Y, patterns);  
+  latentregpp::convert_vector(e.data.nl, freq);
   return List::create(Rcpp::Named("latent_traits") = traits, 
-                      Rcpp::Named("patterns") = patterns);
+                      Rcpp::Named("patterns") = patterns,
+                      Rcpp::Named("freq") = freq);
 }
