@@ -142,64 +142,61 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				p = ncol(data)
 				d = dim
 				clusters = find_temporal_cluster(p=p,d=d)
-
-				#2. Find initial values
-				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
-
-				acp = PCA(X = III$coefs,graph = FALSE)
-				hcpc = HCPC(acp,nb.clust = d,graph = FALSE)
-				CLUST_final<- list()
-				for (i in 1:length(table(hcpc$data.clust$clust))) {
-					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
-				}
-
-				clusters = unlist(lapply(CLUST_final, ncol))
 			} else
 				if ( length(clusters) != dim )
 					stop("Clusters length must be equal to the number of dimensions")
 
 			#Initial values
 			if ( is.null(initial_values) ) {
-				#Find initial values again
-				initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)$coefs
+				# Item parameters estimation with no initial values provided
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+									Rtheta = theta, Rweights = weights, 
+									Rindividual_weights = individual_weights,
+									dichotomous_data = dichotomous_data,
+									Rclusters = clusters,
+									verbose = verbose)
 			} else {
 				initial_values = data.matrix(initial_values)
 				if ( nrow(initial_values) != ncol(data) )
 					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
+
+				# Item parameters estimation 
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+									Rtheta = theta, Rweights = weights, 
+									Rindividual_weights = individual_weights,
+									dichotomous_data = dichotomous_data,
+									Rclusters = clusters,
+									Rinitial_values = initial_values, 
+									verbose = verbose)
 			}
 		  
-			# Item parameters estimation
-			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-								Rtheta = theta, Rweights = weights, 
-								Rindividual_weights = individual_weights,
-								dichotomous_data = dichotomous_data,
-								Rclusters = clusters,
-								Rinitial_values = initial_values, 
-								verbose = verbose)
 		} else {
 			if ( is.null(clusters) )
 				stop("You must specify clusters")
 
 			#Initial values
 			if ( is.null(initial_values) ) {
-				#Find initial values again
-				initial_values = inivals_MultiPoly(data_poly = data, size.cluster = clusters, verbose=F)
+				# Item parameters estimation with no intial values provided
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+										Rtheta = theta, Rweights = weights, 
+										Rindividual_weights = individual_weights,
+										dichotomous_data = dichotomous_data,
+										Rclusters = clusters,
+										verbose = verbose )
 			} else {
 				initial_values = data.matrix(initial_values)
 				if ( nrow(initial_values) != ncol(data) )
 					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
-			}
 
-			# Item parameters estimation
-			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-									Rtheta = theta, Rweights = weights, 
-									Rindividual_weights = individual_weights,
-									dichotomous_data = dichotomous_data,
-									Rclusters = clusters,
-									Rinitial_values = initial_values, 
-									verbose = verbose )
+					# Item parameters estimation
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+										Rtheta = theta, Rweights = weights, 
+										Rindividual_weights = individual_weights,
+										dichotomous_data = dichotomous_data,
+										Rclusters = clusters,
+										Rinitial_values = initial_values, 
+										verbose = verbose )
+			}
 		}
 	}
 

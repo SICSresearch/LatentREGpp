@@ -9,7 +9,6 @@
 #'It can be NULL, in Quasi-Monte Carlo it is 2000 by default. 
 #'@examples
 #'\dontrun{qp = quadpoints(dim = 4,quad_tech = "QMCEM",quad_points = 3000)}
-#'@export
 quadpoints = function(dim, quad_tech = "Gaussian", quad_points = NULL) {
 	if ( quad_tech == "QMCEM" ) {
 
