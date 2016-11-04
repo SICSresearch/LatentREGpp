@@ -163,7 +163,7 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
     latentregpp::convert_vector(e.data.nl, freq);
     return List::create(Rcpp::Named("latent_traits") = traits, 
                         Rcpp::Named("patterns") = patterns,
-                        Rcpp::Named("freq") = freq);
+                        Rcpp::Named("freqs") = freq);
   }
 
   //Estimation object 
@@ -189,5 +189,5 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   latentregpp::convert_vector(e.data.nl, freq);
   return List::create(Rcpp::Named("latent_traits") = traits, 
                       Rcpp::Named("patterns") = patterns,
-                      Rcpp::Named("freq") = freq);
+                      Rcpp::Named("freqs") = freq);
 }
