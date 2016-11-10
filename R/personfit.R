@@ -47,6 +47,7 @@ personfit = function ( data, dim, model = "2PL", zetas = NULL,
 	if ( model == "1PL" ) m = 1
 	else if ( model == "2PL" ) m = 2
 	else if ( model == "3PL" ) m = 3
+	else if ( model == "Bayesian" ) m = 4
 
 	q = quadpoints(dim = dim, quad_tech = quad_tech, 
 				   quad_points = quad_points)

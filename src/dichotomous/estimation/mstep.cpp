@@ -39,13 +39,15 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   
   //Log(Pzetai)
   //Bayessian mode
-  if(true) {
+  if(data->m->type==4) {
     
     matrix<double> &inivals = data->initial_values;
     
     //std::cout<<"If I am in mstep give me size of:"<<std::endl;
-    //std::cout<<"Rows: "<< inivals.size()<<std::endl;
-    //std::cout<<"Cols: "<< inivals[0].size()<<std::endl;
+    //std::cout<<"Rows: "<< inivals.rows()<<std::endl;
+    //std::cout<<"Cols: "<< inivals.columns(0)<<std::endl;
+    
+    //Rprintf("Good until here? ok");
     
     double coef = -(Nind/2);
     

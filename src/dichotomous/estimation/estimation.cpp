@@ -81,6 +81,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.w = weights;
 	data.G = theta.rows();
 	build_matrixes();
+	
+	bool bayesian_flag = false;
 
 	switch ( themodel ) {
 		case model_type::onepl:
@@ -94,12 +96,18 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			break;
       	case model_type::bayesian:
       	    //Here call my method for matrix to optimizer vector
-      	    data.m = new bayesian(initial_values);
+      	    //If they give me initial values in R, so instance my vector
+      	    if ( initial_values.rows() > 1 ) {
+      	        data.m = new bayesian(initial_values);
+      	    }
+      	    else {
+      	        bayesian_flag = true;
+      	        data.m = new bayesian();
+      	    }
       	    break;
 		default:
 			data.m = new twopl();
 	}
-
 
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
@@ -119,6 +127,19 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			load_multi_initial_values(initial_values);
 		else
 			compute_1D_initial_values();
+		
+		if(bayesian_flag) {
+		    dynamic_cast<bayesian*>(data.m)->set_c_values(data.zeta[0]);
+		    //need initial values
+		    int row = data.zeta[0].size();
+		    int col = (data.zeta[0])[0].size();
+		    data.initial_values = matrix<double>(row,col);
+		    for(int p = 0; p < row ;++p) {
+		        for(int j = 0; j < (data.zeta[0])[p].size(); ++j) {
+		            data.initial_values(p,j) = (data.zeta[0])[p](j);
+		        }
+		    }
+		}
 	}
 
 	//Configurations for the estimation
@@ -176,7 +197,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	//For bayesian
 	int has_c_value = 0;
-	if(data.m->parameters==3) {
+	if(data.m->type==4) {
 		total_parameters--;
 		has_c_value = 1;
 	}
@@ -307,8 +328,9 @@ void estimation::EMAlgorithm ( bool verbose ) {
 		current = iterations % ACCELERATION_PERIOD;
 		if ( current == 2 )
 			ramsay(data.zeta, data.pinned_items);
-
+        //Rprintf("I'm doing E Step\n");
 		Estep(data, current);
+		//Rprintf("Now I'm doing M Step\n");
 		dif = Mstep(data, current);
 		++iterations;
 		if ( verbose ) Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);

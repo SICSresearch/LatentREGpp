@@ -16,11 +16,13 @@ namespace dichotomous {
 
 class bayesian: public dichotomous::model {
 public:
-	//bayesian();
-	bayesian(matrix<double>&);
+	bayesian();
+	bayesian(matrix<double>);
+	bayesian(std::vector<optimizer_vector>);
 	virtual ~bayesian();
 	double P(std::vector<double>&, const optimizer_vector&, int);
-
+	void set_c_values(std::vector<optimizer_vector>);
+	
 private:
 	matrix<double> c_values; 
 };

@@ -57,7 +57,7 @@ void Estep ( estimation_data &data, int current ) {
 			P(g, i) = data.m->P(theta_g, zeta[i], i);
 		}
 	}
-
+	
 	double integral_l = 0;
 
 	/**
