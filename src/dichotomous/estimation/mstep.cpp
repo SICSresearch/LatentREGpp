@@ -39,7 +39,7 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   
   //Log(Pzetai)
   //Bayessian mode
-  if(data->m->type==4) {
+  if(data->m->type==model_type::bayesian) {
     
     matrix<double> &inivals = data->initial_values;
     
@@ -137,13 +137,16 @@ double Mstep(estimation_data &data, int current) {
     } else {
       for ( int j = 0; j < next_zeta[i].size() - 1; ++j )
         max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
-      double c_current = current_zeta[i](current_zeta[i].size() - 1);
-      double c_next = next_zeta[i](next_zeta[i].size() - 1);
-      
-      c_current = 1.0 / (1.0 + exp(-c_current));
-      c_next = 1.0 / (1.0 + exp(-c_next));
-      
-      max_difference = maxp(max_difference, std::abs(c_next - c_current));
+      //if the vector is cut
+      if(!(data.m->parameters == THREE_PARAMETERS && data.m->type == model_type::bayesian)) {
+          double c_current = current_zeta[i](current_zeta[i].size() - 1);
+          double c_next = next_zeta[i](next_zeta[i].size() - 1);
+          
+          c_current = 1.0 / (1.0 + exp(-c_current));
+          c_next = 1.0 / (1.0 + exp(-c_next));
+          
+          max_difference = maxp(max_difference, std::abs(c_next - c_current));
+      }
     }
   }
   

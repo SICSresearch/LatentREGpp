@@ -51,7 +51,12 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
       ++j;
 
       //c
-      if ( parameters == latentregpp::THREE_PARAMETERS ) {
+      if ( e.data.m->type == latentregpp::model_type::bayesian && parameters == latentregpp::THREE_PARAMETERS) {
+          double &c = zetas(i, j);
+          c = e.data.initial_values(i,j);
+          c = 1.0 / (1.0 + exp(-c));
+      } 
+      else if ( parameters == latentregpp::THREE_PARAMETERS ) {
         double &c = zetas(i, j);
         c = e.data.zeta[current_zeta][i](j);
         c = 1.0 / (1.0 + exp(-c));

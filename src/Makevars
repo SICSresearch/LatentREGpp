@@ -3,7 +3,7 @@ CXX_STD = CXX11
 # PATHS
 INCPATH=../inst/include
 BUILDPATH = ../inst/include
-PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
+PKG_CPPFLAGS = -O2 $(CXXPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
 PKG_CXXFLAGS = -Wno-deprecated-declarations $(SHLIB_OPENMP_CXXFLAGS) `$(R_HOME)/bin/Rscript -e "Rcpp:::CxxFlags()"` `$(R_HOME)/bin/Rscript -e 'writeLines(paste("-I",system.file(package="BH"),"/include",sep = ""))'`
 PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) -L$(INCPATH) -lfull $(LIBM)
 LIBS =-L./ -L/../inst

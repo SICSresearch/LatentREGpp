@@ -108,7 +108,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		default:
 			data.m = new twopl();
 	}
-
+	
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
 		//Pinned items in multidimensional case (the first of each dimension)
@@ -129,14 +129,33 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			compute_1D_initial_values();
 		
 		if(bayesian_flag) {
-		    dynamic_cast<bayesian*>(data.m)->set_c_values(data.zeta[0]);
+		    //I cut c in zeta in compute_1D. So, I need to paste c for 
+		    //data.initial_values and for bayesian model probability
+		    std::vector<optimizer_vector> tmp(p);
+		    optimizer_vector ov;
+		 
+		    int tot = 0;
+		    
+		    for ( int i = 0; i < p; ++i ) {
+		        tot = data.zeta[0].at(i).size();
+		        ov = optimizer_vector(tot+1);
+		        for ( int j = 0; j < tot; ++j ) {
+		            ov(j) = data.zeta[0].at(i)(j);
+		        }
+		        ov(tot) = DEFAULT_C_INITIAL_VALUE;
+		        tmp[i] = ov;
+		    }
+		    
+		    dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
+		    
 		    //need initial values
-		    int row = data.zeta[0].size();
-		    int col = (data.zeta[0])[0].size();
+		    int row = tmp.size();
+		    int col = tmp[0].size();
 		    data.initial_values = matrix<double>(row,col);
+		    
 		    for(int p = 0; p < row ;++p) {
-		        for(int j = 0; j < (data.zeta[0])[p].size(); ++j) {
-		            data.initial_values(p,j) = (data.zeta[0])[p](j);
+		        for(int j = 0; j < tmp[p].size(); ++j) {
+		            data.initial_values(p,j) = tmp[p](j);
 		        }
 		    }
 		}
@@ -145,7 +164,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
 	this->convergence_difference = convergence_difference;
-	this->iterations = 0;	
+	this->iterations = 0;
 }
 
 void estimation::build_matrixes() {
@@ -197,7 +216,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	//For bayesian
 	int has_c_value = 0;
-	if(data.m->type==4) {
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS)) {
 		total_parameters--;
 		has_c_value = 1;
 	}
@@ -245,8 +264,6 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	data.loglikelihood = NOT_COMPUTED;
 	iterations = 0;
-
-	//Be sure about initial values matrix in estimation_data instance
 }
 
 void estimation::compute_1D_initial_values() {
@@ -262,10 +279,18 @@ void estimation::compute_1D_initial_values() {
 	zeta = std::vector<optimizer_vector>(p);
 	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + data.d;
 
+	//if bayesian
+	int hasnt_c_value = 0;
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS)) {
+		total_parameters--;
+		hasnt_c_value = 1;
+	}
+
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
-		for ( int j = 0; j < total_parameters; ++j )
+		for ( int j = 0; j < total_parameters; ++j ) {
 			zeta[i](j) = DEFAULT_INITIAL_VALUE;
+		}
 	}
 	
 	if ( d == 1 ) {
@@ -278,7 +303,7 @@ void estimation::compute_1D_initial_values() {
 			if ( data.m->parameters > ONE_PARAMETER ) {
 				item_i(0) = alpha[i];
 				item_i(1) = gamma[i];
-				if ( data.m->parameters == THREE_PARAMETERS ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
+				if ( data.m->parameters == THREE_PARAMETERS && hasnt_c_value==0) item_i(2) = DEFAULT_C_INITIAL_VALUE;
 			} else {
 				item_i(0) = gamma[i];
 			}
@@ -293,8 +318,12 @@ void estimation::compute_1D_initial_values() {
 
 			if ( data.m->parameters < THREE_PARAMETERS ) item_i(item_i.size() - 1) = gamma[i];
 			else {
-				item_i(item_i.size() - 2) = gamma[i];
-				item_i(item_i.size() - 1) = DEFAULT_C_INITIAL_VALUE;
+				if(hasnt_c_value==0) {
+					item_i(item_i.size() - 2) = gamma[i];
+					item_i(item_i.size() - 1) = DEFAULT_C_INITIAL_VALUE;
+				} else {
+					item_i(item_i.size() - 1) = gamma[i];
+				}
 			}
 		}
 
@@ -317,6 +346,15 @@ void estimation::compute_1D_initial_values() {
 		}
 	}
 	data.loglikelihood = NOT_COMPUTED;
+
+	//Test for bugs
+	/*Rprintf("Show me what is my vector");
+	for ( int i = 0; i < p; ++i ) {
+		for ( int j = 0; j < total_parameters; ++j )
+			Rprintf("%lf ",zeta[i](j));
+		Rprintf("\n");
+	}*/
+
 }
 
 void estimation::EMAlgorithm ( bool verbose ) {
@@ -328,9 +366,7 @@ void estimation::EMAlgorithm ( bool verbose ) {
 		current = iterations % ACCELERATION_PERIOD;
 		if ( current == 2 )
 			ramsay(data.zeta, data.pinned_items);
-        //Rprintf("I'm doing E Step\n");
 		Estep(data, current);
-		//Rprintf("Now I'm doing M Step\n");
 		dif = Mstep(data, current);
 		++iterations;
 		if ( verbose ) Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);

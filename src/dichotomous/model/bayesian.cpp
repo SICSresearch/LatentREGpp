@@ -28,11 +28,6 @@ bayesian::bayesian(matrix<double> c) : model(model_type::bayesian, THREE_PARAMET
     }*/
 }
 
-bayesian::bayesian(std::vector<optimizer_vector> c) {
-    //this->c_values = c;
-    Rprintf("Cosntructor with optimizer_vector");
-}
-
 double bayesian::P(std::vector<double> &theta, const optimizer_vector &parameters, int i) {
 	double gamma_parameter = parameters(parameters.size() - 1);
 
@@ -43,7 +38,10 @@ double bayesian::P(std::vector<double> &theta, const optimizer_vector &parameter
 	int item = i;
 	//double c = 0.1;
 	double c = c_values(item,c_values.columns(item)-1);
-	c = 1.0 / (1.0 + exp(-c));
+	//Rprintf("what is actually c: %lf",c);
+	c = -2.19;
+	if(c<0 || c>1)
+	    c = 1.0 / (1.0 + exp(-c));
 
 	//Initialized with gamma value
 	double eta = parameters(parameters.size() - 1);
