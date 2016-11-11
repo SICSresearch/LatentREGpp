@@ -23,7 +23,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights,
                    bool dichotomous_data,
-                   IntegerVector Rclusters = IntegerVector::create(),
+                   IntegerVector Rpinned_items = IntegerVector::create(),
                    NumericMatrix Rinitial_values = NumericMatrix(1, 1),
                    bool verbose = true );
 

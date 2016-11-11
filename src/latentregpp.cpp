@@ -6,7 +6,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
                    NumericMatrix Rtheta, NumericVector Rweights, 
                    IntegerVector Rindividual_weights, 
                    bool dichotomous_data,
-                   IntegerVector Rclusters,
+                   IntegerVector Rpinned_items,
                    NumericMatrix Rinitial_values,
                    bool verbose ) {
   // Converting data types
@@ -14,21 +14,21 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   latentregpp::matrix<double> theta;
   std::vector<double> weights;
   std::vector<int> individual_weights;
-  std::vector<int> clusters;
+  std::vector<int> pinned_items;
   latentregpp::matrix<double> initial_values;
 
   latentregpp::convert_matrix(Rdata, Y);
   latentregpp::convert_matrix(Rtheta, theta);
   latentregpp::convert_vector(Rweights, weights);
   latentregpp::convert_vector(Rindividual_weights, individual_weights);
-  latentregpp::convert_vector(Rclusters, clusters);
+  latentregpp::convert_vector(Rpinned_items, pinned_items);
   latentregpp::convert_matrix(Rinitial_values, initial_values);
 
   if ( dichotomous_data ) {
     //Estimation object  
     latentregpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
                                      theta, weights, individual_weights,
-                                     clusters, initial_values);
+                                     pinned_items, initial_values);
     //EM
     e.EMAlgorithm(verbose);
     
@@ -78,7 +78,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   //Estimation object  
   latentregpp::polytomous::estimation e(Y, dim, model, EMepsilon, 
                                    theta, weights, individual_weights,
-                                   clusters, initial_values);
+                                   pinned_items, initial_values);
   //EM
   e.EMAlgorithm(verbose);
   

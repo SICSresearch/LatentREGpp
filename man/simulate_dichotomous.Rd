@@ -5,7 +5,8 @@
 \title{Dichotomous data simulation}
 \usage{
 simulate_dichotomous(dim.data = 1, sample.size = 1000,
-  size.cluster = c(20), seed_data)
+  size.cluster = c(20), seed_data = 5000L, seed_item = 1000,
+  model = "2PL")
 }
 \arguments{
 \item{dim.data}{Data dimension}
@@ -14,9 +15,23 @@ simulate_dichotomous(dim.data = 1, sample.size = 1000,
 
 \item{size.cluster}{Vector containing the number of items by dimension}
 
-\item{seed_data}{Seed for simulation}
+\item{seed_data}{Seed for simulation of the data}
+
+\item{seed_item}{Seed for simulation of the item parameters}
+}
+\value{
+list with the simulated data, the information of the item parameters and
+the individual parameters
 }
 \description{
-This function generates dichotomous test of an specified dimension and size. The items per dimension are specified in the size.cluster vector, and the individuals are specified in sample.size.
+This function generates dichotomous test
+}
+\examples{
+
+#Example 1: see by default options
+simm=simulate_dichotomous()
+names(simm)
+simm$traits
+simm$params.it
 }
 

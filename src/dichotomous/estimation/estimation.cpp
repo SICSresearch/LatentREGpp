@@ -16,7 +16,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   matrix<double> theta,
 					   std::vector<double> weights,
 					   std::vector<int> individual_weights,
-					   std::vector<int> clusters,
+					   std::vector<int> pinned_items,
 					   matrix<double> initial_values ) {
 	/**
 	 * Object to allocate all data needed in estimation process
@@ -99,15 +99,9 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 
 	if ( d == 1 ) compute_1D_initial_values();
 	else {
-		//Pinned items in multidimensional case (the first of each dimension)
-		std::set<int> &pinned_items = data.pinned_items;
-
-		//clusters size MUST be equal to the number of dimensions
-		if ( clusters.size() == d ) {
-			int pinned = 0;
-			for ( unsigned int i = 0; i < clusters.size(); ++i ) {
-				pinned_items.insert(pinned);
-				pinned += clusters[i];
+		if ( pinned_items.size() == d ) {
+			for ( auto pinned : pinned_items ) {
+				data.pinned_items.insert(pinned);
 			}
 		}
 

@@ -86,7 +86,7 @@ class estimation {
 		 * @param convergence_difference epsilon convergence difference.
 		 * @param theta quadrature points
 		 * @param weights quadrature points' weights
-		 * @param clusters a std vector integer template with number of items for each dimension.
+		 * @param pinned_items a std vector integer template with number of items for each dimension.
 		 * @param initial_values matrix containing initial values
 		 */
 		estimation(matrix<char>&, unsigned int, int themodel = model_type::twopl,
@@ -94,7 +94,7 @@ class estimation {
 						matrix<double> theta = EMPTY_REAL_MATRIX,
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,
 					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR,
-					    std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
+					    std::vector<int> pinned_items = EMPTY_INTEGER_VECTOR,
 					    matrix<double> initial_values = EMPTY_REAL_MATRIX );
 
 		/**

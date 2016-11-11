@@ -142,6 +142,8 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 			if ( length(clusters) != dim )
 				stop("Clusters length must be equal to the number of dimensions")
 
+			pinned_items = itemfix(datos = data, size.cluster = clusters)
+
 			#Initial values
 			if ( is.null(initial_values) ) {
 				# Item parameters estimation with no initial values provided
@@ -149,7 +151,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 									Rtheta = theta, Rweights = weights, 
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
-									Rclusters = clusters,
+									Rpinned_items = pinned_items,
 									verbose = verbose)
 			} else {
 				initial_values = data.matrix(initial_values)
@@ -161,7 +163,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 									Rtheta = theta, Rweights = weights, 
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
-									Rclusters = clusters,
+									Rpinned_items = pinned_items,
 									Rinitial_values = initial_values, 
 									verbose = verbose)
 			}
@@ -173,6 +175,8 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 			if ( length(clusters) != dim )
 				stop("Clusters length must be equal to the number of dimensions")
 
+			pinned_items = itemfix(datos = data, size.cluster = clusters)
+
 			#Initial values
 			if ( is.null(initial_values) ) {
 				# Item parameters estimation with no intial values provided
@@ -180,7 +184,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 										Rtheta = theta, Rweights = weights, 
 										Rindividual_weights = individual_weights,
 										dichotomous_data = dichotomous_data,
-										Rclusters = clusters,
+										Rpinned_items = pinned_items,
 										verbose = verbose )
 			} else {
 				initial_values = data.matrix(initial_values)
@@ -192,7 +196,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 										Rtheta = theta, Rweights = weights, 
 										Rindividual_weights = individual_weights,
 										dichotomous_data = dichotomous_data,
-										Rclusters = clusters,
+										Rpinned_items = pinned_items,
 										Rinitial_values = initial_values, 
 										verbose = verbose )
 			}
@@ -205,7 +209,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	}
 
 	obj_return$dimension = dim
-	obj_return$model = model
+	obj_return$model = model 
 	obj_return$clusters = clusters
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
