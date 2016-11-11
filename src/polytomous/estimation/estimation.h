@@ -107,7 +107,7 @@ class estimation {
 		 * it is called if custom_initial_values_filename is none by default.
 		 * @see custom_initial_values_filename
 		 */
-		void compute_1D_initial_values();
+		void compute_initial_values();
 
 		/**
 		 * Loads the initial values for every parameter of the items to start the estimation

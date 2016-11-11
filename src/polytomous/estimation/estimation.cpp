@@ -114,19 +114,18 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			data.m = new twopl(d, &categories_item);
 	}
 
-	if ( d == 1 ) compute_1D_initial_values();
-	else {
+	if ( d > 1 ) {
 		if ( pinned_items.size() == d ) {
 			for ( auto pinned : pinned_items ) {
 				data.pinned_items.insert(pinned - 1);
 			}
 		}
+	}
 
-		if ( initial_values.rows() > 1 )
-			load_multi_initial_values(initial_values);
-		else
-			compute_1D_initial_values();
-	}	
+	if ( initial_values.rows() > 1 ) 
+		load_multi_initial_values(initial_values);
+	else
+		compute_initial_values();	
 
 	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
@@ -236,7 +235,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 }
 
 
-void estimation::compute_1D_initial_values() {
+void estimation::compute_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Dimension

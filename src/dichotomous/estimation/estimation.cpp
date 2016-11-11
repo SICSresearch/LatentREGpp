@@ -104,51 +104,51 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 				data.m = new twopl();
 		}
 	}
-	
-	if ( d == 1 ) compute_1D_initial_values();
-	else {
+
+
+	if ( d > 1 ) {
 		if ( pinned_items.size() == d ) {
 			for ( auto pinned : pinned_items ) {
 				data.pinned_items.insert(pinned - 1);
 			}
 		}
+	}
 
-		if ( initial_values.rows() > 1 )
-			load_multi_initial_values(initial_values);
-		else
-			compute_1D_initial_values();
-		
-		if(is_bayesian) {
-		    //I cut c in zeta in compute_1D. So, I need to paste c for 
-		    //data.initial_values and for bayesian model probability
-		    std::vector<optimizer_vector> tmp(p);
-		    optimizer_vector ov;
-		 
-		    int tot = 0;
-		    
-		    for ( int i = 0; i < p; ++i ) {
-		        tot = data.zeta[0].at(i).size();
-		        ov = optimizer_vector(tot+1);
-		        for ( int j = 0; j < tot; ++j ) {
-		            ov(j) = data.zeta[0].at(i)(j);
-		        }
-		        ov(tot) = DEFAULT_C_INITIAL_VALUE;
-		        tmp[i] = ov;
-		    }
-		    
-		    dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
-		    
-		    //need initial values
-		    int row = tmp.size();
-		    int col = tmp[0].size();
-		    data.initial_values = matrix<double>(row,col);
-		    
-		    for(int p = 0; p < row ;++p) {
-		        for(int j = 0; j < tmp[p].size(); ++j) {
-		            data.initial_values(p,j) = tmp[p](j);
-		        }
-		    }
-		}
+	if ( initial_values.rows() > 1 ) 
+		load_multi_initial_values(initial_values);
+	else
+		compute_initial_values();
+
+	if(is_bayesian) {
+	    //I cut c in zeta in compute_1D. So, I need to paste c for 
+	    //data.initial_values and for bayesian model probability
+	    std::vector<optimizer_vector> tmp(p);
+	    optimizer_vector ov;
+	 
+	    int tot = 0;
+	    
+	    for ( int i = 0; i < p; ++i ) {
+	        tot = data.zeta[0].at(i).size();
+	        ov = optimizer_vector(tot+1);
+	        for ( int j = 0; j < tot; ++j ) {
+	            ov(j) = data.zeta[0].at(i)(j);
+	        }
+	        ov(tot) = DEFAULT_C_INITIAL_VALUE;
+	        tmp[i] = ov;
+	    }
+	    
+	    dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
+	    
+	    //need initial values
+	    int row = tmp.size();
+	    int col = tmp[0].size();
+	    data.initial_values = matrix<double>(row,col);
+	    
+	    for(int p = 0; p < row ;++p) {
+	        for(int j = 0; j < tmp[p].size(); ++j) {
+	            data.initial_values(p,j) = tmp[p](j);
+	        }
+	    }
 	}
 
 	//Configurations for the estimation
@@ -256,7 +256,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	iterations = 0;
 }
 
-void estimation::compute_1D_initial_values() {
+void estimation::compute_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Number of examinees
