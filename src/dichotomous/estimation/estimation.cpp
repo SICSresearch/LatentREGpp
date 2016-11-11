@@ -109,7 +109,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	else {
 		if ( pinned_items.size() == d ) {
 			for ( auto pinned : pinned_items ) {
-				data.pinned_items.insert(pinned);
+				data.pinned_items.insert(pinned - 1);
 			}
 		}
 
