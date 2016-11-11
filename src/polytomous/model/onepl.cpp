@@ -13,6 +13,7 @@ namespace polytomous {
 
 onepl::onepl(int d, std::vector<int> *categories_item) :
 	model(model_type::onepl, ONE_PARAMETER, d, categories_item) {
+	printf("GPC\n");
 }
 
 onepl::~onepl() {}
@@ -42,6 +43,8 @@ double onepl::Pstar_ik(std::vector<double> &theta, const optimizer_vector &param
 
 double onepl::Pik(std::vector<double> &theta, const optimizer_vector &parameters, int i, int k) {
 	double P_ik = Pstar_ik(theta, parameters, i, k - 1) - Pstar_ik(theta, parameters, i, k);
+
+	printf("onepl\n");
 
 	P_ik = std::max(P_ik, LOWER_BOUND_);
 	P_ik = std::min(P_ik, UPPER_BOUND_);

@@ -14,6 +14,7 @@
 #include "../model/model.h"
 #include "../model/onepl.h"
 #include "../model/twopl.h"
+#include "../model/gpc.h"
 
 #include "../../util/matrix.h"
 #include "../../util/input.h"

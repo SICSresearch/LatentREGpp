@@ -65,8 +65,10 @@ void Estep ( estimation_data &data, int current ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
 			int mi = categories_item[i];
-			for ( int k = 0; k < mi; ++k )
+			for ( int k = 0; k < mi; ++k ) {
 				P[g](i, k) = data.m->Pik(theta_g, zeta[i], i, k);
+				printf("%.5lf\t", P[g](i, k));
+			}
 		}
 	}
 
@@ -141,6 +143,34 @@ void Estep ( estimation_data &data, int current ) {
 			}
 		}
 	}
+/*
+	printf("Probabilities\n");
+	for ( int g = 0; g < G; ++g ) {
+		printf("g: %d\n", g + 1);
+		for ( int i = 0; i < p; ++i ) {
+			int mi = categories_item[i];
+			for ( int k = 0; k < mi; ++k )
+				printf("%.5lf\t", P[g](i, k));
+			printf("\n");
+		}
+		printf("\n");
+		printf("\n");
+	}
+
+
+	printf("R\n");
+	for ( int g = 0; g < G; ++g ) {
+		printf("g: %d\n", g + 1);
+		for ( int i = 0; i < p; ++i ) {
+			int mi = categories_item[i];
+			for ( int k = 0; k < mi; ++k )
+				printf("%.5lf\t", r[g](i, k));
+			printf("\n");
+		}
+		printf("\n");
+		printf("\n");
+	}
+*/
 
 	//Asserting pi correctness
 //	bool pi_ok = test_pi(pi);

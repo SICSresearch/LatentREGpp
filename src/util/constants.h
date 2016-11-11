@@ -59,7 +59,7 @@ namespace latentregpp {
 	};
 
 	enum model_type {
-		onepl = 1, twopl = 2, threepl = 3
+		onepl = 1, twopl = 2, threepl = 3, gpc = 4
 	};
 }
 

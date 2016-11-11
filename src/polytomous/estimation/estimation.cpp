@@ -18,6 +18,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   std::vector<int> individual_weights,
 					   std::vector<int> pinned_items,
 					   matrix<double> initial_values ) {
+	//freopen("/home/milder/Pictures/output.txt", "w", stdout);
+
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -103,14 +105,22 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
+	printf("Model %d\n", themodel);
 	switch ( themodel ) {
 		case model_type::onepl:
+		printf("Va 1pl\n");
 			data.m = new onepl(d, &categories_item);
 			break;
 		case model_type::twopl:
+		printf("Va 2pl\n");
 			data.m = new twopl(d, &categories_item);
 			break;
+		case model_type::gpc:
+			printf("Va gpc\n");
+			data.m = new gpc(d, &categories_item);
+			break;
 		default:
+			printf("Model not found\n");
 			data.m = new twopl(d, &categories_item);
 	}
 
@@ -372,6 +382,21 @@ void estimation::compute_1D_initial_values() {
 	iterations = 0;
 }
 void estimation::EMAlgorithm ( bool verbose ) {
+	
+
+
+	printf("Valores iniciales\n");
+
+	for ( optimizer_vector op : data.zeta[0] ) {
+		for ( int i = 0; i < op.size(); ++i ) {
+			printf("%.5lf\t", op(i));
+		}
+		printf("\n");
+	}
+
+	printf("\n");
+
+
 	if ( verbose ) Rprintf("EM Algorithm started\n");
 	double dif = 0.0;
 	iterations = 0;

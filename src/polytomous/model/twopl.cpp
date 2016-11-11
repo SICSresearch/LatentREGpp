@@ -43,6 +43,8 @@ double twopl::Pstar_ik(std::vector<double> &theta, const optimizer_vector &param
 double twopl::Pik(std::vector<double> &theta, const optimizer_vector &parameters, int i, int k) {
 	double P_ik = Pstar_ik(theta, parameters, i, k - 1) - Pstar_ik(theta, parameters, i, k);
 
+	printf("twopl\n");
+
 	P_ik = std::max(P_ik, LOWER_BOUND_);
 	P_ik = std::min(P_ik, UPPER_BOUND_);
 	return P_ik;
