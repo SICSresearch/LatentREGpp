@@ -17,7 +17,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   std::vector<double> weights,
 					   std::vector<int> individual_weights,
 					   std::vector<int> clusters,
-					   matrix<double> initial_values ) {
+					   matrix<double> initial_values, bool is_bayesian ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -81,32 +81,28 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.w = weights;
 	data.G = theta.rows();
 	build_matrixes();
-	
-	bool bayesian_flag = false;
 
-	switch ( themodel ) {
-		case model_type::onepl:
-			data.m = new onepl();
-			break;
-		case model_type::twopl:
-			data.m = new twopl();
-			break;
-		case model_type::threepl:
-			data.m = new threepl();
-			break;
-      	case model_type::bayesian:
-      	    //Here call my method for matrix to optimizer vector
-      	    //If they give me initial values in R, so instance my vector
-      	    if ( initial_values.rows() > 1 ) {
-      	        data.m = new bayesian(initial_values);
-      	    }
-      	    else {
-      	        bayesian_flag = true;
-      	        data.m = new bayesian();
-      	    }
-      	    break;
-		default:
-			data.m = new twopl();
+	if(is_bayesian) {
+		if ( initial_values.rows() > 1 ) {
+  	        data.m = new bayesian(themodel, initial_values);
+  	    }
+  	    else {
+  	        data.m = new bayesian(themodel);
+  	    }
+	} else {
+		switch ( themodel ) {
+			case model_type::onepl:
+				data.m = new onepl();
+				break;
+			case model_type::twopl:
+				data.m = new twopl();
+				break;
+			case model_type::threepl:
+				data.m = new threepl();
+				break;
+			default:
+				data.m = new twopl();
+		}
 	}
 	
 	if ( d == 1 ) compute_1D_initial_values();
@@ -128,7 +124,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		else
 			compute_1D_initial_values();
 		
-		if(bayesian_flag) {
+		if(is_bayesian) {
 		    //I cut c in zeta in compute_1D. So, I need to paste c for 
 		    //data.initial_values and for bayesian model probability
 		    std::vector<optimizer_vector> tmp(p);

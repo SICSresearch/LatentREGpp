@@ -96,7 +96,7 @@ class estimation {
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,
 					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR,
 					    std::vector<int> clusters = EMPTY_INTEGER_VECTOR,
-					    matrix<double> initial_values = EMPTY_REAL_MATRIX );
+					    matrix<double> initial_values = EMPTY_REAL_MATRIX, bool is_bayesian = false);
 
 		/**
 		 * Destructor for estimation class.

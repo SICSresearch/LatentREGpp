@@ -126,6 +126,84 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
                       Rcpp::Named("r") = Rr);
 }
 
+List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
+                   NumericMatrix Rtheta, NumericVector Rweights, 
+                   IntegerVector Rindividual_weights, 
+                   bool dichotomous_data,
+                   IntegerVector Rclusters,
+                   NumericMatrix Rinitial_values,
+                   bool verbose ) {
+  // Converting data types
+  latentregpp::matrix<char> Y;
+  latentregpp::matrix<double> theta;
+  std::vector<double> weights;
+  std::vector<int> individual_weights;
+  std::vector<int> clusters;
+  latentregpp::matrix<double> initial_values;
+
+  latentregpp::convert_matrix(Rdata, Y);
+  latentregpp::convert_matrix(Rtheta, theta);
+  latentregpp::convert_vector(Rweights, weights);
+  latentregpp::convert_vector(Rindividual_weights, individual_weights);
+  latentregpp::convert_vector(Rclusters, clusters);
+  latentregpp::convert_matrix(Rinitial_values, initial_values);
+
+  if ( dichotomous_data ) {
+    //Estimation object
+    latentregpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
+                                     theta, weights, individual_weights,
+                                     clusters, initial_values, true);
+    //EM
+    e.EMAlgorithm(verbose);
+    
+    NumericMatrix zetas(e.data.p, e.data.d + 2);
+    int current_zeta = e.get_iterations() % latentregpp::ACCELERATION_PERIOD;
+    int parameters = e.data.m->parameters;
+
+    for ( int i = 0; i < e.data.p; ++i ) {
+      int j = 0;
+      //a's and d
+      if ( parameters == latentregpp::ONE_PARAMETER ) {
+        for ( ; j < e.data.d; ++j ) zetas(i, j) = latentregpp::ALPHA_WITH_NO_ESTIMATION;
+        zetas(i, j) = e.data.zeta[current_zeta][i](j - e.data.d);
+      }
+      else {
+        for ( ; j < e.data.d; ++j ) zetas(i, j) = e.data.zeta[current_zeta][i](j);
+        zetas(i, j) = e.data.zeta[current_zeta][i](j);
+      }
+      
+      ++j;
+
+      //c
+      if ( e.data.m->type == latentregpp::model_type::bayesian && parameters == latentregpp::THREE_PARAMETERS) {
+          double &c = zetas(i, j);
+          c = e.data.initial_values(i,j);
+          c = 1.0 / (1.0 + exp(-c));
+      } 
+      else if ( parameters == latentregpp::THREE_PARAMETERS ) {
+        double &c = zetas(i, j);
+        c = e.data.zeta[current_zeta][i](j);
+        c = 1.0 / (1.0 + exp(-c));
+      }
+      else 
+        zetas(i, j) = 0;  
+    }
+
+
+    NumericMatrix Rr;
+    NumericVector Rf;
+    latentregpp::convert_matrix(e.data.r, Rr);
+    latentregpp::convert_vector(e.data.f, Rf);
+
+    return List::create(Rcpp::Named("zetas") = zetas,
+                        Rcpp::Named("Loglik") = e.log_likelihood(),
+                        Rcpp::Named("iterations") = e.get_iterations(),
+                        Rcpp::Named("r") = Rr,
+                        Rcpp::Named("f") = Rf);
+  }
+
+}
+
 List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, 
                            NumericMatrix Rzetas,   
                            NumericMatrix Rtheta, NumericVector Rweights, 

@@ -28,42 +28,78 @@ bayesian::bayesian(matrix<double> c) : model(model_type::bayesian, THREE_PARAMET
     }*/
 }
 
+bayesian::bayesian(int parameters, matrix<double> c) : model(model_type::bayesian, parameters) {
+	this->c_values = c;
+}
+
+bayesian::bayesian(int parameters) : model(model_type::bayesian, parameters) {
+
+}
+
 double bayesian::P(std::vector<double> &theta, const optimizer_vector &parameters, int i) {
-	double gamma_parameter = parameters(parameters.size() - 1);
 
-	//uncommented line below for reparameter a c value [0,1] from gamma in R
-	//double c = 1.0 / (1.0 + exp(-gamma_parameter));
 
-	//need to put c initial value here
-	int item = i;
-	//double c = 0.1;
-	double c = c_values(item,c_values.columns(item)-1);
-	//Rprintf("what is actually c: %lf",c);
-	c = -2.19;
-	if(c<0 || c>1)
-	    c = 1.0 / (1.0 + exp(-c));
+	if(this->parameters == 1) {
+		//Initialized with gamma_k value
+		double eta = parameters(0);
 
-	//Initialized with gamma value
-	double eta = parameters(parameters.size() - 1);
+		//Computing dot product
+		for ( size_t j = 0; j < theta.size(); ++j )
+			eta += 1 * theta[j]; //no alpha in this model
 
-	//Computing dot product
-	for ( size_t j = 0; j < theta.size(); ++j )
-		eta += parameters(j) * theta[j];
+		double P = 1.0 / (1.0 + std::exp(-eta));
+		P = std::max(P, LOWER_BOUND_);
+		P = std::min(P, UPPER_BOUND_);
+		return P;
+	}
+	else if(this->parameters == 2) {
+		//Initialized with gamma value
+		double eta = parameters(parameters.size() - 1);
 
-	/**three different formulas**/
+		//Computing dot product
+		for ( size_t j = 0; j < theta.size(); ++j )
+			eta += parameters(j) * theta[j];
 
-	//with clear
-	//double P = (1.0 / (1.0 + exp(-gamma_parameter))) + (1.0 - (1.0 / (1.0 + exp(-gamma_parameter)))) / (1.0 + exp(-eta));
+		double P = 1.0 / (1.0 + std::exp(-eta));
+		P = std::max(P, LOWER_BOUND_);
+		P = std::min(P, UPPER_BOUND_);
+		return P;
+	}
+	else {
 
-	//without clear
-	//double P = (1.0 / (1.0 + std::exp(-gamma_parameter))) + (1.0 / (1.0 + std::exp(gamma_parameter))) * (1.0 / (1.0 + std::exp(-eta)));
+		double gamma_parameter = parameters(parameters.size() - 1);
 
-	//with reparameter
-	double P = c + (1.0 - c) / (1.0 + exp(-eta));
+		//uncommented line below for reparameter a c value [0,1] from gamma in R
+		//double c = 1.0 / (1.0 + exp(-gamma_parameter));
 
-	P = std::max(P, LOWER_BOUND_);
-	P = std::min(P, UPPER_BOUND_);
-	return P;
+		int item = i;
+		double c = c_values(item,c_values.columns(item)-1);
+
+		if(c<0 || c>1)
+		    c = 1.0 / (1.0 + exp(-c));
+
+		//Initialized with gamma value
+		double eta = parameters(parameters.size() - 1);
+
+		//Computing dot product
+		for ( size_t j = 0; j < theta.size(); ++j )
+			eta += parameters(j) * theta[j];
+
+		/**three different formulas**/
+
+		//with clear
+		//double P = (1.0 / (1.0 + exp(-gamma_parameter))) + (1.0 - (1.0 / (1.0 + exp(-gamma_parameter)))) / (1.0 + exp(-eta));
+
+		//without clear
+		//double P = (1.0 / (1.0 + std::exp(-gamma_parameter))) + (1.0 / (1.0 + std::exp(gamma_parameter))) * (1.0 / (1.0 + std::exp(-eta)));
+
+		//with reparameter
+		double P = c + (1.0 - c) / (1.0 + exp(-eta));
+
+		P = std::max(P, LOWER_BOUND_);
+		P = std::min(P, UPPER_BOUND_);
+		return P;
+	}
 }
 
 void bayesian::set_c_values(std::vector<optimizer_vector> c) {

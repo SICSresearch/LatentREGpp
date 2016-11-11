@@ -18,6 +18,8 @@ class bayesian: public dichotomous::model {
 public:
 	bayesian();
 	bayesian(matrix<double>);
+	bayesian(int,matrix<double>);
+	bayesian(int);
 	virtual ~bayesian();
 	double P(std::vector<double>&, const optimizer_vector&, int);
 	void set_c_values(std::vector<optimizer_vector>);
