@@ -39,33 +39,48 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
   
   //Log(Pzetai)
   //Bayessian mode
-  if(false) {
+  if(data->m->type==model_type::bayesian) {
+    
+    matrix<double> &inivals = data->initial_values;
+    
+    //std::cout<<"If I am in mstep give me size of:"<<std::endl;
+    //std::cout<<"Rows: "<< inivals.rows()<<std::endl;
+    //std::cout<<"Cols: "<< inivals.columns(0)<<std::endl;
+    
+    //Rprintf("Good until here? ok");
     
     double coef = -(Nind/2);
     
     double pzetai = 0;
-    bool guessing_parameter = data->m->parameters == THREE_PARAMETERS;
+    //bool guessing_parameter = m.parameters == THREEPL;
     
-    for (int j = 0; j < current_zeta[i].size()-guessing_parameter; ++j)
+    for (int j = 0; j < current_zeta[i].size(); ++j)
     {
       double miu_alpha = 1;
-      double sigma_alpha = 1;
+      double sigma_alpha = 0.8;
       
-      if(j+1==current_zeta[i].size()-guessing_parameter) {
+      if(j+1==current_zeta[i].size()) {
         double miu_d = 0;
-        double sigma_d = 4;
-        pzetai += pow((current_zeta[i](j)-miu_d),2) / pow(sigma_d,2);
-        break;			
+        double sigma_d = 1; //2^2 = 4
+        //pzetai += pow((current_zeta[i](j)-miu_d),2) / pow(sigma_d,2);
+        pzetai += pow((current_zeta[i](j)-inivals(i,j)),2) / pow(sigma_d,2);
+        break;      
       }
       
-      pzetai += pow((current_zeta[i](j)-miu_alpha),2) / pow(sigma_alpha,2);
+      //pzetai += pow((current_zeta[i](j)-miu_alpha),2) / pow(sigma_alpha,2);
+      pzetai += pow((current_zeta[i](j)-inivals(i,j)),2) / pow(sigma_alpha,2);
     }
     
-    if(guessing_parameter) {
-      double miu_gamma = 0.01;//-4.59512;
-      double sigma_gamma = 0.0009;//7;	 
-      pzetai += pow((current_zeta[i](current_zeta[i].size() - 1)-miu_gamma),2) / pow(sigma_gamma,2);	
-    }
+    /*if(guessing_parameter) {
+     double miu_gamma = 0.01;//-4.59512;
+     double sigma_gamma = 0.0009;//7;   
+     //pzetai += pow((current_zeta[i](current_zeta[i].size() - 1)-miu_gamma),2) / pow(sigma_gamma,2);
+     
+     //double tmp = pow((current_zeta[i](current_zeta[i].size() - 1)-inivals[i][inivals[i].size() - 1]),2) / pow(sigma_gamma,2);
+     double tmp = pow((inivals[i][inivals[i].size() - 1]-inivals[i][inivals[i].size() - 1]),2) / pow(sigma_gamma,2);
+     pzetai += tmp;
+     //std::cout<<"My tmp is: "<<tmp<<std::endl;
+    }*/
     
     pzetai *= coef;
     pzetai += value;
@@ -122,13 +137,16 @@ double Mstep(estimation_data &data, int current) {
     } else {
       for ( int j = 0; j < next_zeta[i].size() - 1; ++j )
         max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
-      double c_current = current_zeta[i](current_zeta[i].size() - 1);
-      double c_next = next_zeta[i](next_zeta[i].size() - 1);
-      
-      c_current = 1.0 / (1.0 + exp(-c_current));
-      c_next = 1.0 / (1.0 + exp(-c_next));
-      
-      max_difference = maxp(max_difference, std::abs(c_next - c_current));
+      //if the vector is cut
+      if(!(data.m->parameters == THREE_PARAMETERS && data.m->type == model_type::bayesian)) {
+          double c_current = current_zeta[i](current_zeta[i].size() - 1);
+          double c_next = next_zeta[i](next_zeta[i].size() - 1);
+          
+          c_current = 1.0 / (1.0 + exp(-c_current));
+          c_next = 1.0 / (1.0 + exp(-c_next));
+          
+          max_difference = maxp(max_difference, std::abs(c_next - c_current));
+      }
     }
   }
   

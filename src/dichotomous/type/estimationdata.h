@@ -49,6 +49,7 @@ public:
 	std::vector<optimizer_vector> zeta[ACCELERATION_PERIOD]; /**< Vector of zeta item parameters*/
 	std::map<std::vector<char>, std::vector<int> > patterns; /**< Patterns and their individuals*/
 	std::vector<optimizer_vector> latent_traits; /**< Latent traits */
+  	matrix<double> initial_values; /**< A vector with initial values for data */
 
 	estimation_data(int);
 

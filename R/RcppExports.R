@@ -5,6 +5,10 @@ itemfitcpp <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividu
     .Call('LatentREGpp_itemfitcpp', PACKAGE = 'LatentREGpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rpinned_items, Rinitial_values, verbose)
 }
 
+itemfitcpp_bayesian <- function(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters = as.integer( c()), Rinitial_values = matrix(1, 1), verbose = TRUE) {
+    .Call('LatentREGpp_itemfitcpp_bayesian', PACKAGE = 'LatentREGpp', Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values, verbose)
+}
+
 personfitcpp <- function(Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits = matrix(1, 1)) {
     .Call('LatentREGpp_personfitcpp', PACKAGE = 'LatentREGpp', Rdata, dim, model, Rzetas, Rtheta, Rweights, method, by_individuals, dichotomous_data, Rinit_traits)
 }
