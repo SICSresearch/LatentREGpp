@@ -16,7 +16,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   matrix<double> theta,
 					   std::vector<double> weights,
 					   std::vector<int> individual_weights,
-					   std::vector<int> clusters,
+					   std::vector<int> pinned_items,
 					   matrix<double> initial_values, bool is_bayesian ) {
 	/**
 	 * Object to allocate all data needed in estimation process
