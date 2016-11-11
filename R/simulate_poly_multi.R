@@ -176,7 +176,7 @@ simulate.poly.multi=function(size.cluster=c(25,25,25,25),
   
   params.it=list()
   for(j in 1:length(umbrales))
-  {params.it[[j]]=c(alphas[j,],Gamma[[j]])}
+  {params.it[[j]]=c(alphas=alphas[j,],gamma=Gamma[[j]])}
   
   
   retorno=list(data=Y,params.it=params.it,theta=theta,indclust1=ind1,indclust2=ind2)

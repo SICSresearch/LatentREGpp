@@ -136,15 +136,11 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 							verbose = verbose )
 	} else {
 		if ( dichotomous_data ) {
+			if ( is.null(clusters) )
+				stop("You must specify clusters")
 
-			if ( is.null(clusters) ) {
-				#1. Find a temporal cluster
-				p = ncol(data)
-				d = dim
-				clusters = find_temporal_cluster(p=p,d=d)
-			} else
-				if ( length(clusters) != dim )
-					stop("Clusters length must be equal to the number of dimensions")
+			if ( length(clusters) != dim )
+				stop("Clusters length must be equal to the number of dimensions")
 
 			#Initial values
 			if ( is.null(initial_values) ) {
@@ -173,6 +169,9 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 		} else {
 			if ( is.null(clusters) )
 				stop("You must specify clusters")
+
+			if ( length(clusters) != dim )
+				stop("Clusters length must be equal to the number of dimensions")
 
 			#Initial values
 			if ( is.null(initial_values) ) {
