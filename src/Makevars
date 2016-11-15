@@ -26,7 +26,7 @@ PUTIL=$(INCPATH)/util
 ## DME
 DMESOURCES=estep.cpp estimation.cpp mstep.cpp
 ## DMM
-DMMSOURCES=model.cpp onepl.cpp twopl.cpp threepl.cpp
+DMMSOURCES=model.cpp onepl.cpp twopl.cpp threepl.cpp bayesian.cpp
 ## DMT
 DMTSOURCES=estimationdata.cpp
 ## PME
