@@ -122,6 +122,7 @@ itemfit.bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters
 	obj_return$clusters = clusters
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
+	obj_return$quadpoints = q
   	
   	if ( dichotomous_data )
 		colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")
