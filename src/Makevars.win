@@ -3,9 +3,9 @@ CXX_STD = CXX11
 # PATHS
 INCPATH=../inst/include
 BUILDPATH = ../inst/include
-PKG_CPPFLAGS = $(CXXPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
+PKG_CPPFLAGS = $(CPICFLAGS) -I$(INCPATH) $(R_XTRA_CPPFLAGS)
 BHPATH = $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e 'writeLines(paste("-I",normalizePath(system.file(package="BH"), winslash="/"),"/include",sep = ""))')
-PKG_CXXFLAGS = -Wno-deprecated-declarations $(SHLIB_OPENMP_CXXFLAGS) $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e 'Rcpp:::CxxFlags()') $(BHPATH)
+PKG_CXXFLAGS = $(CXXFLAGS) $(SHLIB_OPENMP_CXXFLAGS) $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e 'Rcpp:::CxxFlags()') $(BHPATH)
 PKG_LIBS = $(SHLIB_OPENMP_CXXFLAGS) -L$(INCPATH) -lfull $(LIBM)
 LIBS =-L./ -L/../inst
 # -L Path to lib
