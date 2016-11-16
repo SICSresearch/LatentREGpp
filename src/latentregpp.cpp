@@ -116,7 +116,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   List Rr(G);
   for ( int g = 0; g < G; ++g ) {
     NumericMatrix Rrg;
-    latentregpp::convert_matrix(e.data.r[g],  Rrg);
+    latentregpp::convert_matrix(e.data.r[g],  Rrg, max_category);
     Rr[g] = Rrg;
   }
 
@@ -223,7 +223,7 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   latentregpp::convert_vector(Rweights, weights);
   
   if ( dichotomous_data ) {
-    //Estimation object 
+    //Estimation object
     latentregpp::dichotomous::estimation e( Y, dim, model, 1e-4, 
                                      theta, weights );
     e.load_multi_initial_values(zetas);

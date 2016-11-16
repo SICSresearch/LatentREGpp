@@ -211,7 +211,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 		has_c_value = 1;
 	}
 
-	data.initial_values(p,total_parameters+has_c_value);
+	data.initial_values = matrix<double>(p,total_parameters+has_c_value);
 	
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
@@ -483,8 +483,7 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	for ( int h = 0; h < d; ++h )
 		value += theta_l(h) * theta_l(h);
 
-	value = std::exp(-0.5 * value);
-	value *= p;
+	value = std::exp(-0.5 * value)/ std::pow( std::sqrt(2.0 * PI_), d/2 );
 
 	for ( int i = 0; i < p; ++i )
 		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i], i)) : 

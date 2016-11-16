@@ -49,6 +49,22 @@ void convert_matrix ( latentregpp::matrix<T> &mat1, Rcpp::NumericMatrix &mat2 ) 
 }
 
 /**
+ * Converts from latentregpp::matrix<T> to Rcpp::NumericMatrix with max size for vector
+ * @param mat1 source object
+ * @param mat2 destination object
+ */
+template <class T>
+void convert_matrix ( latentregpp::matrix<T> &mat1, Rcpp::NumericMatrix &mat2, int max_size ) {
+  mat2 = Rcpp::NumericMatrix(mat1.rows(), max_size);
+  for ( size_t i = 0; i < mat1.rows(); ++i ) 
+    for ( int j = 0; j < max_size; ++j )
+      if(mat1.columns(i)>j)
+        mat2(i, j) = mat1(i, j);
+      else
+        mat2(i, j) = Rcpp::NumericVector::get_na();
+}
+
+/**
  * Converts from std::vector<latentregpp::optimizer_vector> to Rcpp::NumericMatrix
  * @param mat1 source object
  * @param mat2 destination object
