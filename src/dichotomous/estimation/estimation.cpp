@@ -484,6 +484,7 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 		value += theta_l(h) * theta_l(h);
 
 	value = std::exp(-0.5 * value)/ std::sqrt( std::pow(2.0 * PI_ , d) );
+	value = std::log(value);
 
 	for ( int i = 0; i < p; ++i )
 		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i], i)) : 
