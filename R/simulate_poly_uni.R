@@ -1,5 +1,5 @@
 #funcion que simula los datos en poli uni
-simulate.poly.uni = function (n=1000, nitems=20, ncatgs=rep(2,20), seed_item=5000L,seed_data=2000L,model) 
+simulate.poly.uni = function (n=1000, nitems=20, ncatgs=rep(2,20), seed_item=5000L,seed_data=2000L,model="2PL") 
 {
   thetas = list()
   umbrales = list()
@@ -52,6 +52,7 @@ simulate.poly.uni = function (n=1000, nitems=20, ncatgs=rep(2,20), seed_item=500
     d[[j]] = -1 * d[[j]] * disc[[j]]
   }
   
-  retorno = list(data = data, params.it = cbind(t(mapply(function(x,y){c("disc"=x,"-dif*disc"=y)},disc,d)),guessing=cc),traits=z)
+  itempars=mapply(function(x,y){c("disc"=x,"-dif*disc"=y)},disc,d)
+  retorno = list(data = data, params.it = itempars,traits=z,guessing=cc)
   return(retorno)
 }
