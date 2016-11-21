@@ -7,7 +7,7 @@
 itemfit.bayesian(data, dim, model = "2PL", EMepsilon = 1e-04,
   clusters = NULL, quad_tech = NULL, quad_points = NULL,
   individual_weights = as.integer(c()), initial_values = NULL,
-  verbose = TRUE, save_time = TRUE)
+  noguessing = TRUE, verbose = TRUE, save_time = TRUE)
 }
 \arguments{
 \item{data}{The matrix containing the answers of tested individuals}
@@ -29,6 +29,9 @@ or "QMCEM" for Quasi-Monte Carlo quadrature}
 
 \item{initial_values}{A matrix with initial values for estimation process. Be sure about
 dimension, model and consistency with data.}
+
+\item{noguessing}{In 3PL model and dimension is greater than 1, If true, guessing parameter will not be estimated in zeta vector. Instead
+c value will have a default initial value. Otherwise guessing parameter will be estimated with zeta vector.}
 
 \item{verbose}{True for get information about estimation process in runtime. False in otherwise.}
 

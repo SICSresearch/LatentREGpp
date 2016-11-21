@@ -13,13 +13,15 @@
 #'@param individual_weights A vector with Weights of the quadrature points.
 #'@param initial_values A matrix with initial values for estimation process. Be sure about
 #'dimension, model and consistency with data. 
+#'@param noguessing In 3PL model and dimension is greater than 1, If true, guessing parameter will not be estimated in zeta vector. Instead
+#'c value will have a default initial value. Otherwise guessing parameter will be estimated with zeta vector.
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
 #'@export
 itemfit.bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
 				  individual_weights = as.integer(c()),
-				  initial_values = NULL,
+				  initial_values = NULL, noguessing = TRUE, 
 				  verbose = TRUE, save_time = TRUE ) {
 	
 	# Quadrature technique
@@ -91,6 +93,7 @@ itemfit.bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
 									Rclusters = clusters,
+									noguessing = noguessing,
 									verbose = verbose)
 			} else {
 				initial_values = data.matrix(initial_values)
@@ -104,6 +107,7 @@ itemfit.bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters
 									dichotomous_data = dichotomous_data,
 									Rclusters = clusters,
 									Rinitial_values = initial_values, 
+									noguessing = noguessing,
 									verbose = verbose)
 			}
 		  

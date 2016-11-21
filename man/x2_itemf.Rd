@@ -4,19 +4,17 @@
 \alias{x2_itemf}
 \title{Statistical x2.}
 \usage{
-x2_itemf(z, patterns, G = 10, FUN = median)
+x2_itemf(zetas, patterns, G = 10, FUN = median)
 }
 \arguments{
+\item{zetas}{matrix of estimations of the parameters of the items (alphas, d's, guessing).}
+
 \item{patterns, }{list with Patterns, frequencies and traits.}
 
 \item{G, }{the number of groups, by default 10}
 
 \item{FUN, }{It is the function with which the expected probability, by default median 
 is calculated in each group.}
-
-\item{model, }{The implemented model ("1PL","2PL","3PL")}
-
-\item{zita}{matrix of estimations of the parameters of the items (alphas, d's, guessing).}
 }
 \description{
 Calculates the statistical x2.

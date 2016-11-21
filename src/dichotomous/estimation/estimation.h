@@ -96,7 +96,9 @@ class estimation {
 					    std::vector<double> weights = EMPTY_REAL_VECTOR,
 					    std::vector<int> individual_weights = EMPTY_INTEGER_VECTOR,
 					    std::vector<int> pinned_items = EMPTY_INTEGER_VECTOR,
-					    matrix<double> initial_values = EMPTY_REAL_MATRIX, bool is_bayesian = false);
+					    matrix<double> initial_values = EMPTY_REAL_MATRIX, 
+					    bool is_bayesian = false,
+					    bool noguessing = true);
 
 		/**
 		 * Destructor for estimation class.

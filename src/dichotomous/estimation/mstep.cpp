@@ -43,16 +43,10 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
     
     matrix<double> &inivals = data->initial_values;
     
-    //std::cout<<"If I am in mstep give me size of:"<<std::endl;
-    //std::cout<<"Rows: "<< inivals.rows()<<std::endl;
-    //std::cout<<"Cols: "<< inivals.columns(0)<<std::endl;
-    
-    //Rprintf("Good until here? ok");
-    
     double coef = -(Nind/2);
     
     double pzetai = 0;
-    //bool guessing_parameter = m.parameters == THREEPL;
+    bool guessing_parameter = data->m->parameters == THREE_PARAMETERS;
     
     for (int j = 0; j < current_zeta[i].size(); ++j)
     {
@@ -61,26 +55,28 @@ double Qi::operator() ( const optimizer_vector& item_i ) const {
       
       if(j+1==current_zeta[i].size()) {
         double miu_d = 0;
-        double sigma_d = 1; //2^2 = 4
-        //pzetai += pow((current_zeta[i](j)-miu_d),2) / pow(sigma_d,2);
+        double sigma_d = 2; //1
         pzetai += pow((current_zeta[i](j)-inivals(i,j)),2) / pow(sigma_d,2);
         break;      
       }
-      
-      //pzetai += pow((current_zeta[i](j)-miu_alpha),2) / pow(sigma_alpha,2);
       pzetai += pow((current_zeta[i](j)-inivals(i,j)),2) / pow(sigma_alpha,2);
     }
     
-    /*if(guessing_parameter) {
-     double miu_gamma = 0.01;//-4.59512;
-     double sigma_gamma = 0.0009;//7;   
-     //pzetai += pow((current_zeta[i](current_zeta[i].size() - 1)-miu_gamma),2) / pow(sigma_gamma,2);
+    if(guessing_parameter) {
+     double miu_gamma = 0.01;     //-4.59512;
+     double sigma_gamma = 0.0009; //7;
+     double tmp = 0;
      
-     //double tmp = pow((current_zeta[i](current_zeta[i].size() - 1)-inivals[i][inivals[i].size() - 1]),2) / pow(sigma_gamma,2);
-     double tmp = pow((inivals[i][inivals[i].size() - 1]-inivals[i][inivals[i].size() - 1]),2) / pow(sigma_gamma,2);
+     //if guessing parameter will be estimated with zeta
+     if(!(data->noguessing)) {
+        tmp = pow((current_zeta[i](current_zeta[i].size() - 1) - inivals(i,inivals.columns(i) - 1)),2) / pow(sigma_gamma,2);
+     }
+     else {
+        //it must be zero
+        tmp = pow((inivals(i,inivals.columns(i) - 1) - inivals(i,inivals.columns(i) - 1)),2) / pow(sigma_gamma,2);
+     }
      pzetai += tmp;
-     //std::cout<<"My tmp is: "<<tmp<<std::endl;
-    }*/
+    }
     
     pzetai *= coef;
     pzetai += value;

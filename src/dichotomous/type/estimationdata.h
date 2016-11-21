@@ -50,6 +50,7 @@ public:
 	std::map<std::vector<char>, std::vector<int> > patterns; /**< Patterns and their individuals*/
 	std::vector<optimizer_vector> latent_traits; /**< Latent traits */
   	matrix<double> initial_values; /**< A vector with initial values for data */
+  	bool noguessing; /**< Flag for bayesian models, decision for remove or allow c parameter */
 
 	estimation_data(int);
 

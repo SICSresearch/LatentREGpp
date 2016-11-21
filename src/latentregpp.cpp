@@ -148,6 +148,7 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
                    bool dichotomous_data,
                    IntegerVector Rclusters,
                    NumericMatrix Rinitial_values,
+                   bool noguessing,
                    bool verbose ) {
   // Converting data types
   latentregpp::matrix<char> Y;
@@ -168,7 +169,7 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
     //Estimation object
     latentregpp::dichotomous::estimation e(Y, dim, model, EMepsilon, 
                                      theta, weights, individual_weights,
-                                     clusters, initial_values, true);
+                                     clusters, initial_values, true, noguessing);
     //EM
     e.EMAlgorithm(verbose);
     
@@ -191,7 +192,7 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
       ++j;
 
       //c
-      if ( e.data.m->type == latentregpp::model_type::bayesian && parameters == latentregpp::THREE_PARAMETERS) {
+      if ( e.data.m->type == latentregpp::model_type::bayesian && parameters == latentregpp::THREE_PARAMETERS && e.data.noguessing) {
           double &c = zetas(i, j);
           c = e.data.initial_values(i,j);
           c = 1.0 / (1.0 + exp(-c));

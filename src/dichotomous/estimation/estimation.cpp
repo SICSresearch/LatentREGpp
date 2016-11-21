@@ -17,7 +17,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   std::vector<double> weights,
 					   std::vector<int> individual_weights,
 					   std::vector<int> pinned_items,
-					   matrix<double> initial_values, bool is_bayesian ) {
+					   matrix<double> initial_values, bool is_bayesian, bool noguessing ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -83,6 +83,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	build_matrixes();
 
 	if(is_bayesian) {
+		data.noguessing = noguessing;
 		if ( initial_values.rows() > 1 ) {
   	        data.m = new bayesian(themodel, initial_values);
   	    }
@@ -90,6 +91,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
   	        data.m = new bayesian(themodel);
   	    }
 	} else {
+		data.noguessing = false;
 		switch ( themodel ) {
 			case model_type::onepl:
 				data.m = new onepl();
@@ -137,7 +139,10 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	        tmp[i] = ov;
 	    }
 	    
-	    dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
+	    if(noguessing)
+	    	dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
+	    else
+	    	dynamic_cast<bayesian*>(data.m)->set_c_values(data.zeta[0]);
 	    
 	    //need initial values
 	    int row = tmp.size();
@@ -206,7 +211,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 
 	//For bayesian
 	int has_c_value = 0;
-	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS)) {
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS) && data.noguessing && d>1) {
 		total_parameters--;
 		has_c_value = 1;
 	}
@@ -224,12 +229,12 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 				data.initial_values(i,j) = mt(i, j);
 			}
 			//If I've three parameters - correct
-			if ( data.m->parameters == THREE_PARAMETERS && !(data.m->type==4)) {
+			if ( data.m->parameters == THREE_PARAMETERS || !data.noguessing) {
 				double &c = zeta[i](total_parameters - 1);
 				c = std::log(c / (1.0 - c));
-			}else if(data.m->parameters == THREE_PARAMETERS && data.m->type==4) {
+			}else if(data.m->parameters == THREE_PARAMETERS && data.m->type==4 && data.noguessing) {
 				double c = mt(i,total_parameters);
-			  data.initial_values(i,total_parameters) = c;
+			    data.initial_values(i,total_parameters) = c;
 			}
 		}
 	}
@@ -271,7 +276,7 @@ void estimation::compute_initial_values() {
 
 	//if bayesian
 	int hasnt_c_value = 0;
-	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS)) {
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS) && data.noguessing && d>1) {
 		total_parameters--;
 		hasnt_c_value = 1;
 	}

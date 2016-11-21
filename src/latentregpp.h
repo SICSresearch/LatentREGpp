@@ -45,6 +45,7 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
                    bool dichotomous_data,
                    IntegerVector Rclusters = IntegerVector::create(),
                    NumericMatrix Rinitial_values = NumericMatrix(1, 1),
+                   bool noguessing = true,
                    bool verbose = true );
 
 //[[Rcpp::plugins(cpp11)]]
