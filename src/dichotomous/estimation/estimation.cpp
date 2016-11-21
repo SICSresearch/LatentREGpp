@@ -229,7 +229,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 				data.initial_values(i,j) = mt(i, j);
 			}
 			//If I've three parameters - correct
-			if ( data.m->parameters == THREE_PARAMETERS || !data.noguessing) {
+			if ( data.m->parameters == THREE_PARAMETERS && !data.noguessing) {
 				double &c = zeta[i](total_parameters - 1);
 				c = std::log(c / (1.0 - c));
 			}else if(data.m->parameters == THREE_PARAMETERS && data.m->type==4 && data.noguessing) {
