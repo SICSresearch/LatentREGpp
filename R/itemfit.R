@@ -34,6 +34,8 @@
 #'@importFrom mvtnorm dmvnorm
 #'@importFrom MASS polr
 #'@importFrom ade4 dudi.pca
+#'@importFrom statmod gauss.quad
+#'@importFrom optimx optimx
 #'@importFrom stats cor cov dist plogis quantile rexp rnorm runif
 #'@importFrom utils head
 #'@section Getting Started:
