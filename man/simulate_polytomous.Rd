@@ -5,7 +5,8 @@
 \title{Polytomous data simulation}
 \usage{
 simulate_polytomous(dim.data = 1, sample.size = 1000,
-  size.cluster = c(20), ncatgs = rep(4, 20), seed_data)
+  size.cluster = c(20), ncatgs = rep(4, 20), seed_data = 5000L,
+  model = "2PL")
 }
 \arguments{
 \item{dim.data}{Data dimension}

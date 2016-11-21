@@ -169,7 +169,7 @@ personfit = function ( data, dim, model = "2PL", zetas ,
                             method = method, by_individuals = by_individuals,
                             dichotomous_data = dichotomous_data)
       traits$latent_traits = standarize(traits$latent_traits)
-      return (traits)
     }
-  }	
+  }
+  return (traits)
 }

@@ -71,11 +71,19 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
     latentregpp::convert_matrix(e.data.r, Rr);
     latentregpp::convert_vector(e.data.f, Rf);
 
+    int h = e.data.m->parameters == 1 ? 1 : e.data.m->parameters - 1 + dim;
+    if(e.data.m->parameters == 3) h++;
+
+    double aic = -2 * e.log_likelihood() + 2 * h;
+    double bic = -2 * e.log_likelihood() + h * std::log(e.data.N);
+
     return List::create(Rcpp::Named("zetas") = zetas,
                         Rcpp::Named("Loglik") = e.log_likelihood(),
                         Rcpp::Named("iterations") = e.get_iterations(),
                         Rcpp::Named("r") = Rr,
-                        Rcpp::Named("f") = Rf);
+                        Rcpp::Named("f") = Rf,
+                        Rcpp::Named("aic") = aic,
+                        Rcpp::Named("bic") = bic);
   }
 
   //polytomous data
@@ -120,10 +128,18 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
     Rr[g] = Rrg;
   }
 
+  int h = e.data.m->parameters == 1 ? 1 : e.data.m->parameters - 1 + dim;
+  if(e.data.m->parameters == 3) h++;
+
+  double aic = -2 * e.log_likelihood() + 2 * h;
+  double bic = -2 * e.log_likelihood() + h * std::log(e.data.N);
+
   return List::create(Rcpp::Named("zetas") = zetas,
                       Rcpp::Named("Loglik") = e.log_likelihood(),
                       Rcpp::Named("iterations") = e.get_iterations(),
-                      Rcpp::Named("r") = Rr);
+                      Rcpp::Named("r") = Rr,
+                      Rcpp::Named("aic") = aic,
+                      Rcpp::Named("bic") = bic);
 }
 
 List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
@@ -250,10 +266,12 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   }
 
   //Estimation object 
+  //Rprintf("here 1");
   latentregpp::polytomous::estimation e( Y, dim, model, 1e-4, 
                                    theta, weights );
-  e.load_multi_initial_values(zetas);
-
+  //Rprintf("here 2");
+  e.load_multi_initial_values(zetas); //Revisar TODO
+  //Rprintf("here 3");
   //Latent traits
   if ( method == "EAP" ) e.EAP(by_individuals);
   else { 
@@ -270,6 +288,7 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   IntegerMatrix freq;
   latentregpp::convert_matrix(e.data.Y, patterns);  
   latentregpp::convert_vector(e.data.nl, freq);
+
   return List::create(Rcpp::Named("latent_traits") = traits, 
                       Rcpp::Named("patterns") = patterns,
                       Rcpp::Named("freqs") = freq);

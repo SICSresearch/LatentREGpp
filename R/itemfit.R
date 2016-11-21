@@ -30,6 +30,8 @@
 #'@importFrom sirt noharm.sirt
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
+#'@importFrom numDeriv hessian
+#'@importFrom mvtnorm dmvnorm
 #'@importFrom MASS polr
 #'@importFrom ade4 dudi.pca
 #'@importFrom stats cor cov dist plogis quantile rexp rnorm runif
@@ -59,6 +61,7 @@ NULL
 #'@param individual_weights A vector with Weights of the quadrature points.
 #'@param initial_values A matrix with initial values for estimation process. Be sure about
 #'dimension, model and consistency with data. 
+#'@param SD calculate for standar desviation for items
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
 #'@examples
@@ -88,7 +91,7 @@ NULL
 itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
 				  individual_weights = as.integer(c()),
-				  initial_values = NULL,
+				  initial_values = NULL, SD = FALSE,
 				  verbose = TRUE, save_time = TRUE ) {
 	
 	# Quadrature technique
@@ -165,7 +168,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 									Rindividual_weights = individual_weights,
 									dichotomous_data = dichotomous_data,
 									Rpinned_items = pinned_items,
-									Rinitial_values = initial_values, 
+									Rinitial_values = initial_values,
 									verbose = verbose)
 			}
 		  
@@ -215,6 +218,18 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
 	obj_return$quadpoints = q
+
+	if( SD ) {
+		ncatg <- apply(datos, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
+
+		ff = NULL
+		if(dichotomous_data) ff = obj_return$f
+
+		sd = ssdd(betas = obj_return$zetas,r = obj_return$r,
+			nodes = q$theta, ncatg = ncatg, f=ff, dicomod=dichotomous_data)
+
+		obj_return$sd = sd
+	}
   	
   	if ( dichotomous_data )
 		colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")

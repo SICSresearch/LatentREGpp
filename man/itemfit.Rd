@@ -6,7 +6,7 @@
 \usage{
 itemfit(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
   quad_tech = NULL, quad_points = NULL,
-  individual_weights = as.integer(c()), initial_values = NULL,
+  individual_weights = as.integer(c()), initial_values = NULL, SD = FALSE,
   verbose = TRUE, save_time = TRUE)
 }
 \arguments{
@@ -29,6 +29,8 @@ or "QMCEM" for Quasi-Monte Carlo quadrature}
 
 \item{initial_values}{A matrix with initial values for estimation process. Be sure about
 dimension, model and consistency with data.}
+
+\item{SD}{calculate for standar desviation for items}
 
 \item{verbose}{True for get information about estimation process in runtime. False in otherwise.}
 
