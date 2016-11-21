@@ -223,15 +223,14 @@ orlando_itemf <- function(patterns,G,zita,model){
 #' @name x2_itemf
 #' @title Statistical x2.
 #' @description Calculates the statistical x2.
-#' @param model, The implemented model ("1PL","2PL","3PL")
-#' @param zita matrix of estimations of the parameters of the items (alphas, d's, guessing).
+#' @param zetas matrix of estimations of the parameters of the items (alphas, d's, guessing).
 #' @param patterns, list with Patterns, frequencies and traits.
 #' @param G, the number of groups, by default 10
 #' @param FUN, It is the function with which the expected probability, by default median 
 #' is calculated in each group.
 #' @export
-x2_itemf=function(z,patterns,G = 10,FUN = median){
-  x2(z=z,patterns=patterns,G=G,FUN=FUN)
+x2_itemf=function(zetas,patterns,G = 10,FUN = median){
+  x2(z=zetas,patterns=patterns,G=G,FUN=FUN)
 }
 
 
@@ -262,7 +261,7 @@ envelope_itemf=function(item, numboot=100, alpha=0.05, item.fit, data,seed=5000L
   
   r <- est$r
   f <- matrix(rep(est$f,ncol(data)),ncol=ncol(data),byrow=F)
-  theta <- est$quadpoints
+  theta <- est$quad$theta
   params <- est$zetas
   
   nitems <- ncol(r) 
