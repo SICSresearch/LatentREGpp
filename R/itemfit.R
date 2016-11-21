@@ -66,6 +66,30 @@ NULL
 #'@param SD calculate for standar desviation for items
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
+#'@section Models:
+#'
+#'LatentREGpp has different models to fit likelihood value according parameters to estimate.
+#'
+#'\describe{
+#'   \item{3PL}{
+#'     General. Probability is given by
+#'     \deqn{P_{ij} = c_j + \frac{1 - c_j}{1 + exp(-\eta_{ij})}}
+#'     Where \emph{i} references individual and \emph{j} references the item; c is 
+#'     a value for guessing parameter between 0 and 1. i index is referenced by number of
+#'     examinees or individuals and j index is referenced by items in test.
+#'     \eqn{\eta} is \deqn{\eta_{ij} = \strong{\emph{a}}^{t}_j\theta_i+d_j}
+#'     In unidimensional an \emph{a} is scalar, in
+#'     multidimensional an \strong{\emph{a}} is vector.
+#'     For 1PL model \emph{a} has value 1
+#'   }
+#'   \item{2PL}{
+#'     c = 0
+#'   }
+#'   \item{1PL}{
+#'     c = 0
+#'     \strong{\emph{a}} vector has a value 1 for each element 
+#'   }
+#' }
 #'@examples
 #'\dontrun{
 #' #Example 1
