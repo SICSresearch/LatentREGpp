@@ -8,8 +8,8 @@
 #' \tabular{ll}{
 #'Package: \tab LatentREGpp\cr
 #'Type: \tab Package\cr
-#'Version: \tab 0.2\cr
-#'Date: \tab 2016-11-21\cr
+#'Version: \tab 0.2.1\cr
+#'Date: \tab 2016-11-24\cr
 #'License: \tab MIT + file LICENSE \cr
 #'}
 #'@author Milder Hernandez Cagua <milderhc@gmail.com>
