@@ -32,7 +32,7 @@ public:
 	matrix<int> correct; /**< Matrix that contains what items have been answered correctly for each response pattern*/
 	int d; /**< Dimension*/
 	matrix<char> Y; /**< Matrix of response patterns*/
-	std::vector<int> nl; /**< Frequencies of each response pattern*/
+	std::vector<double> nl; /**< Frequencies of each response pattern*/
 	int N; /**< Number of examines*/
 	int s; /**< Number of response patterns*/
 	int p; /**< Number of items*/
@@ -49,6 +49,8 @@ public:
 	std::vector<optimizer_vector> zeta[ACCELERATION_PERIOD]; /**< Vector of zeta item parameters*/
 	std::map<std::vector<char>, std::vector<int> > patterns; /**< Patterns and their individuals*/
 	std::vector<optimizer_vector> latent_traits; /**< Latent traits */
+  	matrix<double> initial_values; /**< A vector with initial values for data */
+  	bool noguessing; /**< Flag for bayesian models, decision for remove or allow c parameter */
 
 	estimation_data(int);
 

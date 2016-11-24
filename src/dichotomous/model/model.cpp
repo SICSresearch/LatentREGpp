@@ -11,21 +11,21 @@ namespace latentregpp {
 
 namespace dichotomous {
 
+model::model() {}
+
 model::model(model_type type, int parameters) {
 	this->type = type;
 	this->parameters = parameters;
 }
 
-double model::P ( const optimizer_vector &theta, const optimizer_vector &parameters ) {
+double model::P ( const optimizer_vector &theta, const optimizer_vector &parameters, int i ) {
 	std::vector<double> theta_temp(theta.size());
-	for ( int i = 0; i < theta.size(); ++i )
-		theta_temp[i] = theta(i);
-	return P(theta_temp, parameters);
+	for ( int j = 0; j < theta.size(); ++j )
+		theta_temp[j] = theta(j);
+	return P(theta_temp, parameters, i);
 }
 
-model::~model() {
-	// TODO Auto-generated destructor stub
-}
+model::~model() {}
 
 }
 

@@ -51,7 +51,7 @@ double Mstep(estimation_data &data, int current) {
 
 	std::set<int> &pinned_items = data.pinned_items;
 
-	#pragma omp parallel for schedule(dynamic) reduction(max:max_difference)
+	#pragma omp parallel for schedule(dynamic)
 	for ( int i = 0; i < p; ++i ) {
 		/**
 		 * If it is multidimensional and this is one of the pinned items
@@ -68,7 +68,7 @@ double Mstep(estimation_data &data, int current) {
 
 		//Computing difference of current item
 		for ( int j = 0; j < next_zeta[i].size(); ++j )
-			max_difference = std::max(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
+			max_difference = maxp(max_difference, std::abs(next_zeta[i](j) - current_zeta[i](j)));
 	}
 
 	return max_difference;

@@ -30,8 +30,12 @@
 #'@importFrom sirt noharm.sirt
 #'@importFrom FactoMineR PCA
 #'@importFrom FactoMineR HCPC
+#'@importFrom numDeriv hessian
+#'@importFrom mvtnorm dmvnorm
 #'@importFrom MASS polr
 #'@importFrom ade4 dudi.pca
+#'@importFrom statmod gauss.quad
+#'@importFrom optimx optimx
 #'@importFrom stats cor cov dist plogis quantile rexp rnorm runif
 #'@importFrom utils head
 #'@section Getting Started:
@@ -59,8 +63,33 @@ NULL
 #'@param individual_weights A vector with Weights of the quadrature points.
 #'@param initial_values A matrix with initial values for estimation process. Be sure about
 #'dimension, model and consistency with data. 
+#'@param SD calculate for standar desviation for items
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
+#'@section Models:
+#'
+#'LatentREGpp has different models to fit likelihood value according parameters to estimate.
+#'
+#'\describe{
+#'   \item{3PL}{
+#'     General. Probability is given by
+#'     \deqn{P_{ij} = c_j + \frac{1 - c_j}{1 + exp(-\eta_{ij})}}
+#'     Where \emph{i} references individual and \emph{j} references the item; c is 
+#'     a value for guessing parameter between 0 and 1. i index is referenced by number of
+#'     examinees or individuals and j index is referenced by items in test.
+#'     \eqn{\eta} is \deqn{\eta_{ij} = \strong{\emph{a}}^{t}_j\theta_i+d_j}
+#'     In unidimensional an \emph{a} is scalar, in
+#'     multidimensional an \strong{\emph{a}} is vector.
+#'     For 1PL model \emph{a} has value 1
+#'   }
+#'   \item{2PL}{
+#'     c = 0
+#'   }
+#'   \item{1PL}{
+#'     c = 0
+#'     \strong{\emph{a}} vector has a value 1 for each element 
+#'   }
+#' }
 #'@examples
 #'\dontrun{
 #' #Example 1
@@ -87,8 +116,8 @@ NULL
 #'@export
 itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
-				  individual_weights = as.integer(c()),
-				  initial_values = NULL,
+				  individual_weights = as.numeric(c()),
+				  initial_values = NULL, SD = FALSE,
 				  verbose = TRUE, save_time = TRUE ) {
 	
 	# Quadrature technique
@@ -121,6 +150,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	if ( model == "1PL" ) m = 1
 	else if ( model == "2PL" ) m = 2
 	else if ( model == "3PL" ) m = 3
+	else stop("Model not valid")
 
 	q = quadpoints(dim = dim, quad_tech = quad_tech, 
 				   quad_points = quad_points)
@@ -136,70 +166,70 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 							verbose = verbose )
 	} else {
 		if ( dichotomous_data ) {
+			if ( is.null(clusters) )
+				stop("You must specify clusters")
 
-			if ( is.null(clusters) ) {
-				#1. Find a temporal cluster
-				p = ncol(data)
-				d = dim
-				clusters = find_temporal_cluster(p=p,d=d)
+			if ( length(clusters) != dim )
+				stop("Clusters length must be equal to the number of dimensions")
 
-				#2. Find initial values
-				III = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-				                            find.restrictions=TRUE, verbose=FALSE, probit=FALSE)
-
-				acp = PCA(X = III$coefs,graph = FALSE)
-				hcpc = HCPC(acp,nb.clust = d,graph = FALSE)
-				CLUST_final<- list()
-				for (i in 1:length(table(hcpc$data.clust$clust))) {
-					CLUST_final[[i]]<- data[,which(hcpc$data.clust$clust==i)]
-				}
-
-				clusters = unlist(lapply(CLUST_final, ncol))
-			} else
-				if ( length(clusters) != dim )
-					stop("Clusters length must be equal to the number of dimensions")
+			pinned_items = itemfix(datos = data, size.cluster = clusters)
 
 			#Initial values
 			if ( is.null(initial_values) ) {
-				#Find initial values again
-				initial_values = inivals_MultiUni_NOHARM(data, clusters, model=model, 
-				                          find.restrictions=FALSE, verbose=FALSE, probit=FALSE)$coefs
+				# Item parameters estimation with no initial values provided
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+									Rtheta = theta, Rweights = weights, 
+									Rindividual_weights = individual_weights,
+									dichotomous_data = dichotomous_data,
+									Rpinned_items = pinned_items,
+									verbose = verbose)
 			} else {
 				initial_values = data.matrix(initial_values)
 				if ( nrow(initial_values) != ncol(data) )
 					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
+
+				# Item parameters estimation 
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+									Rtheta = theta, Rweights = weights, 
+									Rindividual_weights = individual_weights,
+									dichotomous_data = dichotomous_data,
+									Rpinned_items = pinned_items,
+									Rinitial_values = initial_values,
+									verbose = verbose)
 			}
 		  
-			# Item parameters estimation
-			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-								Rtheta = theta, Rweights = weights, 
-								Rindividual_weights = individual_weights,
-								dichotomous_data = dichotomous_data,
-								Rclusters = clusters,
-								Rinitial_values = initial_values, 
-								verbose = verbose)
 		} else {
 			if ( is.null(clusters) )
 				stop("You must specify clusters")
 
+			if ( length(clusters) != dim )
+				stop("Clusters length must be equal to the number of dimensions")
+
+			pinned_items = itemfix(datos = data, size.cluster = clusters)
+
 			#Initial values
 			if ( is.null(initial_values) ) {
-				#Find initial values again
-				initial_values = inivals_MultiPoly(data_poly = data, size.cluster = clusters, verbose=F)
+				# Item parameters estimation with no intial values provided
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+										Rtheta = theta, Rweights = weights, 
+										Rindividual_weights = individual_weights,
+										dichotomous_data = dichotomous_data,
+										Rpinned_items = pinned_items,
+										verbose = verbose )
 			} else {
 				initial_values = data.matrix(initial_values)
 				if ( nrow(initial_values) != ncol(data) )
 					stop("Inconsistent initial_values. Number of rows must be equal to the number of items")
-			}
 
-			# Item parameters estimation
-			obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
-									Rtheta = theta, Rweights = weights, 
-									Rindividual_weights = individual_weights,
-									dichotomous_data = dichotomous_data,
-									Rclusters = clusters,
-									Rinitial_values = initial_values, 
-									verbose = verbose )
+					# Item parameters estimation
+				obj_return = itemfitcpp(Rdata = data, dim = dim, model = m, EMepsilon = EMepsilon, 
+										Rtheta = theta, Rweights = weights, 
+										Rindividual_weights = individual_weights,
+										dichotomous_data = dichotomous_data,
+										Rpinned_items = pinned_items,
+										Rinitial_values = initial_values, 
+										verbose = verbose )
+			}
 		}
 	}
 
@@ -209,10 +239,23 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	}
 
 	obj_return$dimension = dim
-	obj_return$model = model
+	obj_return$model = model 
 	obj_return$clusters = clusters
 	obj_return$convergence = obj_return$iterations < 500
 	obj_return$epsilon = EMepsilon
+	obj_return$quadpoints = q
+
+	if( SD ) {
+		ncatg <- apply(datos, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
+
+		ff = NULL
+		if(dichotomous_data) ff = obj_return$f
+
+		sd = ssdd(betas = obj_return$zetas,r = obj_return$r,
+			nodes = q$theta, ncatg = ncatg, f=ff, dicomod=dichotomous_data)
+
+		obj_return$sd = sd
+	}
   	
   	if ( dichotomous_data )
 		colnames(obj_return$zetas) = c(paste("a",c(1:obj_return$dimension),sep = ""),"d","c")

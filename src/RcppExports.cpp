@@ -6,8 +6,29 @@
 using namespace Rcpp;
 
 // itemfitcpp
-List itemfitcpp(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rindividual_weights, bool dichotomous_data, IntegerVector Rclusters, NumericMatrix Rinitial_values, bool verbose);
-RcppExport SEXP LatentREGpp_itemfitcpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP dichotomous_dataSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP, SEXP verboseSEXP) {
+List itemfitcpp(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, NumericVector Rindividual_weights, bool dichotomous_data, IntegerVector Rpinned_items, NumericMatrix Rinitial_values, bool verbose);
+RcppExport SEXP LatentREGpp_itemfitcpp(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP dichotomous_dataSEXP, SEXP Rpinned_itemsSEXP, SEXP Rinitial_valuesSEXP, SEXP verboseSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< IntegerMatrix >::type Rdata(RdataSEXP);
+    Rcpp::traits::input_parameter< unsigned int >::type dim(dimSEXP);
+    Rcpp::traits::input_parameter< int >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< double >::type EMepsilon(EMepsilonSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Rtheta(RthetaSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Rweights(RweightsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Rindividual_weights(Rindividual_weightsSEXP);
+    Rcpp::traits::input_parameter< bool >::type dichotomous_data(dichotomous_dataSEXP);
+    Rcpp::traits::input_parameter< IntegerVector >::type Rpinned_items(Rpinned_itemsSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type Rinitial_values(Rinitial_valuesSEXP);
+    Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
+    rcpp_result_gen = Rcpp::wrap(itemfitcpp(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rpinned_items, Rinitial_values, verbose));
+    return rcpp_result_gen;
+END_RCPP
+}
+// itemfitcpp_bayesian
+List itemfitcpp_bayesian(IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon, NumericMatrix Rtheta, NumericVector Rweights, IntegerVector Rindividual_weights, bool dichotomous_data, IntegerVector Rclusters, NumericMatrix Rinitial_values, bool noguessing, bool verbose);
+RcppExport SEXP LatentREGpp_itemfitcpp_bayesian(SEXP RdataSEXP, SEXP dimSEXP, SEXP modelSEXP, SEXP EMepsilonSEXP, SEXP RthetaSEXP, SEXP RweightsSEXP, SEXP Rindividual_weightsSEXP, SEXP dichotomous_dataSEXP, SEXP RclustersSEXP, SEXP Rinitial_valuesSEXP, SEXP noguessingSEXP, SEXP verboseSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,8 +42,9 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type dichotomous_data(dichotomous_dataSEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type Rclusters(RclustersSEXP);
     Rcpp::traits::input_parameter< NumericMatrix >::type Rinitial_values(Rinitial_valuesSEXP);
+    Rcpp::traits::input_parameter< bool >::type noguessing(noguessingSEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    rcpp_result_gen = Rcpp::wrap(itemfitcpp(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values, verbose));
+    rcpp_result_gen = Rcpp::wrap(itemfitcpp_bayesian(Rdata, dim, model, EMepsilon, Rtheta, Rweights, Rindividual_weights, dichotomous_data, Rclusters, Rinitial_values, noguessing, verbose));
     return rcpp_result_gen;
 END_RCPP
 }

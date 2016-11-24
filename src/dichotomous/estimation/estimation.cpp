@@ -15,9 +15,9 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
 					   matrix<double> theta,
 					   std::vector<double> weights,
-					   std::vector<int> individual_weights,
-					   std::vector<int> clusters,
-					   matrix<double> initial_values ) {
+					   std::vector<double> individual_weights,
+					   std::vector<int> pinned_items,
+					   matrix<double> initial_values, bool is_bayesian, bool noguessing ) {
 	/**
 	 * Object to allocate all data needed in estimation process
 	 * */
@@ -39,7 +39,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	matrix<char> &Y = data.Y;
 
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 
 	//Matrix correct that has been answered correctly
 	matrix<int> &correct = data.correct;
@@ -56,14 +56,16 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		patterns[dataset.get_row(i)].push_back(i);
 
 	Y = matrix<char>();
-	nl = std::vector<int>(patterns.size());
+	nl = std::vector<double>(patterns.size());
 
-	if ( individual_weights.empty() ) individual_weights = std::vector<int>(patterns.size(), 1);
+	if ( individual_weights.empty() ) individual_weights = std::vector<double>(dataset.rows(), 1.0);
 
 	int l = 0;
 	for ( auto it : patterns ) {
 		Y.add_row(it.first);
-		nl[l] = it.second.size() * individual_weights[l];
+		nl[l] = 0;
+		for ( auto index : it.second )
+			nl[l] += 1.0 / double(individual_weights[index]);
 		++l;
 	}
 
@@ -82,43 +84,84 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	data.G = theta.rows();
 	build_matrixes();
 
-	switch ( themodel ) {
-		case model_type::onepl:
-			data.m = new onepl();
-			break;
-		case model_type::twopl:
-			data.m = new twopl();
-			break;
-		case model_type::threepl:
-			data.m = new threepl();
-			break;
-		default:
-			data.m = new twopl();
+	if(is_bayesian) {
+		data.noguessing = noguessing;
+		if ( initial_values.rows() > 1 ) {
+  	        data.m = new bayesian(themodel, initial_values);
+  	    }
+  	    else {
+  	        data.m = new bayesian(themodel);
+  	    }
+	} else {
+		data.noguessing = false;
+		switch ( themodel ) {
+			case model_type::onepl:
+				data.m = new onepl();
+				break;
+			case model_type::twopl:
+				data.m = new twopl();
+				break;
+			case model_type::threepl:
+				data.m = new threepl();
+				break;
+			default:
+				data.m = new twopl();
+		}
 	}
 
 
-	if ( d == 1 ) compute_1D_initial_values();
-	else {
-		//Pinned items in multidimensional case (the first of each dimension)
-		std::set<int> &pinned_items = data.pinned_items;
-
-		//clusters size MUST be equal to the number of dimensions
-		if ( clusters.size() == d ) {
-			int pinned = 0;
-			for ( unsigned int i = 0; i < clusters.size(); ++i ) {
-				pinned_items.insert(pinned);
-				pinned += clusters[i];
+	if ( d > 1 ) {
+		if ( pinned_items.size() == d ) {
+			for ( auto pinned : pinned_items ) {
+				data.pinned_items.insert(pinned - 1);
 			}
 		}
+	}
 
-		if ( initial_values.rows() > 0 )
-			load_multi_initial_values(initial_values);
+	if ( initial_values.rows() > 1 ) 
+		load_multi_initial_values(initial_values);
+	else
+		compute_initial_values();
+
+	if(is_bayesian) {
+	    //I cut c in zeta in compute_1D. So, I need to paste c for 
+	    //data.initial_values and for bayesian model probability
+	    std::vector<optimizer_vector> tmp(p);
+	    optimizer_vector ov;
+	 
+	    int tot = 0;
+	    
+	    for ( int i = 0; i < p; ++i ) {
+	        tot = data.zeta[0].at(i).size();
+	        ov = optimizer_vector(tot+1);
+	        for ( int j = 0; j < tot; ++j ) {
+	            ov(j) = data.zeta[0].at(i)(j);
+	        }
+	        ov(tot) = DEFAULT_C_INITIAL_VALUE;
+	        tmp[i] = ov;
+	    }
+	    
+	    if(noguessing)
+	    	dynamic_cast<bayesian*>(data.m)->set_c_values(tmp);
+	    else
+	    	dynamic_cast<bayesian*>(data.m)->set_c_values(data.zeta[0]);
+	    
+	    //need initial values
+	    int row = tmp.size();
+	    int col = tmp[0].size();
+	    data.initial_values = matrix<double>(row,col);
+	    
+	    for(int p = 0; p < row ;++p) {
+	        for(int j = 0; j < tmp[p].size(); ++j) {
+	            data.initial_values(p,j) = tmp[p](j);
+	        }
+	    }
 	}
 
 	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
 	this->convergence_difference = convergence_difference;
-	this->iterations = 0;	
+	this->iterations = 0;
 }
 
 void estimation::build_matrixes() {
@@ -156,7 +199,6 @@ void estimation::build_matrixes() {
 	f = std::vector<double>(G);
 }
 
-
 void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	//Dimension
 	int &d = data.d;
@@ -166,18 +208,35 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	int &p = data.p;
 
 	zeta = std::vector<optimizer_vector>(p);
+
 	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + d;
+
+	//For bayesian
+	int has_c_value = 0;
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS) && data.noguessing && d>1) {
+		total_parameters--;
+		has_c_value = 1;
+	}
+
+	data.initial_values = matrix<double>(p,total_parameters+has_c_value);
 	
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
 		if ( data.m->parameters == ONE_PARAMETER ) {
 			zeta[i](0) = mt(i, d);
+			data.initial_values(i,0) = mt(i, d);
 		} else {
-			for ( int j = 0; j < total_parameters; ++j )
+			for ( int j = 0; j < total_parameters; ++j ) {
 				zeta[i](j) = mt(i, j);
-			if ( data.m->parameters == THREE_PARAMETERS ) {
+				data.initial_values(i,j) = mt(i, j);
+			}
+			//If I've three parameters - correct
+			if ( data.m->parameters == THREE_PARAMETERS && !data.noguessing) {
 				double &c = zeta[i](total_parameters - 1);
 				c = std::log(c / (1.0 - c));
+			}else if(data.m->parameters == THREE_PARAMETERS && data.m->type==4 && data.noguessing) {
+				double c = mt(i,total_parameters);
+			    data.initial_values(i,total_parameters) = c;
 			}
 		}
 	}
@@ -204,39 +263,95 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 	iterations = 0;
 }
 
-void estimation::compute_1D_initial_values() {
+void estimation::compute_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Number of examinees
 	int &p = data.p;
 	//Matrix of answers of the examinees
 	matrix<char> &dataset = *data.dataset;
+	//Dimension
+	int &d = data.d;
 
 	zeta = std::vector<optimizer_vector>(p);
-	int total_parameters = data.m->parameters;
+	int total_parameters = data.m->parameters == ONE_PARAMETER ? 1 : data.m->parameters - 1 + data.d;
+
+	//if bayesian
+	int hasnt_c_value = 0;
+	if((data.m->type==model_type::bayesian) && (data.m->parameters == THREE_PARAMETERS) && data.noguessing && d>1) {
+		total_parameters--;
+		hasnt_c_value = 1;
+	}
 
 	for ( int i = 0; i < p; ++i ) {
 		zeta[i] = optimizer_vector(total_parameters);
-		for ( int j = 0; j < total_parameters; ++j )
+		for ( int j = 0; j < total_parameters; ++j ) {
 			zeta[i](j) = DEFAULT_INITIAL_VALUE;
-	}
-
-	std::vector<double> alpha, gamma;
-	find_initial_values(dataset, alpha, gamma);
-
-	for ( int i = 0; i < p; ++i ) {
-		optimizer_vector &item_i = zeta[i];
-
-		if ( data.m->parameters > ONE_PARAMETER ) {
-			item_i(0) = alpha[i];
-			item_i(1) = gamma[i];
-			if ( data.m->parameters == THREE_PARAMETERS ) item_i(2) = DEFAULT_C_INITIAL_VALUE;
-		} else {
-			item_i(0) = gamma[i];
 		}
 	}
+	
+	if ( d == 1 ) {
+		std::vector<double> alpha, gamma;
+		find_initial_values(dataset, alpha, gamma);
 
+		for ( int i = 0; i < p; ++i ) {
+			optimizer_vector &item_i = zeta[i];
+
+			if ( data.m->parameters > ONE_PARAMETER ) {
+				item_i(0) = alpha[i];
+				item_i(1) = gamma[i];
+				if ( data.m->parameters == THREE_PARAMETERS && hasnt_c_value==0) item_i(2) = DEFAULT_C_INITIAL_VALUE;
+			} else {
+				item_i(0) = gamma[i];
+			}
+		}
+
+	} else {
+		std::vector<double> alpha, gamma;
+		find_initial_values(dataset, alpha, gamma);
+
+		for ( int i = 0; i < p; ++i ) {
+			optimizer_vector &item_i = zeta[i];
+
+			if ( data.m->parameters < THREE_PARAMETERS ) item_i(item_i.size() - 1) = gamma[i];
+			else {
+				if(hasnt_c_value==0) {
+					item_i(item_i.size() - 2) = gamma[i];
+					item_i(item_i.size() - 1) = DEFAULT_C_INITIAL_VALUE;
+				} else {
+					item_i(item_i.size() - 1) = gamma[i];
+				}
+			}
+		}
+
+		//Items that will not be estimated
+		std::set<int> &pinned_items = data.pinned_items;
+
+		if ( pinned_items.empty() ) {
+			int items_for_dimension = (p + d - 1) / d;
+			for ( int i = 0, j = 0; i < p; i += items_for_dimension, ++j )
+				pinned_items.insert(i);
+		}
+
+		int j = 0;
+		for ( auto pinned : pinned_items ) {
+			optimizer_vector &item = zeta[pinned];
+			for ( int h = 0; h < d; ++h )
+				item(h) = 0;
+			item(j) = DEFAULT_INITIAL_VALUE;
+			++j;
+		}
+	}
 	data.loglikelihood = NOT_COMPUTED;
+
+	//Test for bugs
+	/*Rprintf("Show me what is my vector");
+	for ( int i = 0; i < p; ++i ) {
+		for ( int j = 0; j < total_parameters; ++j )
+			Rprintf("%lf ",zeta[i](j));
+		Rprintf("\n");
+	}*/
+
 }
 
 void estimation::EMAlgorithm ( bool verbose ) {
@@ -248,7 +363,6 @@ void estimation::EMAlgorithm ( bool verbose ) {
 		current = iterations % ACCELERATION_PERIOD;
 		if ( current == 2 )
 			ramsay(data.zeta, data.pinned_items);
-
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
@@ -270,7 +384,7 @@ double estimation::log_likelihood() {
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 	//Latent trait vectors
 	matrix<double> &theta = data.theta;
 	//Weights
@@ -285,7 +399,7 @@ double estimation::log_likelihood() {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = data.m->P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i], i);
 		}
 	}
 
@@ -376,11 +490,12 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	for ( int h = 0; h < d; ++h )
 		value += theta_l(h) * theta_l(h);
 
-	value = std::exp(-0.5 * value);
-	value *= p;
+	value = std::exp(-0.5 * value)/ std::sqrt( std::pow(2.0 * PI_ , d) );
+	value = std::log(value);
 
 	for ( int i = 0; i < p; ++i )
-		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i])) : std::log(1 - data->m->P(theta_l, zeta[i]));
+		value += Y(l, i) ? std::log(data->m->P(theta_l, zeta[i], i)) : 
+						   std::log(1 - data->m->P(theta_l, zeta[i], i));
 
 	return value;
 }

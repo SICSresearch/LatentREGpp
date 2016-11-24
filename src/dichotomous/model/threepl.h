@@ -18,7 +18,7 @@ class threepl: public dichotomous::model {
 public:
 	threepl();
 	virtual ~threepl();
-	double P(std::vector<double>&, const optimizer_vector&);
+	double P(std::vector<double>&, const optimizer_vector&, int);
 };
 
 }

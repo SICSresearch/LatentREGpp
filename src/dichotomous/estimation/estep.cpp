@@ -21,7 +21,7 @@ void Estep ( estimation_data &data, int current ) {
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 	//Latent trait vectors
 	matrix<double> &theta = data.theta;
 	//Weights
@@ -54,10 +54,10 @@ void Estep ( estimation_data &data, int current ) {
 	for ( int g = 0; g < G; ++g ) {
 		std::vector<double> &theta_g = *theta.get_pointer_row(g);
 		for ( int i = 0; i < p; ++i ) {
-			P(g, i) = data.m->P(theta_g, zeta[i]);
+			P(g, i) = data.m->P(theta_g, zeta[i], i);
 		}
 	}
-
+	
 	double integral_l = 0;
 
 	/**

@@ -1,7 +1,7 @@
 /**
  * estep.cpp
  *
- *  Created on: 13/04/2016
+ *  Created on: 13/04/2061
  *      Author: Milder
  */
 
@@ -21,7 +21,7 @@ void Estep ( estimation_data &data, int current ) {
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 	//Latent trait vectors
 	matrix<double> &theta = data.theta;
 	//Weights

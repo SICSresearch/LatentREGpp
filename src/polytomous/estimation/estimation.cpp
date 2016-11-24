@@ -15,8 +15,8 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
 					   matrix<double> theta,
 					   std::vector<double> weights,
-					   std::vector<int> individual_weights,
-					   std::vector<int> clusters,
+					   std::vector<double> individual_weights,
+					   std::vector<int> pinned_items,
 					   matrix<double> initial_values ) {
 	/**
 	 * Object to allocate all data needed in estimation process
@@ -39,7 +39,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	matrix<char> &Y = data.Y;
 
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 
 	//Number of categories by item
 	std::vector<int> &categories_item = data.categories_item;
@@ -70,14 +70,16 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		patterns[dataset.get_row(i)].push_back(i);
 
 	Y = matrix<char>();
-	nl = std::vector<int>(patterns.size());
+	nl = std::vector<double>(patterns.size());
 
-	if ( individual_weights.empty() ) individual_weights = std::vector<int>(patterns.size(), 1);
+	if ( individual_weights.empty() ) individual_weights = std::vector<double>(dataset.rows(), 1.0);
 
 	int l = 0;
 	for ( auto it : patterns ) {
 		Y.add_row(it.first);
-		nl[l] = it.second.size() * individual_weights[l];
+		nl[l] = 0;
+		for ( auto index : it.second )
+			nl[l] += 1.0 / double(individual_weights[index]);
 		++l;
 	}
 
@@ -114,23 +116,18 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 			data.m = new twopl(d, &categories_item);
 	}
 
-	if ( d == 1 ) compute_1D_initial_values();
-	else {
-		//Pinned items in multidimensional case (the first of each dimension)
-		std::set<int> &pinned_items = data.pinned_items;
-
-		//clusters size MUST be equal to the number of dimensions
-		if ( clusters.size() == d ) {
-			int pinned = 0;
-			for ( unsigned int i = 0; i < clusters.size(); ++i ) {
-				pinned_items.insert(pinned);
-				pinned += clusters[i];
+	if ( d > 1 ) {
+		if ( pinned_items.size() == d ) {
+			for ( auto pinned : pinned_items ) {
+				data.pinned_items.insert(pinned - 1);
 			}
 		}
+	}
 
-		if ( initial_values.rows() > 0 )
-			load_multi_initial_values(initial_values);
-	}	
+	if ( initial_values.rows() > 1 ) 
+		load_multi_initial_values(initial_values);
+	else
+		compute_initial_values();	
 
 	//Configurations for the estimation
 	loglikelihood = NOT_COMPUTED;
@@ -240,7 +237,7 @@ void estimation::load_multi_initial_values ( matrix<double> &mt ) {
 }
 
 
-void estimation::compute_1D_initial_values() {
+void estimation::compute_initial_values() {
 	//Parameters of the items
 	std::vector<optimizer_vector> &zeta = data.zeta[0];
 	//Dimension
@@ -407,7 +404,7 @@ double estimation::log_likelihood() {
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 	//Latent trait vectors
 	matrix<double> &theta = data.theta;
 	//Weights
@@ -519,7 +516,8 @@ double estimation::posterior::operator() ( const optimizer_vector& theta_l ) con
 	double value = 0.0;
 	for ( int h = 0; h < d; ++h )
 		value += theta_l(h) * theta_l(h);
-	value = std::exp(-0.5 * value) / std::pow( std::sqrt(2.0 * PI_), d );
+	value = std::exp(-0.5 * value) / std::sqrt( std::pow(2.0 * PI_ , d) );
+	value = std::log(value);
 
 	for ( int i = 0; i < p; ++i )
 		value += std::log(data->m->Pik(theta_l, zeta[i], i, Y(l, i) - 1));
