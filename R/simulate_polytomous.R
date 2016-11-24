@@ -7,6 +7,7 @@
 #'@param size.cluster Vector containing the number of items by dimension
 #'@param ncatgs Vector containing the number of categories for each item
 #'@param seed_data Seed for simulation
+#'@param model the model used to generate the test. It can have values of "1PL", "2PL" or "3PL".
 #'@export 
 simulate_polytomous = function(dim.data = 1, sample.size = 1000, size.cluster = c(20), ncatgs = rep(4, 20), seed_data=5000L,model="2PL") {
   if ( dim.data > 1 )

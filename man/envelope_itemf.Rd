@@ -17,6 +17,8 @@ envelope_itemf(item, numboot = 100, alpha = 0.05, item.fit, data,
 \item{item.fit}{object LatentREGpp::itemfit() type.}
 
 \item{data}{the data frame or a matrix with the test data.}
+
+\item{seed}{the seed to be used in the random number generator}
 }
 \value{
 plot with the envelopes and the caracteristic curve of the item.
@@ -24,11 +26,6 @@ plot with the envelopes and the caracteristic curve of the item.
 \description{
 Graphic bands of confidence of an item, to evaluate 
 the goodness of fit of the model.
-}
-\examples{
-
-...........
-.............
 }
 \references{
 David Thissen, Howard Wainer  D. (1990). Confidence Envelopes for Item Response Theory. \emph{Journal of Educational Statistics, Vol 15, No 2}, 113-128.

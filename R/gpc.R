@@ -143,10 +143,15 @@ prob_gpcm=function(node,betas,nitems,ncatg){
 #'@description Estimates the test parameters according to gpc model, you only need
 #'data matrix for estimation. This model is unidimensional only.
 #'@param data The matrix containing the answers of tested individuals
+#'@examples
+#'\dontrun{
+#' data = simulate_polytomous$data
+#' estim=estim_grm(datos = datos)
+#'}
 #'@export
 estim_grm=function(data){      
   
-  ###numero de categorias por ítem y el ítem a estimar.
+  ###numero de categorias por item y el item a estimar.
   ncatg <- apply(data, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
   ind1 <- c(1, cumsum(ncatg[-ncol(data)]) + 1)
   ind2 <- cumsum(ncatg)
@@ -172,10 +177,10 @@ estim_grm=function(data){
   npats=nrow(pats)
   freqs=patrones(data)$freqs
   
-  #data expandidos por item
+  #datos expandidos por item
   pats.cod=expand(pats,ncatg)
   
-  #data dicotomizados para cada item, y para todas las categorias
+  #datos dicotomizados para cada item, y para todas las categorias
   dat.dic=expand.list(pats=pats,ncatg = ncatg,npats)
   
   
@@ -215,20 +220,30 @@ estim_grm=function(data){
     betas.ant=betas
     # if(mm==500){warn="no converge";seguir=FALSE}
   }
-  return(betas)
+  retorno=list(pt.cuad=pt.cuad,w.cuad = w.cuad,betas = betas,
+               pats = pats,ncatg = ncatg,dat.dic = dat.dic)
+  return(retorno)
 }
 
 #'@name eap
 #'@title Latent Trait Estimation with EAP for gpc model 
 #'@description Estimates latent traits for gpc model.
-#'@param pt.cuad TODO
-#'@param w.cuad TODO
-#'@param betas TODO
-#'@param pats TODO
-#'@param ncatg TODO
-#'@param dat.dic TODO
+#'@param estim Output object from the estim_grm function.
+#'@examples
+#'\dontrun{
+#' data = simulate_polytomous()$data
+#' estim=estim_grm(datos = datos)
+#' eap = eap(estim)
+#' plot(density(eap))
+#'}
 #'@export
-eap=function(pt.cuad,w.cuad,betas,pats,ncatg,dat.dic){
+eap=function(estim){
+  betas=estim$betas
+  pt.cuad=estim$pt.cuad
+  w.cuad=estim$w.cuad
+  pats=estim$pats
+  ncatg=estim$ncatg
+  dat.dic=estim$dat.dic
   nitems=length(betas)
   npats=nrow(pats)
   denom=matrix(NA,nrow=length(pt.cuad),ncol=npats)
@@ -257,16 +272,24 @@ eap=function(pt.cuad,w.cuad,betas,pats,ncatg,dat.dic){
 #'@title Latent Trait Estimation with MAP for gpc model 
 #'@description Estimates latent traits for gpc model with MAP
 #'data matrix for estimation. This model is unidimensional only.
-#'@param betas TODO
-#'@param nitems TODO
-#'@param ncatg TODO
+#'@param estim Output object from the estim_grm function.
+#'@examples
+#'\dontrun{
+#' data = simulate_polytomous()$data
+#' estim=estim_grm(datos = datos)
+#' map = map(estim)
+#'}
 #'@export
-map=function(betas,nitems,ncatg){
-
+map=function(estim){
+	betas=estim$betas
+	nitems=length(betas)
+	ncatg=estim$ncatg
+	dat.dic=estim$dat.dic
+	npats=nrow(estim$pats)
 	prr=function(thetal,betas,nitems,ncatg){
 	  
 	  etas=
-	    lapply(betas,function(x,thetal){x[length(x)]*(thetal-x[1:(length(x)-1)])},thetal=thetal)
+		lapply(betas,function(x,thetal){x[length(x)]*(thetal-x[1:(length(x)-1)])},thetal=thetal)
 	  
 	  cumsumetas=lapply(etas,function(x)cumsum(x))
 	  den=lapply(cumsumetas,function(x){1+sum(exp(x))})
@@ -275,9 +298,9 @@ map=function(betas,nitems,ncatg){
 	  p[[i]][1]=1/den[[i]]}
 	  
 	  for(i in 1:nitems){ 
-	    for(k in 2:(ncatg[i])){ 
-	      p[[i]][k]=exp(etas[[i]][k-1])*p[[i]][k-1]
-	    }
+		for(k in 2:(ncatg[i])){ 
+		  p[[i]][k]=exp(etas[[i]][k-1])*p[[i]][k-1]
+		}
 	  }
 	  p<-lapply(p, function(x) ifelse(x <= sqrt(2.2e-16) , sqrt(2.2e-16), x )  ) 
 	  p<- lapply(p, function(x) ifelse(x >=  1 - 1e-6,  1 - 1e-6 , x) )
@@ -286,20 +309,20 @@ map=function(betas,nitems,ncatg){
 	  return(p)
 	}
 
-	postthetal=function(thetal,l,betas,nitems,ncatg){
+	postthetal=function(thetal,l,betas,nitems,ncatg,dat.dic){
 	  p=prr(thetal = thetal,betas = betas,nitems = nitems,ncatg = ncatg)
 	  pik=mapply(function(x,y)log(x^y),p,dat.dic[[l]],SIMPLIFY = F)  
 	  retorno=do.call(sum,lapply(pik,function(x)sum(x)))+log(dnorm(thetal))
 	  return(-retorno)
 	}
-
-	postthetal(thetal = 0,l = 1,betas = estim,nitems = nitems,ncatg = ncatg)
+	postthetal(thetal = 0,l = 1,betas = betas,nitems = nitems,ncatg = ncatg,
+			   dat.dic=dat.dic)
 
 	map=NULL
 	for(l in 1:npats){  
-	opt=optim(par = 1,fn = postthetal,l=l,betas=estim,
-	       method = "BFGS",
-	       nitems=nitems,ncatg=ncatg)
+	opt=optim(par = 1,fn = postthetal,l=l,betas=betas,
+		   method = "BFGS",
+		   nitems=nitems,ncatg=ncatg,dat.dic=dat.dic)
 	map[l]=opt$par
 	print(l)
 	}

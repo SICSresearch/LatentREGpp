@@ -218,7 +218,9 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
                         Rcpp::Named("r") = Rr,
                         Rcpp::Named("f") = Rf);
   }
-
+  
+  return List();
+  
 }
 
 List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, 

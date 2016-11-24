@@ -13,9 +13,9 @@
 #include <ctime>
 
 #include <iostream>
-
+#ifdef _OPENMP
 #include <omp.h>
-
+#endif
 #include "../../dichotomous/model/model.h"
 #include "../../dichotomous/type/estimationdata.h"
 

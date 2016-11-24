@@ -13,4 +13,10 @@ estim_grm(data)
 Estimates the test parameters according to gpc model, you only need
 data matrix for estimation. This model is unidimensional only.
 }
+\examples{
+\dontrun{
+data = simulate_polytomous$data
+estim=estim_grm(datos = datos)
+}
+}
 

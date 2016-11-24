@@ -4,22 +4,20 @@
 \alias{eap}
 \title{Latent Trait Estimation with EAP for gpc model}
 \usage{
-eap(pt.cuad, w.cuad, betas, pats, ncatg, dat.dic)
+eap(estim)
 }
 \arguments{
-\item{pt.cuad}{TODO}
-
-\item{w.cuad}{TODO}
-
-\item{betas}{TODO}
-
-\item{pats}{TODO}
-
-\item{ncatg}{TODO}
-
-\item{dat.dic}{TODO}
+\item{estim}{Output object from the estim_grm function.}
 }
 \description{
 Estimates latent traits for gpc model.
+}
+\examples{
+\dontrun{
+data = simulate_polytomous()$data
+estim=estim_grm(datos = datos)
+eap = eap(estim)
+plot(density(eap))
+}
 }
 

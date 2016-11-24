@@ -6,21 +6,21 @@
 \alias{LatentREGpp-package}
 \title{LatentREGpp : Item Response Theory Implemented in R and Cpp}
 \description{
-This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model.\cr
+Provides a C++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and obtain useful information about the resulting model.\cr
 This package is a work of SICS Research Group, Universidad Nacional de Colombia.\cr
 }
 \details{
 \tabular{ll}{
 Package: \tab LatentREGpp\cr
 Type: \tab Package\cr
-Version: \tab 0.1\cr
-Date: \tab 2016-09-07\cr
+Version: \tab 0.2\cr
+Date: \tab 2016-11-21\cr
 License: \tab MIT + file LICENSE \cr
 }
 }
 \section{Getting Started}{
 
-Get started with the LatentREGpp package browsing the index of this documentation
+Get started with the LatentREGpp package by browsing the index of this documentation
 if you need help the vignettes should be helpful.
 
 

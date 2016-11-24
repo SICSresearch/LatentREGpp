@@ -4,10 +4,20 @@
 \alias{alpha_cronbach}
 \title{Cronbach's alpha}
 \usage{
-alpha_cronbach(data)
+alpha_cronbach(data,standardized,CI,probs,B,na.rm)
 }
 \arguments{
 \item{data}{a matrix or a Dataframe that holds the test response data}
+
+\item{standardized}{Standarize data}
+
+\item{CI}{boolean}
+
+\item{probs}{Vector of probabilities}
+
+\item{B}{Vector Size}
+
+\item{na.rm}{Remove Na values}
 }
 \value{
 Cronbach's alpha for the test and the number of individuals of test.
@@ -17,14 +27,10 @@ Cronbach's alpha measures how correlated are the
 items in a test. Taken from ltm::cronbach.alpha
 }
 \details{
-the coefficient is calculated $\alpha = (n/n-1)*(1 - (\sum V_i/V_t))$
-where $V_t$ is the variance of test scores and $V_i$ is the variance of item scores.
+the coefficient is calculated \deqn{\alpha = (n/n-1)*(1 - (\sum V_i/V_t))}
+where \deqn{V_t} is the variance of test scores and \deqn{V_i} is the variance of item scores.
 It is desirable that the items are closely interrelated (coefficient near 1).
 This function was extracted from multilevel_2.5 package.
-}
-\examples{
-
-.....
 }
 \references{
 Cronbach L. J. (1951) Coefficient Alpha and the internal structure of tests. Psychometrika, 16,297-334

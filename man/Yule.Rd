@@ -28,10 +28,6 @@ The coefficient of Yule is calculated from (ad - bc)/(ad + bc).
 This is the number of pairs in agreement (ad) - the number in disagreement (bc) 
 over the total number of paired observations.
 }
-\examples{
-
-.......
-}
 \references{
 Yule, G.U. (1912). On the methods of measuring the association between two attributes. Journal of the Royal Statistical Society, 75, 579-652.
 

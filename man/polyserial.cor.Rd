@@ -20,17 +20,19 @@ used when one variable is continuous and the other variable is dichotomous.
 Taken and adapted from psych::polyserial
 }
 \details{
-The coefficient is calculated from $\rho = r_{xy} * \sqrt{(n - 1)/n} * s_y/\sum{\phi(\tau)}$ 
-where $r_{xy}$ is the coefficient of correlation of Pearson coefficient, S_y is the 
-standard deviation of Y, and $\phi(\tau)$ are the ordinates of the normal curve at 
+The coefficient is calculated from \deqn{\rho = r_{xy} * \sqrt{(n - 1)/n} * s_y/\sum{\phi(\tau)}} 
+where \deqn{r_{xy}} is the coefficient of correlation of Pearson coefficient, S_y is the 
+standard deviation of Y, and \deqn{\phi(\tau)} are the ordinates of the normal curve at 
 the normal equivalent of the cut point boundaries between the item responses.
 This function was adapted from ltm_1.0 package.
 }
 \examples{
+\dontrun{
  x <- rnorm(100)
- y <- sample(1:5,100,replace=T)
+ y <- sample(1:5,100,replace=TRUE)
  cor(x, y) 
  polyserial.cor(x, y) 
+}
 }
 \references{
 U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.

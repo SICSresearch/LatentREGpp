@@ -1,5 +1,3 @@
-# doc=function(){source("~/Escritorio/documentacion.R")}
-# doc()
 #######################################################################
 #' @name z3_personf
 #' @title Z3 Person fit statistic
@@ -27,7 +25,7 @@ z3_personf <- function(data,zita,patterns){
     scoresTot[index[[mm]]] <- scores[mm,ncol(data) +1]  
   }
   
-  P <- lapply(scoresTot,FUN=function(x){PR_uni_dico(thet=x,z=zita)}) 
+  P <- lapply(scoresTot,FUN=function(x){PR_uni_dico(thet=x,zita=zita)}) 
   P <- matrix(unlist(P),ncol=nitems,byrow=T)
   dim(P)
   
@@ -76,7 +74,7 @@ z3_itemf <- function(data,zita,patterns){
     scoresTot[index[[mm]]] <- scores[mm,ncol(data) +1]  
   }
   
-  P <- lapply(scoresTot,FUN=function(x){PR_uni_dico(thet=x,z=zita)}) 
+  P <- lapply(scoresTot,FUN=function(x){PR_uni_dico(thet=x,zita=zita)}) 
   P <- matrix(unlist(P),ncol=nitems,byrow=T)
   dim(P)
   
@@ -108,7 +106,6 @@ z3_itemf <- function(data,zita,patterns){
 #' @param zita matrix of estimations of the parameters of the items (alphas, d's, guessing).
 #' @param model type of model ( "1PL", 2PL", "3PL" ).
 #' @return Orlando's statistic, degrees of freedom and p-value for each item.
-#' @export
 #'
 #' @seealso
 #' \code{\link{z3_itemf}}
@@ -116,10 +113,7 @@ z3_itemf <- function(data,zita,patterns){
 #' @references
 #' Orlando, M. & Thissen, D. (2000). Likelihood-based item fit indices for dichotomous item
 #' response theory models. \emph{Applied Psychological Measurement, 24}, 50-64.
-#'
-#' @examples
-#'
-#'.......
+#' @export
 orlando_itemf <- function(patterns,G,zita,model){
   
   
@@ -142,7 +136,7 @@ orlando_itemf <- function(patterns,G,zita,model){
   w.cuad <- theta[,2] 
   thetaG <- theta[,1] 
   
-  pr <- lapply(thetaG,FUN=function(x){PR_uni_dico(thet=x,z=zita)}) #probabilidad para cada punto de cuadratura
+  pr <- lapply(thetaG,FUN=function(x){PR_uni_dico(thet=x,zita=zita)}) #probabilidad para cada punto de cuadratura
   pr <- matrix(unlist(pr),ncol=nitems,byrow=T)
   
   score <- rowSums(patsSinFrec )  
@@ -223,10 +217,11 @@ orlando_itemf <- function(patterns,G,zita,model){
 #' @name x2_itemf
 #' @title Statistical x2.
 #' @description Calculates the statistical x2.
+#' @usage x2_itemf(zetas, patterns, G, FUN)
 #' @param zetas matrix of estimations of the parameters of the items (alphas, d's, guessing).
-#' @param patterns, list with Patterns, frequencies and traits.
-#' @param G, the number of groups, by default 10
-#' @param FUN, It is the function with which the expected probability, by default median 
+#' @param patterns list with Patterns, frequencies and traits.
+#' @param G the number of groups, by default 10
+#' @param FUN It is the function with which the expected probability, by default median 
 #' is calculated in each group.
 #' @export
 x2_itemf=function(zetas,patterns,G = 10,FUN = median){
@@ -244,8 +239,8 @@ x2_itemf=function(zetas,patterns,G = 10,FUN = median){
 #' @param alpha level of significance to plot the envelopes. By default 0.05
 #' @param item.fit object LatentREGpp::itemfit() type.
 #' @param data the data frame or a matrix with the test data.
+#' @param seed the seed to be used in the random number generator
 #' @return plot with the envelopes and the caracteristic curve of the item.
-#' @export
 #'
 #' @seealso
 #' \code{\link{orlando_itemf}}, \code{\link{z3_itemf}}
@@ -253,16 +248,13 @@ x2_itemf=function(zetas,patterns,G = 10,FUN = median){
 #' @references
 #'
 #' David Thissen, Howard Wainer  D. (1990). Confidence Envelopes for Item Response Theory. \emph{Journal of Educational Statistics, Vol 15, No 2}, 113-128.
-#' @examples
-#'
-#'...........
-#'.............
+#' @export
 envelope_itemf=function(item, numboot=100, alpha=0.05, item.fit, data,seed=5000L){
   
-  r <- est$r
-  f <- matrix(rep(est$f,ncol(data)),ncol=ncol(data),byrow=F)
-  theta <- est$quad$theta
-  params <- est$zetas
+  r <- item.fit$r
+  f <- matrix(rep(item.fit$f,ncol(data)),ncol=ncol(data),byrow=F)
+  theta <- item.fit$quad$theta
+  params <- item.fit$zetas
   
   nitems <- ncol(r) 
   x <- seq(from = -6,to = 6,by=0.1)

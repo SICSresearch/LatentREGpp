@@ -1,7 +1,7 @@
 Package: LatentREGpp
 Type: Package
 Title: Item Response Theory Implemented in R and Cpp
-Version: 0.1
+Version: 0.2
 Authors@R:c(
   person("Milder Hernandez Cagua",email = "milderhc@gmail.com",role = "aut"),
   person("Jhonatan Javier Guzman del Rio",email = "jhjguzmanri@unal.edu.co",role = "aut"),
@@ -14,11 +14,11 @@ Authors@R:c(
   person("Emilio Pablo Berdugo Camacho",email = "epberdugoc@unal.edu.co",role = "aut"),
   person("SICS Research Group",email = "sics_fcbog@unal.edu.co",role = "cph"))
 Maintainer: Camilo Antonio Suarez Bolanos <caasuarezbo@unal.edu.co>
-Description: This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model. Acknowledgment: This work was Supported by Colciencias Research Grant 0039-2013 and SICS Research Group, Universidad Nacional de Colombia.
+Description: Provides a C++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and obtain useful information about the resulting model. This package is a work of SICS Research Group, Universidad Nacional de Colombia.
 License: MIT + file LICENSE
 LazyData: TRUE
 Imports:
-    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, FactoMineR, MASS, ade4
+    Rcpp (>= 0.12.6), randtoolbox, fastGHQuad, RSpectra, FactoMineR, MASS, ade4, sirt, paran, statmod, optimx, mvtnorm, numDeriv, stats, utils
 LinkingTo: Rcpp, BH
 SystemRequirements: c++11, OpenMP
 RoxygenNote: 5.0.1

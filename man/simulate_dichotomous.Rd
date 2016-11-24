@@ -11,13 +11,15 @@ simulate_dichotomous(dim.data = 1, sample.size = 1000,
 \arguments{
 \item{dim.data}{Data dimension}
 
-\item{sample.size}{Size of the population that will be simulated}
+\item{sample.size}{Size of the population to be simulated}
 
-\item{size.cluster}{Vector containing the number of items by dimension}
+\item{size.cluster}{Vector containing the number of items per dimension}
 
 \item{seed_data}{Seed for simulation of the data}
 
 \item{seed_item}{Seed for simulation of the item parameters}
+
+\item{model}{the model used to generate the test. It can have values of "1PL", "2PL" or "3PL".}
 }
 \value{
 list with the simulated data, the information of the item parameters and
@@ -30,8 +32,5 @@ This function generates dichotomous test
 
 #Example 1: see by default options
 simm=simulate_dichotomous()
-names(simm)
-simm$traits
-simm$params.it
 }
 

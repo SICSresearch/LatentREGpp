@@ -26,16 +26,18 @@ Taken from ltm::biserial.cor
 \details{
 It is calculated by applying the Pearson correlation coefficient to the case
 where one of the variables has dichotomous nature. 
-It is calculated as $r_{xy} = (\bar{x}_p - \bar{x}_q / S_x)*\sqrt{pq}$ 
+It is calculated as \deqn{r_{xy} = (\bar{x}_p - \bar{x}_q / S_x)*\sqrt{pq}}
 where p  is the proportion of subjects with one of the two possible values of the 
 variable Y, q is the proportion of subjects with the other possible value, 
-$\bar{x}_p$ and $\bar{x}_q$ is the average X subjects whose proportion is p and q respectively,
-and $S_x$ is the standard deviation of all subjects X.
+\deqn{\bar{x}_p} and \deqn{\bar{x}_q} is the average X subjects whose proportion is p and q respectively,
+and \deqn{S_x} is the standard deviation of all subjects X.
 This function was adapted from ltm_1.0 package.
 }
 \examples{
-data <- simulateTest(model="2PL",items=10,individuals=1000)
-biserial.cor(rowSums(data$test), data$test[,1])
+\dontrun{
+data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
+biserial.cor(rowSums(data$data), data$data[,1])
+}
 }
 \references{
 U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.

@@ -10,12 +10,9 @@
 #' or a vector c(a,b,c,d) of frequencies.
 #' @usage phi(x)
 #' @param x a 1 x 4 vector or a matrix 2 x 2 of frequencies.
-#' @details The coefficient phi is calculated from $(ad - bc)/\sqrt{p_qp_2q_1q_2}$ 
-#' where $p_i$ and $q_i$ are the ratios of the dichotomous variables. 
+#' @details The coefficient phi is calculated from \deqn{(ad - bc)/\sqrt{p_qp_2q_1q_2}}
+#' where \deqn{p_i} and \deqn{q_i} are the ratios of the dichotomous variables. 
 #' @return the value of the phi coefficient correlation.
-#' @examples 
-#' 
-#' .......
 #' @references Warrens, Matthijs (2008), On Association Coefficients for 2x2 Tables and Properties That Do Not Depend on the Marginal Distributions. Psychometrika, 73, 777-789.
 #' @references Yule, G.U. (1912). On the methods of measuring the association between two attributes. Journal of the Royal Statistical Society, 75, 579-652.
 #' @export
@@ -53,18 +50,13 @@ phi <- function (x)
 #' @return The maximum value of the alpha coefficient calculated at each step. 
 #' @return The item removed at each step. 
 #' @return Tue Cronbach-Mesbah curve plot.
-#' @examples
-#' 
-#' ..........
 #' @references Cameletti, M. & Caviezel, V. (2010). Checking the unidimensionality in R
 #' using the Cronbach-Mesbah curve.
 #' @references Mesbah, M. (2010). Statistical quality of life. In "Method and Applications of Statistics in the 
 #' Life and Health Sciences", N. BalakrishnanEd., Wiley, pp. 839-864. 
 #' @export
-
-alpha_curve=function (x) 
+alpha_curve=function (data) 
 {
-  data = x
   n = nrow(data)
   k = ncol(data)
   max.vec = c()
@@ -113,21 +105,21 @@ alpha_curve=function (x)
 #' @title Cronbach's alpha
 #' @description Cronbach's alpha measures how correlated are the 
 #' items in a test. Taken from ltm::cronbach.alpha 
-#' @usage alpha_cronbach(data)
+#' @usage alpha_cronbach(data,standardized,CI,probs,B,na.rm)
 #' @param data a matrix or a Dataframe that holds the test response data
-#' @details the coefficient is calculated $\alpha = (n/n-1)*(1 - (\sum V_i/V_t))$
-#' where $V_t$ is the variance of test scores and $V_i$ is the variance of item scores.
+#' @param standardized Standarize data
+#' @param CI boolean
+#' @param probs Vector of probabilities
+#' @param B Vector Size
+#' @param na.rm Remove Na values
+#' @details the coefficient is calculated \deqn{\alpha = (n/n-1)*(1 - (\sum V_i/V_t))}
+#' where \deqn{V_t} is the variance of test scores and \deqn{V_i} is the variance of item scores.
 #' It is desirable that the items are closely interrelated (coefficient near 1).
 #' This function was extracted from multilevel_2.5 package.
 #' @return Cronbach's alpha for the test and the number of individuals of test.
-#' @examples
-#' 
-#' .....
 #' @references Cronbach L. J. (1951) Coefficient Alpha and the internal structure of tests. Psychometrika, 16,297-334
 #' @export
-#' 
-alpha_cronbach <-
-  function (data, standardized = FALSE, CI = FALSE, probs = c(0.025, 0.975), B = 1000, na.rm = FALSE) {
+alpha_cronbach <- function (data, standardized = FALSE, CI = FALSE, probs = c(0.025, 0.975), B = 1000, na.rm = FALSE) {
     if (!inherits(data, "matrix") && !inherits(data, "data.frame"))
       stop("'data' must be either a data.frame or a matrix.\n")
     n <- nrow(data)
@@ -185,20 +177,21 @@ alpha_cronbach <-
 #' @param level which level of y to use.
 #' @details It is calculated by applying the Pearson correlation coefficient to the case
 #' where one of the variables has dichotomous nature. 
-#' It is calculated as $r_{xy} = (\bar{x}_p - \bar{x}_q / S_x)*\sqrt{pq}$ 
+#' It is calculated as \deqn{r_{xy} = (\bar{x}_p - \bar{x}_q / S_x)*\sqrt{pq}}
 #' where p  is the proportion of subjects with one of the two possible values of the 
 #' variable Y, q is the proportion of subjects with the other possible value, 
-#' $\bar{x}_p$ and $\bar{x}_q$ is the average X subjects whose proportion is p and q respectively,
-#' and $S_x$ is the standard deviation of all subjects X.
+#' \deqn{\bar{x}_p} and \deqn{\bar{x}_q} is the average X subjects whose proportion is p and q respectively,
+#' and \deqn{S_x} is the standard deviation of all subjects X.
 #' This function was adapted from ltm_1.0 package.
-#' @examples 
-#' data <- simulateTest(model="2PL",items=10,individuals=1000)
-#' biserial.cor(rowSums(data$test), data$test[,1])
+#' @examples
+#' \dontrun{
+#' data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
+#' biserial.cor(rowSums(data$data), data$data[,1])
+#' }
 #' @return The value of the point-biserial correlation.
 #' @references U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.
 #' @references Cox. N.R. (1974). Estimation of the Correlation between a Continuous and a Discrete Variable. Biometrics, 30:171-178.
 #' @export
-
 biserial.cor <- function (x, y, use = c("all.obs", "complete.obs"), level = 1) 
 {
   if (!is.numeric(x)) 
@@ -226,30 +219,26 @@ biserial.cor <- function (x, y, use = c("all.obs", "complete.obs"), level = 1)
 #' @description Six Lower limits of reliability coefficients are presented. 
 #' @usage gutt(test)
 #' @param test a matrix or a Dataframe that holds the test response data
-#' @details Let $S_j^2$ the variances over persons of the n items in the test, and
-#' $S_t^2$ the variance over persons of the sum of the items.
-#' The firt estimate $lambda_1$ can be computed from $L_1 = 1 - (sum{s_j^2}/S_t^2)$
-#' Let $C_2$ the sum of squares of the covariances between items, therefore is
-#' the sum of $n(n-1)/2$ terms. The bound $lambda_2$ is computed by $L_2 = L_1 + (sqrt{n/n-1 C_2}/S_t^2)$ 
-#' The third lower bound $lambda_3$ is a modification of $lambda_1$, it is computed
-#' from the $L_3 = n/(n-1) L_1$
-#' Fourth lower bound $lamda_4$ has been interpreted as the greatest split half reliability,
+#' @details Let \deqn{S_j^2} the variances over persons of the n items in the test, and
+#' \deqn{S_t^2} the variance over persons of the sum of the items.
+#' The firt estimate \deqn{lambda_1} can be computed from \deqn{L_1 = 1 - (sum{s_j^2}/S_t^2)}
+#' Let \deqn{C_2} the sum of squares of the covariances between items, therefore is
+#' the sum of \deqn{n(n-1)/2} terms. The bound \deqn{lambda_2} is computed by \deqn{L_2 = L_1 + (sqrt{n/n-1 C_2}/S_t^2)} 
+#' The third lower bound \deqn{lambda_3} is a modification of \deqn{lambda_1}, it is computed
+#' from the \deqn{L_3 = n/(n-1) L_1}
+#' Fourth lower bound \deqn{lamda_4} has been interpreted as the greatest split half reliability,
 #' and requires that the test be scored as twohalves. It is calculated from 
-#' $L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)$ where $S_a^2$ and $S_b^2$ are the respectives variances
+#' \deqn{L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)} where \deqn{S_a^2} and \deqn{S_b^2} are the respectives variances
 #' of the two parts for the single trial. 
-#' For the fifth lower bound $lambda_5$, let $C_{2j}$ be the sum of the squares of the
-#' covariances of item j with the remaining $n-1$ items, and let $bar{C}_2$ be the largest of
-#' the $C_{2j}$. Then the coefficient can be computed from $L_5 = L_1 + (2sqrt{bar{C}_2})/S_t^2$
-#' The final bound is based on multiple correlation, let $e_j^2$ be the variance of the errors
+#' For the fifth lower bound \deqn{lambda_5}, let \deqn{C_{2j}} be the sum of the squares of the
+#' covariances of item j with the remaining \deqn{n-1} items, and let \deqn{bar{C}_2} be the largest of
+#' the \deqn{C_{2j}}. Then the coefficient can be computed from \deqn{L_5 = L_1 + (2sqrt{bar{C}_2})/S_t^2}
+#' The final bound is based on multiple correlation, let \deqn{e_j^2} be the variance of the errors
 #' of estimate of item j from its linear multiple regression on the remaining n-1 items. Then
-#' $lambda_6$ can be computed from $L_6 = 1 - (sum{e_j^2})/S_t^2$ 
+#' \deqn{lambda_6} can be computed from \deqn{L_6 = 1 - (sum{e_j^2})/S_t^2} 
 #' @return The six coefficients Guttman for the test.
-#' @examples
-#'  
-#' .....
 #' @references Guttman, L. (1945). A basis for analyzing test-retest reliability. Psychometrika, 10(4), 255-282.
 #' @export
-
 gutt <- function(test){
   
   r <- cov(test)
@@ -338,13 +327,9 @@ gutt <- function(test){
 #' This is the number of pairs in agreement (ad) - the number in disagreement (bc) 
 #' over the total number of paired observations. 
 #' @return the value of the Yule Q coefficient.
-#' @examples 
-#' 
-#' .......
 #' @references Yule, G.U. (1912). On the methods of measuring the association between two attributes. Journal of the Royal Statistical Society, 75, 579-652.
 #' @references Warrens, Matthijs (2008), On Association Coefficients for 2x2 Tables and Properties That Do Not Depend on the Marginal Distributions. Psychometrika, 73, 777-789.
 #' @export
-
 Yule <- function (x, Y = FALSE) 
 {
   stopifnot(prod(dim(x)) == 4 || length(x) == 4)
@@ -375,20 +360,21 @@ Yule <- function (x, Y = FALSE)
 #' @usage polyserial.cor(x,y)
 #' @param x a numeric vector representing the continuous variable. 
 #' @param y a numeric vector representing the dichotomous variable.
-#' @details The coefficient is calculated from $\rho = r_{xy} * \sqrt{(n - 1)/n} * s_y/\sum{\phi(\tau)}$ 
-#' where $r_{xy}$ is the coefficient of correlation of Pearson coefficient, S_y is the 
-#' standard deviation of Y, and $\phi(\tau)$ are the ordinates of the normal curve at 
+#' @details The coefficient is calculated from \deqn{\rho = r_{xy} * \sqrt{(n - 1)/n} * s_y/\sum{\phi(\tau)}} 
+#' where \deqn{r_{xy}} is the coefficient of correlation of Pearson coefficient, S_y is the 
+#' standard deviation of Y, and \deqn{\phi(\tau)} are the ordinates of the normal curve at 
 #' the normal equivalent of the cut point boundaries between the item responses.
 #' This function was adapted from ltm_1.0 package.
 #' @examples
+#' \dontrun{
 #'  x <- rnorm(100)
-#'  y <- sample(1:5,100,replace=T)
+#'  y <- sample(1:5,100,replace=TRUE)
 #'  cor(x, y) 
 #'  polyserial.cor(x, y) 
+#' }
 #' @return the value of the polyserial correlation.
 #' @references U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.
 #' @export
-
 polyserial.cor <- function (x, y) 
 {
   min.item <- min(y, na.rm = TRUE) 
@@ -440,8 +426,10 @@ polyserial.cor <- function (x, y)
 #' an unrotated principal component analysis.
 #' @return Bias a vector of the estimated bias of the unadjusted eigenvalues 
 #' @examples 
-#' data <- simulateTest(model="2PL",items=10,individuals=1000) 
-#' an.parallel(data$test, iterations = 100, centile = 99, seed = 12)
+#' \dontrun{
+#'  data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
+#'  an.parallel(data$data, iterations = 100, centile = 99, seed = 12)
+#' }
 #' @references John L. Horn (1965). A rationale and test for the number of factors 
 #' in factor analysis. Psychometrika, Volume 30, Number 2, Page 179.
 #' @references Dinno A. 2009. Exploring the Sensitivity of Horn's Parallel Analysis to the 
