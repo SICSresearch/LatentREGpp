@@ -267,12 +267,12 @@ List personfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model,
   }
 
   //Estimation object 
-  //Rprintf("here 1");
+  //printf("here 1");
   latentregpp::polytomous::estimation e( Y, dim, model, 1e-4, 
                                    theta, weights );
-  //Rprintf("here 2");
+  //printf("here 2");
   e.load_multi_initial_values(zetas); //Revisar TODO
-  //Rprintf("here 3");
+  //printf("here 3");
   //Latent traits
   if ( method == "EAP" ) e.EAP(by_individuals);
   else { 

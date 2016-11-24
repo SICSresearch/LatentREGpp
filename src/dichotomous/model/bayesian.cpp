@@ -17,14 +17,14 @@ bayesian::bayesian(matrix<double> c) : model(model_type::bayesian, THREE_PARAMET
 	this->c_values = c;
     //this->type = model_type::bayesian;
     //this->parameters = THREE_PARAMETERS;
-    //Rprintf("%f",c_values(2,3));
-    //Rprintf("I am in construct\n");
+    //printf("%f",c_values(2,3));
+    //printf("I am in construct\n");
     /*for(int p = 0; p < c_values.rows(); p++)
     {
         for(int q = 0; q < c_values.columns(p); q++) {
-            Rprintf("%f ",c_values(p,q));
+            printf("%f ",c_values(p,q));
         }
-        Rprintf("\n");
+        printf("\n");
     }*/
 }
 
@@ -112,12 +112,12 @@ void bayesian::set_c_values(std::vector<optimizer_vector> c) {
         }
     }
     
-    /*Rprintf("Print values for c_values matrix atributte");
+    /*printf("Print values for c_values matrix atributte");
     for(int x = 0; x < c_values.rows() ;++x) {
         for(int y = 0; y < c_values.columns(x) ;++y) {
-            Rprintf("%f ",c_values(x,y));
+            printf("%f ",c_values(x,y));
         }
-        Rprintf("\n");
+        printf("\n");
     }*/
 }
 

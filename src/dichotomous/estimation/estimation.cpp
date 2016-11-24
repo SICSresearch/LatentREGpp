@@ -345,17 +345,17 @@ void estimation::compute_initial_values() {
 	data.loglikelihood = NOT_COMPUTED;
 
 	//Test for bugs
-	/*Rprintf("Show me what is my vector");
+	/*printf("Show me what is my vector");
 	for ( int i = 0; i < p; ++i ) {
 		for ( int j = 0; j < total_parameters; ++j )
-			Rprintf("%lf ",zeta[i](j));
-		Rprintf("\n");
+			printf("%lf ",zeta[i](j));
+		printf("\n");
 	}*/
 
 }
 
 void estimation::EMAlgorithm ( bool verbose ) {
-	if ( verbose ) Rprintf("EM Algorithm started\n");
+	if ( verbose ) printf("EM Algorithm started\n");
 	double dif = 0.0;
 	iterations = 0;
 	int current;
@@ -366,9 +366,9 @@ void estimation::EMAlgorithm ( bool verbose ) {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-		if ( verbose ) Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
+		if ( verbose ) printf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
-	if ( verbose ) Rprintf("\n");
+	if ( verbose ) printf("\n");
 }
 
 double estimation::log_likelihood() {

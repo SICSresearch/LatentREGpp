@@ -124,7 +124,7 @@ double Mstep(estimation_data &data, int current) {
                                                  Qi(i, &data, current), next_zeta[i], -1);
 
     //for ( int j = 0; j < next_zeta[i].size(); ++j )
-      //Rprintf("%lf %lf\n", current_zeta[i](j), next_zeta[i](j));
+      //printf("%lf %lf\n", current_zeta[i](j), next_zeta[i](j));
     
     //Computing difference of current item
     if ( data.m->parameters < THREE_PARAMETERS ) {

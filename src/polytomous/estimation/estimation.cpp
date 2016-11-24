@@ -373,7 +373,7 @@ void estimation::compute_initial_values() {
 	iterations = 0;
 }
 void estimation::EMAlgorithm ( bool verbose ) {
-	if ( verbose ) Rprintf("EM Algorithm started\n");
+	if ( verbose ) printf("EM Algorithm started\n");
 	double dif = 0.0;
 	iterations = 0;
 	int current;
@@ -385,9 +385,9 @@ void estimation::EMAlgorithm ( bool verbose ) {
 		Estep(data, current);
 		dif = Mstep(data, current);
 		++iterations;
-		if ( verbose ) Rprintf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
+		if ( verbose ) printf("\rIteration: %u \tMax-Change: %.6lf", iterations, dif);
 	} while ( dif >= convergence_difference && iterations < MAX_ITERATIONS );
-	if ( verbose ) Rprintf("\n");
+	if ( verbose ) printf("\n");
 }
 
 
