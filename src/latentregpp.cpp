@@ -4,7 +4,7 @@ using namespace Rcpp;
 
 List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
-                   IntegerVector Rindividual_weights, 
+                   NumericVector Rindividual_weights, 
                    bool dichotomous_data,
                    IntegerVector Rpinned_items,
                    NumericMatrix Rinitial_values,
@@ -13,7 +13,7 @@ List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMeps
   latentregpp::matrix<char> Y;
   latentregpp::matrix<double> theta;
   std::vector<double> weights;
-  std::vector<int> individual_weights;
+  std::vector<double> individual_weights;
   std::vector<int> pinned_items;
   latentregpp::matrix<double> initial_values;
 
@@ -154,7 +154,7 @@ List itemfitcpp_bayesian ( IntegerMatrix Rdata, unsigned int dim, int model, dou
   latentregpp::matrix<char> Y;
   latentregpp::matrix<double> theta;
   std::vector<double> weights;
-  std::vector<int> individual_weights;
+  std::vector<double> individual_weights;
   std::vector<int> clusters;
   latentregpp::matrix<double> initial_values;
 

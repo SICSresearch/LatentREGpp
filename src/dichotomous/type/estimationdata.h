@@ -32,7 +32,7 @@ public:
 	matrix<int> correct; /**< Matrix that contains what items have been answered correctly for each response pattern*/
 	int d; /**< Dimension*/
 	matrix<char> Y; /**< Matrix of response patterns*/
-	std::vector<int> nl; /**< Frequencies of each response pattern*/
+	std::vector<double> nl; /**< Frequencies of each response pattern*/
 	int N; /**< Number of examines*/
 	int s; /**< Number of response patterns*/
 	int p; /**< Number of items*/

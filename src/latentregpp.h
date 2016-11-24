@@ -21,7 +21,7 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List itemfitcpp ( IntegerMatrix Rdata, unsigned int dim, int model, double EMepsilon,
                    NumericMatrix Rtheta, NumericVector Rweights, 
-                   IntegerVector Rindividual_weights,
+                   NumericVector Rindividual_weights,
                    bool dichotomous_data,
                    IntegerVector Rpinned_items = IntegerVector::create(),
                    NumericMatrix Rinitial_values = NumericMatrix(1, 1),

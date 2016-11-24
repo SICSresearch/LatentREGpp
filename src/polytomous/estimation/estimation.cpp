@@ -15,7 +15,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 					   double convergence_difference,
 					   matrix<double> theta,
 					   std::vector<double> weights,
-					   std::vector<int> individual_weights,
+					   std::vector<double> individual_weights,
 					   std::vector<int> pinned_items,
 					   matrix<double> initial_values ) {
 	/**
@@ -39,7 +39,7 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 	matrix<char> &Y = data.Y;
 
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 
 	//Number of categories by item
 	std::vector<int> &categories_item = data.categories_item;
@@ -70,14 +70,16 @@ estimation::estimation(matrix<char> &dataset, unsigned int d, int themodel,
 		patterns[dataset.get_row(i)].push_back(i);
 
 	Y = matrix<char>();
-	nl = std::vector<int>(patterns.size());
+	nl = std::vector<double>(patterns.size());
 
-	if ( individual_weights.empty() ) individual_weights = std::vector<int>(patterns.size(), 1);
+	if ( individual_weights.empty() ) individual_weights = std::vector<double>(dataset.rows(), 1.0);
 
 	int l = 0;
 	for ( auto it : patterns ) {
 		Y.add_row(it.first);
-		nl[l] = it.second.size() * individual_weights[l];
+		nl[l] = 0;
+		for ( auto index : it.second )
+			nl[l] += 1.0 / double(individual_weights[index]);
 		++l;
 	}
 
@@ -402,7 +404,7 @@ double estimation::log_likelihood() {
 	//Matrix of response patterns
 	matrix<char> &Y = data.Y;
 	//Frequency of each pattern
-	std::vector<int> &nl = data.nl;
+	std::vector<double> &nl = data.nl;
 	//Latent trait vectors
 	matrix<double> &theta = data.theta;
 	//Weights
