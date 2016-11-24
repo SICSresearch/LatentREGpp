@@ -43,8 +43,10 @@ in a principle component analysis (PCA). This procedure is a adaptation of the
 function paran of Package Paran.
 }
 \examples{
-data <- simulateTest(model="2PL",items=10,individuals=1000) 
-an.parallel(data$test, iterations = 100, centile = 99, seed = 12)
+\dontrun{
+ data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
+ an.parallel(data$data, iterations = 100, centile = 99, seed = 12)
+}
 }
 \references{
 John L. Horn (1965). A rationale and test for the number of factors 

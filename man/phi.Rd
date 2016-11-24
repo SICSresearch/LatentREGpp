@@ -22,12 +22,8 @@ to dichotomous data. Given a two x two table of counts
 or a vector c(a,b,c,d) of frequencies.
 }
 \details{
-The coefficient phi is calculated from $(ad - bc)/\sqrt{p_qp_2q_1q_2}$ 
-where $p_i$ and $q_i$ are the ratios of the dichotomous variables.
-}
-\examples{
-
-.......
+The coefficient phi is calculated from \deqn{(ad - bc)/\sqrt{p_qp_2q_1q_2}}
+where \deqn{p_i} and \deqn{q_i} are the ratios of the dichotomous variables.
 }
 \references{
 Warrens, Matthijs (2008), On Association Coefficients for 2x2 Tables and Properties That Do Not Depend on the Marginal Distributions. Psychometrika, 73, 777-789.

@@ -2,14 +2,14 @@
 #' @name LatentREGpp
 #' @docType package
 #' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
-#' @description This Package is a c++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and provides useful information about the obtained model.\cr
+#' @description Provides a C++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and obtain useful information about the resulting model.\cr
 #' This package is a work of SICS Research Group, Universidad Nacional de Colombia.\cr
 #' @details
 #' \tabular{ll}{
 #'Package: \tab LatentREGpp\cr
 #'Type: \tab Package\cr
-#'Version: \tab 0.1\cr
-#'Date: \tab 2016-09-07\cr
+#'Version: \tab 0.2\cr
+#'Date: \tab 2016-11-21\cr
 #'License: \tab MIT + file LICENSE \cr
 #'}
 #'@author Milder Hernandez Cagua <milderhc@gmail.com>
@@ -38,8 +38,29 @@
 #'@importFrom optimx optimx
 #'@importFrom stats cor cov dist plogis quantile rexp rnorm runif
 #'@importFrom utils head
+#'@importFrom paran paran
+#'@importFrom statmod gauss.quad
+#'@importFrom optimx optimx
+#'@importFrom graphics abline
+#'@importFrom graphics legend
+#'@importFrom graphics lines
+#'@importFrom graphics par
+#'@importFrom graphics plot
+#'@importFrom graphics plot.default
+#'@importFrom graphics points
+#'@importFrom graphics text
+#'@importFrom stats complete.cases
+#'@importFrom stats dnorm
+#'@importFrom stats median
+#'@importFrom stats na.omit
+#'@importFrom stats optim
+#'@importFrom stats pchisq
+#'@importFrom stats qlogis
+#'@importFrom stats qnorm
+#'@importFrom stats sd
+#'@importFrom stats var
 #'@section Getting Started:
-#'Get started with the LatentREGpp package browsing the index of this documentation
+#'Get started with the LatentREGpp package by browsing the index of this documentation
 #'if you need help the vignettes should be helpful.
 #'@section Getting Started:
 #'The LatentREGpp package allows you to use the LatentREGpp methodology for simulating, analyzing and scoring tests \cr
@@ -246,7 +267,7 @@ itemfit = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 	obj_return$quadpoints = q
 
 	if( SD ) {
-		ncatg <- apply(datos, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
+		ncatg <- apply(data, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
 
 		ff = NULL
 		if(dichotomous_data) ff = obj_return$f

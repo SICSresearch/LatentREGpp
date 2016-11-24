@@ -31,12 +31,12 @@
 #'   p(\theta_l/\eta)\partial\theta_l}}
 #'   where:
 #'   \describe{
-#'   \item{} \eqn{\theta_l} is the latent trait associated with pattern l.
-#'   \item{} \eqn{U_l} refers to response pattern l
-#'   \item{} \eqn{\zeta} are items parameters
-#'   \item{} \eqn{\eta} are the hiperparameters from the prior distribution to the traits. }  }
+#'   \item{}{\eqn{\theta_l} is the latent trait associated with pattern l.}
+#'   \item{}{\eqn{U_l} refers to response pattern l}
+#'   \item{}{\eqn{\zeta} are items parameters}
+#'   \item{}{\eqn{\eta} are the hiperparameters from the prior distribution to the traits. }  }}
 #'   
-#'   \item{MAP} {The method consists of maximize the following expression regard to
+#'   \item{MAP}{The method consists of maximize the following expression regard to
 #'   \eqn{\theta_l}
 #'   \deqn{\frac{p(U_{l}=u_l /\theta_l,\zeta)p(\theta_l/\eta)} {\int p(U_{l}=u_l /\theta_l,\zeta)
 #'   p(\theta_l/\eta)\partial\theta_l}}}
@@ -51,7 +51,7 @@
 #'\boldsymbol{a}_i,\gamma_{ik}) =c_i+(1-c_i)\boldsymbol{\Psi}(\eta_{lik})}
 #'where 
 #'\describe{
-#'\item{} {\eqn{\eta_{lik}=\boldsymbol{a}_i^t\boldsymbol{\theta}_l + \gamma_{ik}}}
+#'\item{}{\eqn{\eta_{lik}=\boldsymbol{a}_i^t\boldsymbol{\theta}_l + \gamma_{ik}}}
 #'}
 #'\describe{
 #'\item{}{\eqn{\boldsymbol{a}_i=(\boldsymbol{a}_1,\boldsymbol{a}_2,...,\boldsymbol{a}_d)^t} 
@@ -69,12 +69,8 @@
 #'\item{}{If by_individuals=FALE. Returns a list of length 3 with the latent traits for each pattern,
 #'the reponse patterns and the frecuencie of each pattern}
 #'}
-#' @references
-#' lllll
-#' 
-#' llll
 #' @examples
-#' 
+#' \dontrun{
 #' #Example 1
 #' 
 #' #simulate 10 polyotmous items, the first 5 with 4 response categories and the
@@ -83,7 +79,6 @@
 #' dats=simulate_polytomous(ncatgs = c(rep(4,10),rep(5,10)),seed_data = 5000L)
 #' #estimate the items parameters
 #' est=itemfit(dats$data,dim = 1,model = "2PL")
-#' est$zetas
 #' #calculates the latent traits estimation.
 #' personfit(dats$data,dim = 1,zetas = est$zetas,method = "MAP")
 #' 
@@ -91,12 +86,12 @@
 #' 
 #' #simulate 10 dichotomous items, the trait dimention is 2
 #' #other arguments by default
-#' dats=simulate_dichotomous(dim.data = 2,seed_data = 5000L)
+#' dats=simulate_dichotomous(dim.data = 2,size.cluster = c(5,5), seed_data = 5000L)
 #' #estimate the items parameters
-#' est=itemfit(dats$data,dim = 2,model = "2PL")
-#' est$zetas
+#' est=itemfit(dats$data,dim = 2,clusters = c(5,5),model = "2PL")
 #' #calculates the latent traits estimation
 #' personfit(dats$data,dim = 2,zetas = est$zetas,method = "MAP",by_individuals=F)
+#' }
 #'@export
 personfit = function ( data, dim, model = "2PL", zetas , 
                        quad_tech = "Gaussian", quad_points =NULL, 

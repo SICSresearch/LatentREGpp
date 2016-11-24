@@ -52,7 +52,6 @@ bayesian adjust in dichotomous data
 
  Then, log posterior is given by:
 
- \deqn{log(P_{\zeta_{i}}(\zeta_{i})) = - \fraq{N}{2} (\fraq{(a_{1i} - \mu_{a1i})^2}{\sigma_{1i}^2} + \cdots + \fraq{(a_{Di} - \mu_{aDi})^2}{\sigma_{Di}^2} + \fraq{(d_{i} - \mu_{di})^2}{\sigma_{di}^2} + \fraq{(c_{i} - \mu_{ci})^2}{\sigma_{ci}^2}) }
 
  Where a,d and c are parameters, D is the dimension of test. You can give the \eqn{\mu} values for each parameters through initial values matrix. In otherwise \eqn{\mu} will have default initial values value
  \eqn{\sigma^2} values are constant \eqn{\sigma_a^2 = 0.64}, \eqn{\sigma_d^2 = 4}, \eqn{\sigma_c^2 = 0.009}

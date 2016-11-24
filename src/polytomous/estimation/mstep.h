@@ -22,7 +22,9 @@
 //including optimization files from dlib library
 #include <dlib/optimization.h>
 
+#ifdef _OPENMP
 #include <omp.h>
+#endif
 
 namespace latentregpp {
 

@@ -22,10 +22,6 @@ Orlando's statistic, degrees of freedom and p-value for each item.
 Calculate the values of the statistics S_x2 from
 Maria Orlando and David Thisen.
 }
-\examples{
-
-.......
-}
 \references{
 Orlando, M. & Thissen, D. (2000). Likelihood-based item fit indices for dichotomous item
 response theory models. \emph{Applied Psychological Measurement, 24}, 50-64.

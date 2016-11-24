@@ -22,15 +22,6 @@ PR_uni_dico=function(thet,zita){
   
 }
 
-#######################################################################
-#' @name s_ss
-#' @title Calculates the likelihoods.
-#' @description Likelihood of the classics scores to calculate 
-#' expected frequencies in Orlando statistical.
-#' @param pr Probability matrix.
-#' @param nitems Number of items considered in the probability matrix.
-#' @param G the group number
-#' @keywords internal
 
 s_ss <- function(pr,nitems,G){
   sact <- matrix(0,ncol = nitems +1,nrow = G)   
@@ -53,18 +44,6 @@ s_ss <- function(pr,nitems,G){
   }
   return(sact)
 }
-#######################################################################
-#' @name coll
-#' @title Coll
-#' @description Fixes very small expected frequencies for statistical orlando
-#' @param E It is a list (of length number of items) with expected frequencies
-#' of incorrect and correct answers for each item.This function is taken and adapted from 
-#' mirt package (function "collapsecells")
-#' @param O It is a list (of length number of items) with observed frequencies
-#' of incorrect and correct answers for each item
-#' @param mincell is the minimum number of people expected to score k or not 
-#' answering item j
-#' @keywords internal
 
 coll <- function(O, E, mincell = 1){
   for(i in 1L:length(O)){ 
@@ -101,17 +80,6 @@ coll <- function(O, E, mincell = 1){
 }
 
 
-#######################################################################
-#' @name x2
-#' @title Statistical x2.
-#' @description Calculates the statistical x2.
-#' @param model, The implemented model ("1PL","2PL","3PL")
-#' @param zita matrix of estimations of the parameters of the items (alphas, d's, guessing).
-#' @param patterns, list with Patterns, frequencies and traits.
-#' @param G, the number of groups.
-#' @param FUN, It is the function with which the expected probability 
-#' is calculated in each group
-#'
 x2 <- function(z,patterns,G,FUN){
   nitems <- ncol(patterns$patterns) 
   theta <- patterns$latent_traits 
@@ -124,9 +92,8 @@ x2 <- function(z,patterns,G,FUN){
   
   thetaG <- tapply(rep(theta, frec), rep(groups.Ind, frec), FUN = FUN) 
   
-  ###hasta aqui no hay diferencias.
   
-  prs <- matrix(unlist(lapply(thetaG,function(theta){PR_uni_dico(thet=theta,z = z)})),ncol=nitems,byrow = T)
+  prs <- matrix(unlist(lapply(thetaG,function(theta){PR_uni_dico(thet=theta,zita = z)})),ncol=nitems,byrow = T)
    # pr=read.table("/home/juan/ppr_ltm.txt")
    # prs=rbind(pr[1:3,],pr[5,],pr[7,],pr[4,],pr[6,],pr[8,],pr[10,],pr[9,])
    # set.seed(17000L)

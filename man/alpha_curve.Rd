@@ -30,10 +30,6 @@ increase, whereas if we remove a good item alpha must decrease.
 3. This procedure is repeated until only  two items remain.
 This function was extracted from CMC_1.0 package.
 }
-\examples{
-
-..........
-}
 \references{
 Cameletti, M. & Caviezel, V. (2010). Checking the unidimensionality in R
 using the Cronbach-Mesbah curve.

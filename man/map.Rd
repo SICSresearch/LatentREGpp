@@ -4,17 +4,20 @@
 \alias{map}
 \title{Latent Trait Estimation with MAP for gpc model}
 \usage{
-map(betas, nitems, ncatg)
+map(estim)
 }
 \arguments{
-\item{betas}{TODO}
-
-\item{nitems}{TODO}
-
-\item{ncatg}{TODO}
+\item{estim}{Output object from the estim_grm function.}
 }
 \description{
 Estimates latent traits for gpc model with MAP
 data matrix for estimation. This model is unidimensional only.
+}
+\examples{
+\dontrun{
+data = simulate_polytomous()$data
+estim=estim_grm(datos = datos)
+map = map(estim)
+}
 }
 
