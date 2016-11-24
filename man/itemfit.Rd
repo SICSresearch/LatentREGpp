@@ -6,7 +6,7 @@
 \usage{
 itemfit(data, dim, model = "2PL", EMepsilon = 1e-04, clusters = NULL,
   quad_tech = NULL, quad_points = NULL,
-  individual_weights = as.integer(c()), initial_values = NULL, SD = FALSE,
+  individual_weights = as.numeric(c()), initial_values = NULL, SD = FALSE,
   verbose = TRUE, save_time = TRUE)
 }
 \arguments{
