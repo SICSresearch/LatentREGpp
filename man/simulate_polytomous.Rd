@@ -21,8 +21,15 @@ simulate_polytomous(dim.data = 1, sample.size = 1000,
 
 \item{model}{the model used to generate the test. It can have values of "1PL", "2PL" or "3PL".}
 }
+\value{
+list with the simulated data, the information of the item parameters and
+the individual parameters
+}
 \description{
 This function generates dichotomous test of an specified dimension and size. The items per dimension are specified in the size.cluster vector, and the individuals are specified in sample.size.
 The amout of categories of each item is determined with ncatgs.
+}
+\seealso{
+\code{\link{simulate_polytomous}}
 }
 

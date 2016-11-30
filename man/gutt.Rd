@@ -4,10 +4,10 @@
 \alias{gutt}
 \title{Guttman's Lambda}
 \usage{
-gutt(test)
+gutt(data)
 }
 \arguments{
-\item{test}{a matrix or a Dataframe that holds the test response data}
+\item{data}{a matrix or a Dataframe that holds the test response data}
 }
 \value{
 The six coefficients Guttman for the test.
@@ -17,22 +17,22 @@ Six Lower limits of reliability coefficients are presented.
 }
 \details{
 Let \deqn{S_j^2} the variances over persons of the n items in the test, and
-\deqn{S_t^2} the variance over persons of the sum of the items.
-The firt estimate \deqn{lambda_1} can be computed from \deqn{L_1 = 1 - (sum{s_j^2}/S_t^2)}
-Let \deqn{C_2} the sum of squares of the covariances between items, therefore is
-the sum of \deqn{n(n-1)/2} terms. The bound \deqn{lambda_2} is computed by \deqn{L_2 = L_1 + (sqrt{n/n-1 C_2}/S_t^2)} 
-The third lower bound \deqn{lambda_3} is a modification of \deqn{lambda_1}, it is computed
-from the \deqn{L_3 = n/(n-1) L_1}
-Fourth lower bound \deqn{lamda_4} has been interpreted as the greatest split half reliability,
+\eqn{S_t^2} the variance over persons of the sum of the items.
+The firt estimate \eqn{\lambda_1} can be computed from \eqn{L_1 = 1 - (sum{s_j^2}/S_t^2)}
+Let \eqn{C_2} the sum of squares of the covariances between items, therefore is
+the sum of \eqn{n(n-1)/2} terms. The bound \eqn{lambda_2} is computed by \eqn{L_2 = L_1 + (\sqrt{n/n-1 C_2}/S_t^2)} 
+The third lower bound \eqn{\lambda_3} is a modification of \eqn{\lambda_1}, it is computed
+from the \eqn{L_3 = n/(n-1) L_1}
+Fourth lower bound \eqn{\lambda_4} has been interpreted as the greatest split half reliability,
 and requires that the test be scored as twohalves. It is calculated from 
-\deqn{L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)} where \deqn{S_a^2} and \deqn{S_b^2} are the respectives variances
+\deqn{L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)} where \eqn{S_a^2} and \eqn{S_b^2} are the respectives variances
 of the two parts for the single trial. 
-For the fifth lower bound \deqn{lambda_5}, let \deqn{C_{2j}} be the sum of the squares of the
-covariances of item j with the remaining \deqn{n-1} items, and let \deqn{bar{C}_2} be the largest of
-the \deqn{C_{2j}}. Then the coefficient can be computed from \deqn{L_5 = L_1 + (2sqrt{bar{C}_2})/S_t^2}
-The final bound is based on multiple correlation, let \deqn{e_j^2} be the variance of the errors
+For the fifth lower bound \eqn{lambda_5}, let \eqn{C_{2j}} be the sum of the squares of the
+covariances of item j with the remaining \eqn{n-1} items, and let \eqn{\bar{C}_2} be the largest of
+the \deqn{C_{2j}}. Then the coefficient can be computed from \eqn{L_5 = L_1 + (2\sqrt{bar{C}_2})/S_t^2}
+The final bound is based on multiple correlation, let \eqn{e_j^2} be the variance of the errors
 of estimate of item j from its linear multiple regression on the remaining n-1 items. Then
-\deqn{lambda_6} can be computed from \deqn{L_6 = 1 - (sum{e_j^2})/S_t^2}
+\eqn{lambda_6} can be computed from \eqn{L_6 = 1 - (\sum{e_j^2})/S_t^2}
 }
 \references{
 Guttman, L. (1945). A basis for analyzing test-retest reliability. Psychometrika, 10(4), 255-282.

@@ -1,14 +1,14 @@
-#'@name itemfit.bayesian
-#'@title Parameter estimation of a test
+#'@name itemfit_bayesian
+#'@title Bayesian parameter estimation of a test
 #'@description Estimates the test parameters according to the Multidimensional Item Response Theory with
-#'bayesian adjust in dichotomous data
+#'bayesian adjust for dichotomous data
 #'@param data The matrix containing the answers of tested individuals
 #'@param dim The dimensionality of the test
 #'@param model "1PL", "2PL" or "3PL"
 #'@param EMepsilon Convergence value to determine the accuracy of the test
 #'@param clusters A vector with cluster per dimension 
 #'@param quad_tech A string with technique. "Gaussian" for Gaussian quadrature 
-#'or "QMCEM" for Quasi-Monte Carlo quadrature
+#'or "QMCEM" for Quasi-Monte Carlo quadrature. If NULL it's selected according to the model's dimension (QMCEM if dim>3).
 #'@param quad_points Amount of quadrature points. If quadratura_technique is "Gaussian". It can be NULL
 #'@param individual_weights A vector with Weights of the quadrature points.
 #'@param initial_values A matrix with initial values for estimation process. Be sure about
@@ -33,7 +33,7 @@
 #'  \eqn{\sigma^2} values are constant \eqn{\sigma_a^2 = 0.64}, \eqn{\sigma_d^2 = 4}, \eqn{\sigma_c^2 = 0.009}
 #'}
 #'@export
-itemfit.bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
+itemfit_bayesian = function(data, dim, model = "2PL", EMepsilon = 1e-4, clusters = NULL,
 				  quad_tech = NULL, quad_points = NULL, 
 				  individual_weights = as.numeric(c()),
 				  initial_values = NULL, noguessing = TRUE, 

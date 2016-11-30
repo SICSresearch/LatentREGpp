@@ -1,6 +1,6 @@
 #'@name quadpoints
 #'@title Quadrature points
-#'@description Return a list with quadrature points according dimensionality, technique
+#'@description Return a list with quadrature points according to dimensionality, technique
 #'and number of points.
 #'@param dim Dimension of the quadrature
 #'@param quad_tech A string to specify the quadrature calculation technique. Use "Gaussian" to use that method, or

@@ -1,5 +1,5 @@
 #######################################################################
-#' @name LatentREGpp
+#' @name LatentREGpp-Description
 #' @docType package
 #' @title LatentREGpp : Item Response Theory Implemented in R and Cpp
 #' @description Provides a C++ implementation of the Multidimensional Item Response Theory (MIRT) capable of performing parameter and traits estimations. It also provides a list of options to perform an optimal analysis and obtain useful information about the resulting model.\cr
@@ -8,8 +8,8 @@
 #' \tabular{ll}{
 #'Package: \tab LatentREGpp\cr
 #'Type: \tab Package\cr
-#'Version: \tab 0.2.1\cr
-#'Date: \tab 2016-11-24\cr
+#'Version: \tab 0.2.2\cr
+#'Date: \tab 2016-11-28\cr
 #'License: \tab MIT + file LICENSE \cr
 #'}
 #'@author Milder Hernandez Cagua <milderhc@gmail.com>
@@ -87,6 +87,7 @@ NULL
 #'@param SD calculate for standar desviation for items
 #'@param verbose True for get information about estimation process in runtime. False in otherwise. 
 #'@param save_time True for save estimation time. False otherwise.
+#'@value a list with estimations, loglikelihood, iterations, r (an intermediate matrix), f, aic, bic, time, dimension, model, convergence, epsilon, quadrature points.
 #'@section Models:
 #'
 #'LatentREGpp has different models to fit likelihood value according parameters to estimate.

@@ -2,29 +2,29 @@
 % Please edit documentation in R/goodness_of_fit.R
 \name{envelope_itemf}
 \alias{envelope_itemf}
-\title{Confidence bands}
+\title{Confidence Envelops for an item}
 \usage{
 envelope_itemf(item, numboot = 100, alpha = 0.05, item.fit, data,
   seed = 5000L)
 }
 \arguments{
-\item{item}{a number indicating the item that you want evaluate.}
+\item{item}{a number indicating the item to be evaluated.}
 
-\item{numboot}{number of iterations bootstrap, used to plot the envelopes, by default 100}
+\item{numboot}{number of iterations bootstrap, used to plot the envelopes. By default 100.}
 
-\item{alpha}{level of significance to plot the envelopes. By default 0.05}
+\item{alpha}{level of significance to plot the envelopes. By default 0.05.}
 
 \item{item.fit}{object LatentREGpp::itemfit() type.}
 
-\item{data}{the data frame or a matrix with the test data.}
+\item{data}{a dataframe or a matrix with the test data.}
 
-\item{seed}{the seed to be used in the random number generator}
+\item{seed}{the seed to fix the random sample. By default 500L.}
 }
 \value{
 plot with the envelopes and the caracteristic curve of the item.
 }
 \description{
-Graphic bands of confidence of an item, to evaluate 
+Graphs confidence bands of an item, to evaluate 
 the goodness of fit of the model.
 }
 \references{

@@ -138,18 +138,18 @@ prob_gpcm=function(node,betas,nitems,ncatg){
 	return(p)
 }
 
-#'@name estim_grm
+#'@name estim_gpc
 #'@title Estimation gpc model
-#'@description Estimates the test parameters according to gpc model, you only need
-#'data matrix for estimation. This model is unidimensional only.
+#'@description Estimates the test parameters according to the gerenalized parcial credit model (gpc) model.
+#'This model is unidimensional only.
 #'@param data The matrix containing the answers of tested individuals
 #'@examples
 #'\dontrun{
 #' data = simulate_polytomous$data
-#' estim=estim_grm(datos = datos)
+#' estim=estim_gpc(data = datos)
 #'}
 #'@export
-estim_grm=function(data){      
+estim_gpc=function(data){      
   
   ###numero de categorias por item y el item a estimar.
   ncatg <- apply(data, 2, function (x) if (any(is.na(x))) length(unique(x)) - 1 else length(unique(x)))
@@ -225,19 +225,20 @@ estim_grm=function(data){
   return(retorno)
 }
 
-#'@name eap
-#'@title Latent Trait Estimation with EAP for gpc model 
-#'@description Estimates latent traits for gpc model.
-#'@param estim Output object from the estim_grm function.
+#'@name eap_gpc
+#'@title Latent Trait Estimation with EAP for gerenalized parcial credit model (gpc) model 
+#'@description Estimates latent traits for gerenalized parcial credit model (gpc) model.
+#'Just for unidimensional models.
+#'@param estim Output object from the estim_gpc function.
 #'@examples
 #'\dontrun{
 #' data = simulate_polytomous()$data
-#' estim=estim_grm(datos = datos)
-#' eap = eap(estim)
-#' plot(density(eap))
+#' estim=estim_gpc(datos = datos)
+#' eap_gpc = eap_gpc(estim)
+#' plot(density(eap_gpc))
 #'}
 #'@export
-eap=function(estim){
+eap_gpc=function(estim){
   betas=estim$betas
   pt.cuad=estim$pt.cuad
   w.cuad=estim$w.cuad
@@ -264,23 +265,23 @@ eap=function(estim){
       num[g,l]=do.call(prod,prod.catgs)*(w.cuad[g])*pt.cuad[g]
     }
   }
-  eap=colSums(num)/colSums(denom)
-  return(eap)
+  eap_gpc=colSums(num)/colSums(denom)
+  return(eap_gpc)
 }
 
-#'@name map
-#'@title Latent Trait Estimation with MAP for gpc model 
-#'@description Estimates latent traits for gpc model with MAP
-#'data matrix for estimation. This model is unidimensional only.
-#'@param estim Output object from the estim_grm function.
+#'@name map_gpc
+#'@title Latent Trait Estimation with MAP for gerenalized parcial credit model (gpc) 
+#'@description Estimates latent traits for gerenalized parcial credit model (gpc) with MAP
+#'data matrix for estimation. Just for unidimensional models.
+#'@param estim Output object from the estim_gpc function.
 #'@examples
 #'\dontrun{
 #' data = simulate_polytomous()$data
-#' estim=estim_grm(datos = datos)
-#' map = map(estim)
+#' estim=estim_gpc(datos = datos)
+#' map_gpc = map_gpc(estim)
 #'}
 #'@export
-map=function(estim){
+map_gpc=function(estim){
 	betas=estim$betas
 	nitems=length(betas)
 	ncatg=estim$ncatg

@@ -19,15 +19,15 @@ The item removed at each step.
 Tue Cronbach-Mesbah curve plot.
 }
 \description{
-To assess the unidimensionality of a set of items from alpha coefficient.
+Assess the unidimensionality of a set of items from alpha coefficient.
 }
 \details{
-To construct the curve takes the next step by step:
-1. The first step uses all items to compute alpha. 
-2. One item is removed from the scale. The removed item is that which leaves the scale
+Constructs the curve by iteration:\cr
+1. Compute alpha using all items.\cr
+2. Remove one item from the scale. The removed item is the one which leaves the scale
 with its maximum alpha value. If we remove a bad item, the alpha  coefficient  will
-increase, whereas if we remove a good item alpha must decrease.  
-3. This procedure is repeated until only  two items remain.
+increase. Whereas if we remove a good item, the alpha must decrease.\cr
+3. Repeat until only  two items remain.\cr
 This function was extracted from CMC_1.0 package.
 }
 \references{

@@ -13,12 +13,12 @@ phi(x)
 the value of the phi coefficient correlation.
 }
 \description{
-The phi coefficient of is  a correlation coefficient applied 
-to dichotomous data. Given a two x two table of counts
-| a | b | R1 |
-| c | d | R1 |
-|---|---|----|
-|C1 | C2| n  |
+The phi coefficient is  a correlation coefficient applied 
+to dichotomous data. Given a two x two table of counts\cr
+| a | b | R1 |\cr
+| c | d | R1 |\cr
+|---|---|----|\cr
+|C1 | C2| n  |\cr
 or a vector c(a,b,c,d) of frequencies.
 }
 \details{

@@ -1,6 +1,6 @@
 #'@name simulate_dichotomous
 #'@title Dichotomous data simulation 
-#'@description This function generates dichotomous test 
+#'@description This function a generates dichotomous test 
 #'@param dim.data Data dimension
 #'@param sample.size Size of the population to be simulated
 #'@param size.cluster Vector containing the number of items per dimension
@@ -13,6 +13,8 @@
 #'
 #'#Example 1: see by default options
 #'simm=simulate_dichotomous()
+#' @seealso
+#' \code{\link{simulate_polytomous}}
 #'@export 
 
 simulate_dichotomous = function(dim.data = 1, sample.size = 1000, size.cluster = c(20), seed_data=5000L,seed_item=1000,model="2PL") {

@@ -100,10 +100,10 @@ z3_itemf <- function(data,zita,patterns){
 #' @name orlando_itemf
 #' @title Orlando's statistic
 #' @description Calculate the values of the statistics S_x2 from
-#' Maria Orlando and David Thisen.
+#' Maria Orlando and David Thisen (2000).
 #' @param patterns list of patterns response (patterns$patterns), the frequency of each pattern (patterns$freq) and the latent traits (patterns$latent_traits).
 #' @param G number of quadrature points.
-#' @param zita matrix of estimations of the parameters of the items (alphas, d's, guessing).
+#' @param zeta matrix of estimations of the parameters of the items (alphas, d's, guessing).
 #' @param model type of model ( "1PL", 2PL", "3PL" ).
 #' @return Orlando's statistic, degrees of freedom and p-value for each item.
 #'
@@ -114,8 +114,8 @@ z3_itemf <- function(data,zita,patterns){
 #' Orlando, M. & Thissen, D. (2000). Likelihood-based item fit indices for dichotomous item
 #' response theory models. \emph{Applied Psychological Measurement, 24}, 50-64.
 #' @export
-orlando_itemf <- function(patterns,G,zita,model){
-  
+orlando_itemf <- function(patterns,G,zeta,model){
+  zita = zeta;
   
   if(model=="3PL"){mo=3}
   if(model=="2PL"){mo=2}
@@ -231,15 +231,15 @@ x2_itemf=function(zetas,patterns,G = 10,FUN = median){
 
 #######################################################################
 #' @name envelope_itemf
-#' @title Confidence bands
-#' @description Graphic bands of confidence of an item, to evaluate 
+#' @title Confidence Envelops for an item
+#' @description Graphs confidence bands of an item, to evaluate 
 #' the goodness of fit of the model.
-#' @param item a number indicating the item that you want evaluate.
-#' @param numboot number of iterations bootstrap, used to plot the envelopes, by default 100
-#' @param alpha level of significance to plot the envelopes. By default 0.05
+#' @param item a number indicating the item to be evaluated.
+#' @param numboot number of iterations bootstrap, used to plot the envelopes. By default 100.
+#' @param alpha level of significance to plot the envelopes. By default 0.05.
 #' @param item.fit object LatentREGpp::itemfit() type.
-#' @param data the data frame or a matrix with the test data.
-#' @param seed the seed to be used in the random number generator
+#' @param data a dataframe or a matrix with the test data.
+#' @param seed the seed to fix the random sample. By default 500L.
 #' @return plot with the envelopes and the caracteristic curve of the item.
 #'
 #' @seealso

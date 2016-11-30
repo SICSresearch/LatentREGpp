@@ -47,7 +47,7 @@ the reponse patterns and the frecuencie of each pattern}
 \description{
 Estimates the latent traits by using either the Expected A Posteriori (EAP) 
 or Mode A Posteriori (MAP) method. A Normal distribution with mean vector zero and 
-covariance matrix the identity is assumed. Quasi-Monte Carlo quadrature is advised
+covariance matrix the identity is assumed. Quasi-Monte Carlo quadrature is suggested
 when the data dimension is large \eqn{(>3)}.
 }
 \section{Methods to estimate the Latent Traits}{

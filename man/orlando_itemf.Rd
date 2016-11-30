@@ -4,14 +4,14 @@
 \alias{orlando_itemf}
 \title{Orlando's statistic}
 \usage{
-orlando_itemf(patterns, G, zita, model)
+orlando_itemf(patterns, G, zeta, model)
 }
 \arguments{
 \item{patterns}{list of patterns response (patterns$patterns), the frequency of each pattern (patterns$freq) and the latent traits (patterns$latent_traits).}
 
 \item{G}{number of quadrature points.}
 
-\item{zita}{matrix of estimations of the parameters of the items (alphas, d's, guessing).}
+\item{zeta}{matrix of estimations of the parameters of the items (alphas, d's, guessing).}
 
 \item{model}{type of model ( "1PL", 2PL", "3PL" ).}
 }
@@ -20,7 +20,7 @@ Orlando's statistic, degrees of freedom and p-value for each item.
 }
 \description{
 Calculate the values of the statistics S_x2 from
-Maria Orlando and David Thisen.
+Maria Orlando and David Thisen (2000).
 }
 \references{
 Orlando, M. & Thissen, D. (2000). Likelihood-based item fit indices for dichotomous item

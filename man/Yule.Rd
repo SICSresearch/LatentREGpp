@@ -15,13 +15,13 @@ Yule(x, Y = FALSE)
 the value of the Yule Q coefficient.
 }
 \description{
-The Yule coefficient of is  a correlation coefficient applied 
-to dichotomous data. Given a two x two table of counts. Taken from psych::Yule 
-| a | b | R1 |
-| c | d | R1 |
-|---|---|----|
-|C1 | C2| n  |
-or a vector c(a,b,c,d) of frequencies.
+The Yule coefficientis a correlation coefficient applied 
+to dichotomous data. Given a two x two table of counts\cr
+| a | b | R1 |\cr
+| c | d | R1 |\cr
+|---|---|----|\cr
+|C1 | C2| n  |\cr
+or a vector c(a,b,c,d) of frequencies. Taken from psych::Yule.
 }
 \details{
 The coefficient of Yule is calculated from (ad - bc)/(ad + bc).

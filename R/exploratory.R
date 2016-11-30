@@ -1,12 +1,12 @@
 #######################################################################
 #' @name phi
 #' @title Phi coefficient of correlation 
-#' @description The phi coefficient of is  a correlation coefficient applied 
-#' to dichotomous data. Given a two x two table of counts
-#' | a | b | R1 |
-#' | c | d | R1 |
-#' |---|---|----|
-#' |C1 | C2| n  |
+#' @description The phi coefficient is  a correlation coefficient applied 
+#' to dichotomous data. Given a two x two table of counts\cr
+#' | a | b | R1 |\cr
+#' | c | d | R1 |\cr
+#' |---|---|----|\cr
+#' |C1 | C2| n  |\cr
 #' or a vector c(a,b,c,d) of frequencies.
 #' @usage phi(x)
 #' @param x a 1 x 4 vector or a matrix 2 x 2 of frequencies.
@@ -36,15 +36,15 @@ phi <- function (x)
 #######################################################################
 #' @name alpha_curve
 #' @title Cronbach-Mesbah Curve
-#' @description To assess the unidimensionality of a set of items from alpha coefficient.
+#' @description Assess the unidimensionality of a set of items from alpha coefficient.
 #' @usage alpha_curve(data)
 #' @param data a Dataframe that holds the test response data
-#' @details To construct the curve takes the next step by step:
-#' 1. The first step uses all items to compute alpha. 
-#' 2. One item is removed from the scale. The removed item is that which leaves the scale
+#' @details Constructs the curve by iteration:\cr
+#' 1. Compute alpha using all items.\cr
+#' 2. Remove one item from the scale. The removed item is the one which leaves the scale
 #' with its maximum alpha value. If we remove a bad item, the alpha  coefficient  will
-#' increase, whereas if we remove a good item alpha must decrease.  
-#' 3. This procedure is repeated until only  two items remain.
+#' increase. Whereas if we remove a good item, the alpha must decrease.\cr
+#' 3. Repeat until only  two items remain.\cr
 #' This function was extracted from CMC_1.0 package.
 #' @return The number of items used to calculate the coefficient. 
 #' @return The maximum value of the alpha coefficient calculated at each step. 
@@ -165,20 +165,20 @@ alpha_cronbach <- function (data, standardized = FALSE, CI = FALSE, probs = c(0.
   }
 
 #######################################################################
-#' @name biserial.cor
+#' @name biserial_cor
 #' @title Biserial Correlation
 #' @description Point-Biserial correlation coefficient is a correlation coefficient
 #' used when one variable is continuous and the other variable is dichotomous.
-#' Taken from ltm::biserial.cor
-#' @usage biserial.cor(x,y, use = c("all.obs", "complete.obs"), level = 1)
+#' Taken from ltm::biserial_cor
+#' @usage biserial_cor(x,y, use = c("all.obs", "complete.obs"), level = 1)
 #' @param x a numeric vector representing the continuous variable. 
 #' @param y a numeric vector representing the dichotomous variable.
-#' @param use Is a option for the use of missing values. 
+#' @param use is a option for the use of missing values. 
 #' @param level which level of y to use.
 #' @details It is calculated by applying the Pearson correlation coefficient to the case
-#' where one of the variables has dichotomous nature. 
+#' where one of the variables has dichotomous nature.\cr
 #' It is calculated as \deqn{r_{xy} = (\bar{x}_p - \bar{x}_q / S_x)*\sqrt{pq}}
-#' where p  is the proportion of subjects with one of the two possible values of the 
+#' Where p  is the proportion of subjects with one of the two possible values of the 
 #' variable Y, q is the proportion of subjects with the other possible value, 
 #' \deqn{\bar{x}_p} and \deqn{\bar{x}_q} is the average X subjects whose proportion is p and q respectively,
 #' and \deqn{S_x} is the standard deviation of all subjects X.
@@ -186,13 +186,13 @@ alpha_cronbach <- function (data, standardized = FALSE, CI = FALSE, probs = c(0.
 #' @examples
 #' \dontrun{
 #' data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
-#' biserial.cor(rowSums(data$data), data$data[,1])
+#' biserial_cor(rowSums(data$data), data$data[,1])
 #' }
 #' @return The value of the point-biserial correlation.
 #' @references U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.
 #' @references Cox. N.R. (1974). Estimation of the Correlation between a Continuous and a Discrete Variable. Biometrics, 30:171-178.
 #' @export
-biserial.cor <- function (x, y, use = c("all.obs", "complete.obs"), level = 1) 
+biserial_cor <- function (x, y, use = c("all.obs", "complete.obs"), level = 1) 
 {
   if (!is.numeric(x)) 
     stop("'x' must be a numeric variable.\n")
@@ -217,30 +217,30 @@ biserial.cor <- function (x, y, use = c("all.obs", "complete.obs"), level = 1)
 #' @name gutt
 #' @title Guttman's Lambda
 #' @description Six Lower limits of reliability coefficients are presented. 
-#' @usage gutt(test)
-#' @param test a matrix or a Dataframe that holds the test response data
+#' @usage gutt(data)
+#' @param data a matrix or a Dataframe that holds the test response data
 #' @details Let \deqn{S_j^2} the variances over persons of the n items in the test, and
-#' \deqn{S_t^2} the variance over persons of the sum of the items.
-#' The firt estimate \deqn{lambda_1} can be computed from \deqn{L_1 = 1 - (sum{s_j^2}/S_t^2)}
-#' Let \deqn{C_2} the sum of squares of the covariances between items, therefore is
-#' the sum of \deqn{n(n-1)/2} terms. The bound \deqn{lambda_2} is computed by \deqn{L_2 = L_1 + (sqrt{n/n-1 C_2}/S_t^2)} 
-#' The third lower bound \deqn{lambda_3} is a modification of \deqn{lambda_1}, it is computed
-#' from the \deqn{L_3 = n/(n-1) L_1}
-#' Fourth lower bound \deqn{lamda_4} has been interpreted as the greatest split half reliability,
+#' \eqn{S_t^2} the variance over persons of the sum of the items.
+#' The firt estimate \eqn{\lambda_1} can be computed from \eqn{L_1 = 1 - (sum{s_j^2}/S_t^2)}
+#' Let \eqn{C_2} the sum of squares of the covariances between items, therefore is
+#' the sum of \eqn{n(n-1)/2} terms. The bound \eqn{lambda_2} is computed by \eqn{L_2 = L_1 + (\sqrt{n/n-1 C_2}/S_t^2)} 
+#' The third lower bound \eqn{\lambda_3} is a modification of \eqn{\lambda_1}, it is computed
+#' from the \eqn{L_3 = n/(n-1) L_1}
+#' Fourth lower bound \eqn{\lambda_4} has been interpreted as the greatest split half reliability,
 #' and requires that the test be scored as twohalves. It is calculated from 
-#' \deqn{L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)} where \deqn{S_a^2} and \deqn{S_b^2} are the respectives variances
+#' \deqn{L_4 = 2(1 - (s_a^2 + s_b^2)/s_t^2)} where \eqn{S_a^2} and \eqn{S_b^2} are the respectives variances
 #' of the two parts for the single trial. 
-#' For the fifth lower bound \deqn{lambda_5}, let \deqn{C_{2j}} be the sum of the squares of the
-#' covariances of item j with the remaining \deqn{n-1} items, and let \deqn{bar{C}_2} be the largest of
-#' the \deqn{C_{2j}}. Then the coefficient can be computed from \deqn{L_5 = L_1 + (2sqrt{bar{C}_2})/S_t^2}
-#' The final bound is based on multiple correlation, let \deqn{e_j^2} be the variance of the errors
+#' For the fifth lower bound \eqn{lambda_5}, let \eqn{C_{2j}} be the sum of the squares of the
+#' covariances of item j with the remaining \eqn{n-1} items, and let \eqn{\bar{C}_2} be the largest of
+#' the \deqn{C_{2j}}. Then the coefficient can be computed from \eqn{L_5 = L_1 + (2\sqrt{bar{C}_2})/S_t^2}
+#' The final bound is based on multiple correlation, let \eqn{e_j^2} be the variance of the errors
 #' of estimate of item j from its linear multiple regression on the remaining n-1 items. Then
-#' \deqn{lambda_6} can be computed from \deqn{L_6 = 1 - (sum{e_j^2})/S_t^2} 
+#' \eqn{lambda_6} can be computed from \eqn{L_6 = 1 - (\sum{e_j^2})/S_t^2} 
 #' @return The six coefficients Guttman for the test.
 #' @references Guttman, L. (1945). A basis for analyzing test-retest reliability. Psychometrika, 10(4), 255-282.
 #' @export
-gutt <- function(test){
-  
+gutt <- function(data){
+  test = data
   r <- cov(test)
   n <- ncol(r)
   n.obs <- nrow(r)
@@ -313,13 +313,13 @@ gutt <- function(test){
 #######################################################################
 #' @name Yule
 #' @title Yule coefficient of correlation 
-#' @description The Yule coefficient of is  a correlation coefficient applied 
-#' to dichotomous data. Given a two x two table of counts. Taken from psych::Yule 
-#' | a | b | R1 |
-#' | c | d | R1 |
-#' |---|---|----|
-#' |C1 | C2| n  |
-#' or a vector c(a,b,c,d) of frequencies.
+#' @description The Yule coefficientis a correlation coefficient applied 
+#' to dichotomous data. Given a two x two table of counts\cr
+#' | a | b | R1 |\cr
+#' | c | d | R1 |\cr
+#' |---|---|----|\cr
+#' |C1 | C2| n  |\cr
+#' or a vector c(a,b,c,d) of frequencies. Taken from psych::Yule.
 #' @usage Yule(x, Y = FALSE)
 #' @param x a 1 x 4 vector or a matrix 2 x 2 of frequencies.
 #' @param Y if Y is true return Yule's Y coefficient of colligation.
@@ -352,12 +352,12 @@ Yule <- function (x, Y = FALSE)
 
 
 #######################################################################
-#' @name polyserial.cor
+#' @name polyserial_cor
 #' @title Polyserial correlation
 #' @description Polyserial correlation coefficient is a correlation coefficient
 #' used when one variable is continuous and the other variable is dichotomous.
 #' Taken and adapted from psych::polyserial
-#' @usage polyserial.cor(x,y)
+#' @usage polyserial_cor(x,y)
 #' @param x a numeric vector representing the continuous variable. 
 #' @param y a numeric vector representing the dichotomous variable.
 #' @details The coefficient is calculated from \deqn{\rho = r_{xy} * \sqrt{(n - 1)/n} * s_y/\sum{\phi(\tau)}} 
@@ -370,12 +370,12 @@ Yule <- function (x, Y = FALSE)
 #'  x <- rnorm(100)
 #'  y <- sample(1:5,100,replace=TRUE)
 #'  cor(x, y) 
-#'  polyserial.cor(x, y) 
+#'  polyserial_cor(x, y) 
 #' }
 #' @return the value of the polyserial correlation.
 #' @references U.Olsson, F.Drasgow, and N.Dorans (1982). The polyserial correlation coefficient. Psychometrika, 47:337-347.
 #' @export
-polyserial.cor <- function (x, y) 
+polyserial_cor <- function (x, y) 
 {
   min.item <- min(y, na.rm = TRUE) 
   max.item <- max(y, na.rm = TRUE) 
@@ -402,33 +402,30 @@ polyserial.cor <- function (x, y)
 }
 
 #######################################################################
-#' @name an.parallel
+#' @name an_parallel
 #' @title Parallel Analysis
-#' @description performs Horn's parallel analysis for a principal component. 
-#' @usage an.parallel(x = NA, iterations = 0, centile = 0, 
+#' @description Performs Horn's parallel analysis for a principal component. 
+#' @usage an_parallel(x = NA, iterations = 0, centile = 0, 
 #'  seed = 0,mat = NA, n = NA)
-#' @param x a matrix or a Dataframe that holds the test response data
-#' @param iterations a number indicating the amount of iterations that 
-#' representing the number of random data sets to be produced in the analysis.
+#' @param x a matrix or a dataframe that holds the test response data.
+#' @param iterations how many iterations are performed during the analysis. Amount of random datasets produced.
 #' @param centile a number between 1 and 99 indicating the centile used in estimating bias.
-#' @param seed specifies that the random number is to be seeded with the supplied integer.
-#' @param mat specifies that the procedure use the provided correlation matrix rather
-#' than supplying a data matrix through x. The n argument must also be supplied when 
-#' mat is used.
-#' @param n the number of observations. Required when the correlation matrix is supplied 
+#' @param seed seed used for the random data generation.
+#' @param mat a supplied correlation mtrix to use instead of x. If used, then n must be also supplied.
+#' @param n the number of observations. Required when a correlation matrix is supplied 
 #' with the mat option.
-#' @details Is a implementation of Horn's (1965) tecnique for evaluating the components retained
-#' in a principle component analysis (PCA). This procedure is a adaptation of the
-#' function paran of Package Paran.
-#' @return Retained Components a scalar integer representing the number of components retained.
-#' @return Adjusted eigenvalues a vector of the estimated eigenvalues adjusted.
-#' @return Unadjusted eigenvalues a vector of the eigenvalues of the observed data from either
+#' @details Implementation of Horn's (1965) tecnique for evaluating the components retained
+#' in a principle component analysis (PCA). This procedure is an adaptation of the
+#' paran function in the Paran Package.
+#' @return Retained Components a scalar integer representing the number of retained components.
+#' @return Adjusted Eigenvalues a vector of the estimated adjusted eigenvalues.
+#' @return Unadjusted Eigenvalues a vector of the eigenvalues of the observed data from
 #' an unrotated principal component analysis.
 #' @return Bias a vector of the estimated bias of the unadjusted eigenvalues 
-#' @examples 
+#' @examples
 #' \dontrun{
 #'  data <- simulate_dichotomous(size.cluster = c(10),sample.size=1000)
-#'  an.parallel(data$data, iterations = 100, centile = 99, seed = 12)
+#'  an_parallel(data$data, iterations = 100, centile = 99, seed = 12)
 #' }
 #' @references John L. Horn (1965). A rationale and test for the number of factors 
 #' in factor analysis. Psychometrika, Volume 30, Number 2, Page 179.
@@ -436,7 +433,7 @@ polyserial.cor <- function (x, y)
 #' Distributional Form of Simulated Data. Multivariate Behavioral Research. 44(3): 362-388
 #' @export
 
-an.parallel <- function(x = NA, iterations = 0, centile = 0, seed = 0, 
+an_parallel <- function(x = NA, iterations = 0, centile = 0, seed = 0, 
                         mat = NA, n = NA) 
 {
   if (!is.na(mat[[1]][1]) & !is.na(x[[1]][1])) {

@@ -1,17 +1,17 @@
 #######################################################################
 #' @name findim_hcpc
 #' @title Discovering Dimension
-#' @description Based on loadings and Factorial analysis find the test dimension for a dichotomous logistic model.
+#' @description Finds the test dimension for a dichotomous logistic model by using Loadings and Factorial Analysis, according to the Paez & Montenegro methodology.
 #' @usage findim_hcpc(data, verbose, probit)
-#' @param data A binary matrix or a dataframe that holds the response data with N individuals (columns) and P items (rows).
-#' @param verbose A boolean, if TRUE all procedures are descibed in console. The adjusted eigen values are allways shown.
-#' @param probit A boolean, if FALSE correction of probit to logit model is made (multiplying by 1.702 de discrimination vectors).
-#' @details Is a implementation of a tecnique for evaluating the number of latent constructs presented by data.
-#' @return L_data_Clust List of matrices formed by clusters, each matrix has associated a set of binary vectors of items.
-#' @return M_data Matrix of the join of objects in L_data_Clust.
-#' @return dim_new Numeric, Dimension found by the algorithm.
-#' @return dim_old Numeric, Initial Dimension of the algorithm (set by parallel analysis).
-#' @return sc Vector, The size of each cluster of L_data_Clust.
+#' @param data A binary matrix or dataframe that holds the response data with N individuals (columns) and P items (rows).
+#' @param verbose a boolean, if TRUE all procedures are descibed in console. The adjusted eigen values are allways shown.
+#' @param probit a boolean, if FALSE correction of probit to logit model is made (multiplying by 1.702 de discrimination vectors).
+#' @details Implementation of a tecnique to evaluate the number of latent constructs presented by data.
+#' @return L_data_Clust: list of matrices formed by clusters, each matrix has an associated set of binary vectors of items.
+#' @return M_data: matrix of the join of objects in L_data_Clust.
+#' @return dim_new: numeric, Dimension found by the algorithm.
+#' @return dim_old: numeric, Initial Dimension of the algorithm (set by parallel analysis).
+#' @return sc: vector, The size of each cluster of L_data_Clust.
 #' @examples
 #' \dontrun{
 #' file = paste(system.file(package = "LatentREGpp"),"/dataset/TUN.txt",sep = "")
@@ -19,11 +19,12 @@
 #' findim_hcpc(TUN)
 #' findim_hcpc(TUN, verbose = T)
 #' }
-#' @references P'aez S. Montenegro A. and Pardo C. (2017). Principles and Methodology to Find Dimension on Latent Regression Models. Novel based approach.
-#' British Journal of Mathematical and Statistical Psychology. (In proceedings)
+#' @references Paez S. Montenegro A. and Pardo C. (2017). Principles and Methodology to Find Dimension on Latent Regression Models. Novel based approach.
+#' British Journal of Mathematical and Statistical Psychology. (Submitted)
 #' @references John L. Horn (1965). A rationale and test for the number of factors 
 #' in factor analysis. Psychometrika, Volume 30, Number 2, Page 179.
 #' @references Lebart L, Morineau A, Piron M (1997). Statistique Exploratoire Multidimensionnelle. Dunod.
+#' @references Reckase M (2009). Multidimensional item response theory. Springer.
 #' @seealso
 #' \code{\link{itemfit}}
 #' @export

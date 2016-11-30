@@ -2,7 +2,7 @@
 #'@title Latent traits estimation
 #'@description Estimates the latent traits by using either the Expected A Posteriori (EAP) 
 #'or Mode A Posteriori (MAP) method. A Normal distribution with mean vector zero and 
-#'covariance matrix the identity is assumed. Quasi-Monte Carlo quadrature is advised
+#'covariance matrix the identity is assumed. Quasi-Monte Carlo quadrature is suggested
 #'when the data dimension is large \eqn{(>3)}.
 #'@param data The matrix containing the answers of tested individuals
 #'@param dim The dimensionality of the test

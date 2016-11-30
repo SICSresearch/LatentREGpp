@@ -26,11 +26,14 @@ list with the simulated data, the information of the item parameters and
 the individual parameters
 }
 \description{
-This function generates dichotomous test
+This function a generates dichotomous test
 }
 \examples{
 
 #Example 1: see by default options
 simm=simulate_dichotomous()
+}
+\seealso{
+\code{\link{simulate_polytomous}}
 }
 

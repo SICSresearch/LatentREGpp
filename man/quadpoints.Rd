@@ -16,7 +16,7 @@ or "QMCEM" for Quasi-Monte Carlo quadrature.}
 If Quasi-Monte Carlo method is specified, the default value is of 2000 points.}
 }
 \description{
-Return a list with quadrature points according dimensionality, technique
+Return a list with quadrature points according to dimensionality, technique
 and number of points.
 }
 \examples{
